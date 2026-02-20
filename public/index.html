@@ -2,77 +2,119 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ST Guard | Página Inicial</title>
+  <title>ST Guard | Página Inicial</title>
 
-    <script src="./js/sessao.js"></script>
+  <script src="./js/sessao.js"></script>
 
-    <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="d./assets/icon/favicon2.ico">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="./css/estilo.css">
+  <link rel="icon" href="d./assets/icon/favicon2.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
 <body>
-    <div class="header">
-      <div class="container">
-        <h1 class="titulo">ST Guard</h1>
-        <ul class="navbar">
-          <li class="agora">
-            <a href="#">Inicial</a>
-          </li> 
-          <li>
-            <a href="login.html">Login</a>
-          </li>
-          <li>
-            <a href="cadastro.html">Cadastro</a>
-          </li>
-        </ul>
+  <header>
+
+      <div id="div_logo">
+        <a class="logo" href="">Smart Data</a>
       </div>
-    </div>
-  
-    <div class="banner">
-      <div class="container">
-        <p>Preservando <span>hoje</span> para existirem <span>amanhã</span>.</p>
+
+      <div id="div_navbar">
+        <a href="">Dashboard</a>
+        <a href="">Servidores</a>
+        <a href="">Relatórios</a>
+        <a href="">Alertas</a>
+        <button>Login</button>
       </div>
+
+  </header>
+
+  <div id="div_banner">
+
+    <div id="div_banner_titulo">
+      Monitoramento <br>
+     <span>Avançado de Hardware</span> <br>
+      para Servidores da Steam
     </div>
-  
-    <div class="social">
-      <div class="container">
-        <div class="boxes">
-          <div class="box">
-            <img src="assets/imgs/planet-earth_color.png">
-            <h4>Missão</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
-              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
-              minima.</p>
-          </div>
-          <div class="box">
-            <img src="assets/imgs/lightbulb_color.png">
-            <h4>Visão</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
-              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
-              minima.</p>
-          </div>
-          <div class="box">
-            <img src="assets/imgs/growth_color.png">
-            <h4>Valores</h4>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Et, quas cupiditate asperiores provident magnam
-              vitae illum iusto fugiat atque deleniti nulla sed iure suscipit, laborum, aliquid accusantium cum dicta
-              minima.</p>
-          </div>
+
+    <div id="div_banner_subtitulo">
+      Monitoramento em tempo real e análises para o <br>
+      hardware físico dos servidores da Steam.
+    </div>
+
+    <div id="div_banner_button">
+
+      <button id="button_yellow">Começar Agora</button>
+
+      <button id="button_transparent_blue">Saiba mais</button>
+
+    </div>
+
+
+  </div>
+
+  <div id="div_relatorios">
+
+    <div id="div_relatorios_kpi">
+
+      <div id="div_kpi_1" class="kpi">
+
+        <div id="div_img1">
+        <img src="./assets/fundos-home/servidor 1.png" alt="">
         </div>
+
+        <div id="div_texto1">
+          <span>23</span> <br>
+          Servidores Online
+        </div>
+
       </div>
-    </div>
-  
-    <div class="footer">
-      <div class="container">
-        <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-        <span class="version">v1.0.0</span>
+
+      <div id="div_kpi_2" class="kpi">
+
+        <div id="div_img2">
+        <img src="./assets/fundos-home/atencao 2.png" alt="">
+        </div>
+
+        <div id="div_texto2">
+         <span>15</span> <br>
+          Alertas Ativos
+        </div>
+
       </div>
+      
+      <div id="div_kpi_3" class="kpi">
+
+        <div id="div_img3">
+        <img src="./assets/fundos-home/relatorio 1.png" alt="">
+        </div>
+
+        <div id="div_texto3">
+          <span>120</span> <br>
+          Relatórios Gerados
+        </div>
+
+      </div>
+
+      <div id="div_kpi_4" class="kpi">
+
+        <div id="div_img4">
+        <img src="./assets/fundos-home/comercial 1.png" alt="">
+        </div>
+
+        <div id="div_texto4">
+          <span>40</span> <br>
+          Equipes
+        </div>
+
+      </div>
+
     </div>
-  </body>
+
+  </div>
+</body>
 
 </html>
