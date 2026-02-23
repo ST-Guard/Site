@@ -1,0 +1,50 @@
+body {
+  background-color: #f4f6fb;
+  font-size: 0.85rem;
+  padding-bottom: 2rem;
+}
+
+.cartao {
+  border: none;
+  border-radius: 20px;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.02),
+    0 2px 6px rgba(0, 20, 40, 0.04);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(2px);
+}
+
+.valor-grande {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #0b2b4a;
+}
+
+.unidade {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #5e6f88;
+  margin-left: 0.2rem;
+}
+.rotulo-medicao {
+  color: #566b82;
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.barra-progresso {
+  height: 8px;
+  border-radius: 20px;
+  background-color: #e5ecf3;
+}
+.barra-cpu {
+  background-color: #2469f0;
+}
+.barra-ram {
+  background-color: #23b26d;
+}
+.barra-disco {
+  background-color: #f2b547;
+}
