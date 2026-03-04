@@ -81,3 +81,5 @@ INSERT INTO empresa VALUES
     
 INSERT INTO usuario VALUES
 	(333, 1, 'Rogério Ragozzini', 'ragozzini@gmail.com', '12345678901', 'roro', NULL);
+    
+SELECT * from empresa;
