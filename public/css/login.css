@@ -1,0 +1,130 @@
+.st-login-section {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.st-login-esquerda {
+    width: 50%;
+    background:
+        linear-gradient(rgba(46, 83, 117, 0.4),
+            rgba(46, 83, 117, 0.3)),
+        url("../assets/imgs/supervisores-login");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.st-login-direita {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2E5375;
+    padding: 20px;
+}
+
+.st-login-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.st-login-card {
+    background-color: #ffffff;
+    padding: 100px 60px;
+    border-radius: 25px;
+    width: 90%;
+    max-width: 750px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.st-login-card h2 {
+    font-size: 55px;
+    font-weight: 800;
+    color: #0F1C2E;
+    margin-bottom: 15px;
+}
+
+.st-login-card p {
+    color: #6c757d;
+    font-size: 18px;
+    margin-bottom: 40px;
+}
+
+.st-campo {
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.st-login-section .st-campo label {
+    display: block;
+    font-weight: 500;
+    color: #2E5375;
+    margin-bottom: 8px;
+}
+
+.st-login-section .st-campo input {
+    height: 60px;
+    font-size: 17px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 0 20px;
+    width: 100%;
+    color: black;
+}
+
+.st-botao {
+    width: 100%;
+    background-color: #F5CC4D;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.st-botao:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+}
+
+#tela-login {
+    width: 100%;
+    text-align: right;
+    margin-left: auto;
+
+}
+
+.navbar-nav {
+    justify-content: flex-end;
+    width: 100%;
+}
+
+@media (max-width: 991px) {
+    .st-login-esquerda {
+        display: none;
+    }
+
+    .st-login-direita {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .st-login-card {
+        padding: 50px 25px;
+        width: 95%;
+    }
+
+    .st-login-card h2 {
+        font-size: 38px;
+    }
+}

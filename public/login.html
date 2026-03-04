@@ -6,93 +6,67 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>ST Guard | Página Inicial</title>
+  <title>Smart Data | Página Inicial</title>
 
   <script src="./js/sessao.js"></script>
 
+  <link rel="stylesheet" href="./css/login.css">
   <link rel="stylesheet" href="./css/estilo.css">
   <link rel="icon" href="d./assets/icon/favicon2.ico">
   <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0F1C2E; width: 100%;">
+      <div class="container-fluid px-5">
+        <a class="navbar-brand fs-3 fw-semibold" href="index.html">
+          <a class="navbar-brand" href="index.html">
+            <img src="assets/fundos-home/smart_branca.png" alt="Smart Data Logo" style="height: 50px; width: auto;">
+          </a>
+        </a>
 
- <div class="nav-container">
-  
-      <div>
-        <a class="logo" href="index.html">Smart Data</a>
-      </div>
-  
-      <nav id="div_navbar">
-        <a href="">Dashboard</a>
-        <a href="">Servidores</a>
-        <a href="">Relatórios</a>
-        <a href="">Alertas</a>
-      </nav>
-  
-      <!-- <div class="nav-login">
-        <button>
-          <a href="login.html">Login</a></button>
-      </div> -->
-  
-    </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-4">
+            <li class="nav-item">
+              <a class="nav-link text-white fs-5" id="tela-login" href="index.html">Home</a>
+            </li>
+        </div>
+    </nav>
+  </header>
 
-<section class="st-login-section">
+  <section class="st-login-section">
 
-  <div class="st-login-left">
+    <div class="st-login-esquerda"></div>
 
-    <div class="alerta_erro">
-      <div class="card_erro" id="cardErro">
-        <span id="mensagem_erro"></span>
-      </div>
-    </div>
+    <div class="st-login-direita">
+      <div class="st-login-container">
 
-    <div class="st-login-container">
-      <div class="st-login-card">
-
-        <h2>Seja bem vindo!</h2>
-
-        <div class="st-formulario">
+        <div class="st-login-card">
+          <h2>Login</h2>
+          <p>Bem vindo(a) ao Smart Data Portal</p>
 
           <div class="st-campo">
-            <label>Código de acesso</label>
-            <input id="email_input" type="text" placeholder="Digite seu e-mail">
+            <label>Insira sua chave de acesso</label>
+            <input type="text">
           </div>
 
-          <!-- <div class="st-campo">
-            <label>Senha</label>
-            <input id="senha_input" type="password" placeholder="******">
-          </div> -->
-
-          <button class="st-botao" onclick="entrar()">Entrar</button>
-
+          <button class="st-botao">Entrar</button>
+          <br>
         </div>
-
-        <div id="div_aguardar" class="loading-div">
-          <img src="./assets/circle-loading.gif" id="loading-gif">
-        </div>
-
-        <div id="div_erros_login"></div>
 
       </div>
     </div>
 
-  </div>
-
-  <div class="st-login-right">
-    <img src="./assets/imgs/imagemlogin.png" alt="DataCenter Steam">
-  </div>
-
-</section>
-    <!--footer inicio-->
-    <!-- <div class="footer">
-        <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-            <span class="version">v1.0.0</span>
-        </div>
-    </div>
-    footer fim -->
+  </section>
 
 </body>
 
@@ -101,7 +75,7 @@
 <script>
 
 
-     function entrar() {
+function entrar() {
         aguardar();
 
         var tokenVar = token_input.value;
