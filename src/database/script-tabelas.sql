@@ -1,85 +1,74 @@
-CREATE DATABASE stsecurity;
+show databases;
+show tables;
+drop database smartData;
 
-USE stsecurity;
+CREATE DATABASE smartData;
+USE smartData;
 
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(100) NOT NULL,
-	cnpj CHAR(14) NOT NULL UNIQUE
+CREATE TABLE empresa(
+idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
+razaoSocial VARCHAR(100),
+cpnj CHAR(14)
 );
 
-CREATE TABLE usuario (
-	idUsuario INT AUTO_INCREMENT,
-	fkEmpresa INT NOT NULL,
-		CONSTRAINT fkUsuarioEmpresa
-			FOREIGN KEY (fkEmpresa)
-				REFERENCES empresa (id),
-		PRIMARY KEY (idUsuario, fkEmpresa),
-	nome VARCHAR(100) NOT NULL,
-	email VARCHAR(200) NOT NULL UNIQUE,
-	cpf CHAR(11) NOT NULL UNIQUE,
-	senha VARCHAR(50) NOT NULL,
-	gestor INT,
-		CONSTRAINT fkUsuarioGestor
-			FOREIGN KEY (gestor)
-				REFERENCES usuario (idUsuario)
+CREATE TABLE usuario(
+idUsuario INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(100),
+email VARCHAR(200),
+cpf CHAR(11),
+senha VARCHAR(50),
+idGerente INT,
+	CONSTRAINT idGerenteUsuario
+    FOREIGN KEY(idGerente)
+    REFERENCES usuario(idUsuario)
 );
 
-CREATE TABLE dataCenter (
-	idDataCenter INT AUTO_INCREMENT,
-	fkEmpresa INT NOT NULL,
-		CONSTRAINT fkDataCenterEmpresa
-			FOREIGN KEY (fkEmpresa)
-				REFERENCES empresa(id),
-		PRIMARY KEY (idDataCenter, fkEmpresa),
-	cep VARCHAR(45) NOT NULL,
-	pais VARCHAR(45) NOT NULL,
-	estado VARCHAR(45) NOT NULL,
-	cidade VARCHAR(45) NOT NULL,
-	logradouro VARCHAR(45) NOT NULL,
-	numero VARCHAR(10) NOT NULL,
-	complemento VARCHAR(45),
-	qtdServidor INT NOT NULL,
-	tamArea INT NOT NULL
+CREATE TABLE servidor(
+idServidor INT PRIMARY KEY AUTO_INCREMENT,
+tipoServidor VARCHAR(100)
 );
 
-CREATE TABLE servidor (
-	idServidores INT PRIMARY KEY AUTO_INCREMENT,
-	modelRam VARCHAR(100) NOT NULL,
-	qtdRam INT NOT NULL,
-	modelDisco VARCHAR(100) NOT NULL,
-	qtdDisco INT NOT NULL,
-	modelCpu VARCHAR(100) NOT NULL,
-	qtdCpu INT NOT NULL,
-	capacidadeProcesso VARCHAR(100) NOT NULL,
-	fkDataCenter INT NOT NULL,
-		CONSTRAINT fkServidorDataCenter
-			FOREIGN KEY (fkDataCenter)
-				REFERENCES dataCenter(idDataCenter),
-	fkEmpresa INT NOT NULL,
-		CONSTRAINT fkServidorEmpresa
-			FOREIGN KEY (fkEmpresa)
-				REFERENCES empresa(id)
+CREATE TABLE dataCenter(
+idDataCenter INT PRIMARY KEY AUTO_INCREMENT,
+capacidadeServidores INT,
+fkUsuario INT,
+	CONSTRAINT fkDataCenterUsuario
+    FOREIGN KEY(fkUsuario)
+	REFERENCES usuario(idUsuario),
+fkServidor INT,
+	CONSTRAINT fkDataCenterServidor
+    FOREIGN KEY(fkServidor)
+    REFERENCES servidor(idServidor)
 );
 
-CREATE TABLE registroServidor (
-	idRegistroServidor INT AUTO_INCREMENT,
-	fkServidor INT NOT NULL,
-		CONSTRAINT fkRegistroServidor
-			FOREIGN KEY (fkServidor)
-				REFERENCES servidor(idServidores),
-		PRIMARY KEY (idregistroServidor, fkServidor),
-	dia DATE NOT NULL,
-	hora TIME NOT NULL,
-	ramPorcentagem INT NOT NULL,
-	discoPorcentagem INT NOT NULL,
-	cpuPorcentagem INT NOT NULL
+CREATE TABLE endereco(
+idEndereco INT PRIMARY KEY AUTO_INCREMENT,
+cep CHAR(8),
+numero VARCHAR(45),
+complemento VARCHAR(45),
+fkEmpresa INT,
+	CONSTRAINT fkEnderecoEmpresa
+    FOREIGN KEY(fkEmpresa)
+    REFERENCES empresa(idEmpresa),
+fkDataCenter INT,
+	CONSTRAINT fkEnderecoDataCenter
+	FOREIGN KEY(fkDataCenter)
+    REFERENCES dataCenter(idDataCenter)
 );
 
-INSERT INTO empresa VALUES
-	(DEFAULT, 'Steam Inc.', '85952212605234');
-    
-INSERT INTO usuario VALUES
-	(333, 1, 'Rogério Ragozzini', 'ragozzini@gmail.com', '12345678901', 'roro', NULL);
-    
-SELECT * from empresa;
+CREATE TABLE componentes(
+idComponente INT PRIMARY KEY AUTO_INCREMENT,
+nomeComponente VARCHAR(50),
+tipoComponente VARCHAR(45),
+unidadeMedida VARCHAR(45),
+capacidadeMaxima FLOAT
+);
+
+CREATE TABLE componentes_servidor(
+limite FLOAT,
+fkServidor INT,
+fkComponentes INT,
+	PRIMARY KEY (fkServidor, fkComponentes)
+);
+
+
