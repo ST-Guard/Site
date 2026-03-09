@@ -10,11 +10,19 @@ function autenticar(emailVar,senhaVar) {
 }
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
-function cadastrar(nome, email, senha,cpf) {
+function cadastrar(nome, email, senha,cpf, dt, servidor) {
 
     var instrucaoSql = `
         INSERT INTO usuario ( nome, email, cpf, senha)
         VALUES ( '${nome}', '${email}', '00000000000', '${senha}');
+    `;
+    var instrucaoSql = `
+        INSERT INTO servidor (qtdServidor)
+        VALUES ( '${servidor}');
+    `;
+     var instrucaoSql = `
+        INSERT INTO dataCenter (identificadorDT)
+        VALUES ( '${dt}');
     `;
 
     return database.executar(instrucaoSql);

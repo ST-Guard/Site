@@ -38,7 +38,7 @@
 
   
 
-    <div class="st-cadastro-container">
+    <div id="div_cadastro1" class="st-cadastro-container">
       <div class="st-cadastro-card">
 
         <h2>Crie sua conta</h2>
@@ -65,7 +65,7 @@
           </div>
           
 
-          <button onclick="cadastrar()" class="st-botao">Cadastrar</button>
+          <button onclick="nextPage()" class="st-botao">Proxima página</button>
 
         </div>
 
@@ -73,15 +73,48 @@
     </div>
 
   </section>
+  <div style="display: none;"  id="div_nextpage" class="st-cadastro-container">
+    <div class="st-cadastro-card">
+<div>
+ <h2>Selecione a quantidade de DataCenters e Servidores</h2>
+
+        <div class="st-formulario">
+
+          <div class="st-campo">
+            <label>Informe o identificar DataCenters</label>
+            <input id="input_dt" type="text" placeholder="DataCenters:">
+          </div>
+          <div class="st-campo">
+            <label>Informe a quantidadede de Servidores</label>
+            <input id="input_servidor" type="number" placeholder="Servidores:">
+          </div>
+
+        
+          <button onclick="previousPage()">Página anterior</button>
+          <button onclick="cadastrar()" class="st-botao">Cadastrar</button>
+    <div>
+
+    </div>
+
+  </div>
+  </div>
+</div>
+  
 
 </body>
 
 </html>
 
 <script>
+  function previousPage(){}
+ div_nextpage.style.display="none";
+    div_cadastro1.style.display="block";
+  function nextPage(){
 
-  // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
+    div_nextpage.style.display="block";
+    div_cadastro1.style.display="none";
+
+  }
 
   function cadastrar() {
 
@@ -91,9 +124,12 @@
     var senha = input_senha.value;
     var nomeUsuario = input_nome.value;
     var email = input_email.value;
-   
+    var dt = input_dt.value;
+    var servidor = input_servidor.value;
+
+
     // Verificando se há algum campo em branco
-   if (cpf == "" || senha == "" || nomeUsuario == "" || email == "") {
+   if (cpf == "" || senha == "" || nomeUsuario == "" || email == ""|| dt == ""|| servidor == "") {
   alert("Preencha todos os campos!");
   return;
 }
@@ -108,8 +144,9 @@
     cpfServer: cpf,
     senhaServer: senha,
     nomeServer: nomeUsuario,
-    emailServer: email
-    
+    emailServer: email,
+    dtServer: dt,
+    servidorServer: servidor
   }),
 }
   )

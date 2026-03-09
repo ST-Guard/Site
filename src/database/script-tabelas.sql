@@ -1,6 +1,5 @@
 show databases;
 show tables;
-drop database smartData;
 
 CREATE DATABASE smartData;
 USE smartData;
@@ -25,16 +24,18 @@ idGerente INT,
 
 CREATE TABLE servidor(
 idServidor INT PRIMARY KEY AUTO_INCREMENT,
-tipoServidor VARCHAR(100)
+tipoServidor VARCHAR(100),
+qtdServidores INT
 );
 
 CREATE TABLE dataCenter(
 idDataCenter INT PRIMARY KEY AUTO_INCREMENT,
+identificadorDT VARCHAR(100),
 capacidadeServidores INT,
-fkUsuario INT,
-	CONSTRAINT fkDataCenterUsuario
-    FOREIGN KEY(fkUsuario)
-	REFERENCES usuario(idUsuario),
+fkEmpresa INT,
+	CONSTRAINT fkDataCenterEmpresa
+    FOREIGN KEY(fkEmpresa)
+	REFERENCES empresa(idEmpresa),
 fkServidor INT,
 	CONSTRAINT fkDataCenterServidor
     FOREIGN KEY(fkServidor)
@@ -61,7 +62,9 @@ idComponente INT PRIMARY KEY AUTO_INCREMENT,
 nomeComponente VARCHAR(50),
 tipoComponente VARCHAR(45),
 unidadeMedida VARCHAR(45),
-capacidadeMaxima FLOAT
+biblioteca VARCHAR(50),
+comando VARCHAR(100),
+parametro VARCHAR(50)
 );
 
 CREATE TABLE componentes_servidor(
@@ -70,5 +73,4 @@ fkServidor INT,
 fkComponentes INT,
 	PRIMARY KEY (fkServidor, fkComponentes)
 );
-
 

@@ -39,8 +39,9 @@ function cadastrar(req, res) {
     var email = req.body.emailServer;
     var cpf = req.body.cpfServer;
     var senha = req.body.senhaServer;
+    var dt = req.body.dtServer;
+    var servidor = req.body.servidorServer;
 
-    var fkEmpresa = req.body.idEmpresaVincularServer;
 
     // Faça as validações dos valores
     if (nome == undefined) {
@@ -51,12 +52,14 @@ function cadastrar(req, res) {
         res.status(400).send("Sua senha está undefined!");
     } else if (cpf == undefined) {
         res.status(400).send("Sua cpf está undefined!");
-    }  else if (fkEmpresa == undefined) {
-        res.status(400).send("Sua empresa a vincular está undefined!");
+    } else if (dt == undefined) {
+        res.status(400).send("Seu DataCenter está undefined!");
+    } else if (servidor == undefined) {
+        res.status(400).send("Seu Servidor está undefined!");
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, email, senha,cpf, fkEmpresa)
+        usuarioModel.cadastrar(nome, email, senha, cpf, dt, servidor)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -79,28 +82,30 @@ var usuarioModel = require("../models/usuarioModel");
 function cadastrarCompleto(req, res) {
 
 
-    
+
     var cpf = req.body.cpfServer;
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
+    var dt = req.body.dtServer;
+    var servidor = req.body.servidorServer;
 
-    if (!cpf || !nome || !email || !senha) {
+    if (!cpf || !nome || !email || !senha|| !dt|| !servidor) {
         return res.status(400).send("Campos obrigatórios vazios");
     }
 
-    
-    usuarioModel.cadastrar(nome, email, senha, cpf)
+
+    usuarioModel.cadastrar(nome, email, senha, cpf,dt , servidor)
         .then(function (resultado) {
-            res.json(resultado); 
+            res.json(resultado);
         })
         .catch(function (erro) {
             console.log(erro);
-            res.status(500).json(erro.sqlMessage); 
+            res.status(500).json(erro.sqlMessage);
         });
 }
 
-   
+
 
 
 module.exports = {
