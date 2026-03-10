@@ -1,17 +1,25 @@
 body {
     background-color: #f4f6fb;
     font-size: 0.85rem;
+<<<<<<< HEAD
     padding-bottom: 2rem;
     font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 .cartao {
+=======
+    padding-bottom: 32px;
+}
+
+.card-monitoramento {
+>>>>>>> 2c087d2 (center graph card on dashboard and removing missing icons)
     border: none;
     border-radius: 20px;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 20, 40, 0.04);
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(2px);
 }
+
 
 .valor-grande {
     font-size: 2.2rem;
@@ -31,7 +39,10 @@ body {
     color: #566b82;
     font-weight: 500;
     font-size: 0.75rem;
+<<<<<<< HEAD
     text-transform: uppercase;
+=======
+>>>>>>> 2c087d2 (center graph card on dashboard and removing missing icons)
     letter-spacing: 0.03em;
 }
 
@@ -51,6 +62,184 @@ body {
 
 .barra-disco {
     background-color: #f2b547;
+<<<<<<< HEAD
+=======
+}
+
+.card-grafico {
+    background: white;
+    border-radius: 24px;
+    padding: 1.5rem;
+    height: 100%;
+    max-width: 800px;
+}
+
+.cabecalho-grafico {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.icone-grafico {
+    background: linear-gradient(135deg, #2469f0 0%, #1a4bb8 100%);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+}
+
+.titulo-grafico {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #0b2b4a;
+    margin: 0;
+}
+
+.subtitulo-grafico {
+    color: #5e6f88;
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+.grafico-container {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.grid-estatisticas {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.item-estatistica {
+    background: #f8faff;
+    border-radius: 16px;
+    padding: 12px 8px;
+    text-align: center;
+    border: 1px solid rgba(36, 105, 240, 0.08);
+}
+
+.rotulo-estatistica {
+    color: #5e6f88;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.valor-estatistica {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #0b2b4a;
+    margin-top: 4px;
+}
+
+.unidade-estatistica {
+    font-size: 0.7rem;
+    color: #8a9bb5;
+    margin-left: 2px;
+}
+
+.modulo-memoria {
+    background: #f0f4fc;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-left: 3px solid #2469f0;
+}
+
+.cabecalho-modulo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.nome-modulo {
+    font-weight: 600;
+    color: #0b2b4a;
+}
+
+.velocidade-modulo {
+    color: #2469f0;
+    font-weight: 500;
+}
+
+.especificacoes-modulo {
+    display: flex;
+    gap: 15px;
+    font-size: 0.75rem;
+    color: #5e6f88;
+    flex-wrap: wrap;
+}
+
+.icone-alerta {
+    width: 45px;
+    height: 45px;
+    background: rgba(220, 53, 69, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.live-badge {
+    background: rgba(35, 178, 109, 0.1);
+    color: #23b26d;
+    border-radius: 30px;
+    padding: 2px 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: #23b26d;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse 1.5s infinite;
+}
+
+.bg-alerta {
+    background: rgba(220, 53, 69, 0.03);
+}
+
+.card-tabela {
+    border: none;
+    border-radius: 20px;
+    background: white;
+}
+
+.linha-tabela {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+.linha-tabela:last-child {
+    border-bottom: none;
+}
+
+.badge-dscp {
+    background: #eef2f8;
+    color: #2e5aaf;
+    padding: 4px 10px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 500;
+>>>>>>> 2c087d2 (center graph card on dashboard and removing missing icons)
 }
 
 .freq-card {
