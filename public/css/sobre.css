@@ -1,0 +1,198 @@
+* {
+    box-sizing: border-box;
+}
+
+.titulo-pilares {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 10px;
+}
+
+.titulo-pilares h1 {
+    font-weight: 700;
+    color: #0F1C2E;
+    margin-bottom: 10px;
+}
+
+.titulo-pilares p {
+    color: #6b7280;
+    font-size: 20px;
+}
+
+.titulo-pilares h1:after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 4px;
+    background: #F5CC4D;
+    margin: 15px auto 0 auto;
+    border-radius: 4px;
+}
+
+.coluna-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 30px 20px 60px 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.coluna {
+    background-color: #2f4f75;
+    padding: 40px;
+    border-radius: 16px;
+    text-align: center;
+    color: white;
+    transition: 0.3s;
+    width: 320px;
+}
+
+.coluna:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.icone-pilar {
+    font-size: 38px;
+    color: #F5CC4D;
+    margin-bottom: 20px;
+}
+
+.coluna h2 {
+    font-size: 25px;
+    margin-bottom: 15px;
+    font-weight: 450;
+}
+
+.coluna p {
+    color: white;
+    font-weight: 300;
+}
+
+.secao-beneficios {
+    background-color: #07182b;
+    padding: 90px 30px;
+    text-align: center;
+}
+
+.secao-beneficios h2 {
+    color: white;
+    margin-bottom: 50px;
+}
+
+.beneficios-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.beneficio {
+    background-color: #2f4f75;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 280px;
+    color: white;
+    transition: 0.3s;
+}
+
+.beneficio:hover {
+    transform: translateY(-6px);
+}
+
+.beneficio i {
+    font-size: 35px;
+    color: #F5CC4D;
+    margin-bottom: 10px;
+}
+
+.beneficio h3 {
+    font-size: 20px;
+}
+
+.beneficio p {
+    font-size: 15px;
+    color: white;
+    font-weight: 250;
+}
+
+.secao-cta {
+    background-color: #0F1C2E;
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.secao-cta h2 {
+    color: white;
+    font-size: 20px;
+}
+
+.secao-cta p {
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.botao-cta {
+    background-color: #F5CC4D;
+    padding: 14px 35px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao-cta:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+    .titulo-pilares h1 {
+        font-size: 28px;
+    }
+    
+    .coluna-container {
+        gap: 20px;
+    }
+
+    .coluna {
+        min-width: 280px;
+    }
+}
+
+@media (max-width: 600px) {
+    .titulo-pilares {
+        margin-top: 40px;
+        padding: 0 15px;
+    }
+
+    .titulo-pilares h1 {
+        font-size: 24px;
+    }
+
+    .titulo-pilares p {
+        font-size: 16px;
+    }
+
+    .coluna-container {
+        padding: 20px 15px;
+    }
+
+    .coluna {
+        width: 100%;
+        max-width: 100%; 
+        padding: 30px 20px;
+    }
+
+    .beneficio {
+        max-width: 100%;
+    }
+
+    .secao-cta h2 {
+        font-size: 15px;
+    }
+}

@@ -20,7 +20,6 @@ body {
   margin: auto;
 }
 
-
 .logo {
   color: white;
   text-decoration: none;
@@ -107,6 +106,11 @@ header a {
   border: none;
   cursor: pointer;
   transition: 0.2s;
+}
+
+#div_banner_button a{
+  color: inherit;
+  text-decoration: none;
 }
 
 #button_yellow:hover {
@@ -381,6 +385,11 @@ header a {
 
 .cta-diferenciais {
   text-align: center;
+}
+
+.cta-diferenciais a{
+  text-decoration: none;
+  color: inherit;
 }
 
 .botao-amarelo {
