@@ -11,7 +11,7 @@
   <script src="./js/sessao.js"></script>
 
   <link rel="stylesheet" href="./css/estilo.css">
-  <link rel="icon" href="./assets/icon/favicon2.ico">
+ 
 </head>
 
 <body>
@@ -36,13 +36,9 @@
 
   <section class="st-cadastro-section">
 
-    <div class="alerta_erro">
-      <div class="card_erro" id="cardErro">
-        <span id="mensagem_erro"></span>
-      </div>
-    </div>
 
-    <div class="st-cadastro-container">
+
+    <div id="div_cadastro1" class="st-cadastro-container">
       <div class="st-cadastro-card">
 
         <h2>Crie sua conta</h2>
@@ -58,27 +54,18 @@
             <label>Email</label>
             <input id="input_email" type="email" placeholder="Digite seu e-mail">
           </div>
-
-          <div class="st-campo">
-            <label>Razao Social</label>
-            <input id="input_razaoSocial" type="text" placeholder="Nome da empresa">
-          </div>
-          <div class="st-campo">
-            <label>CNPJ</label>
-            <input id="input_cnpj" type="text" placeholder="CNPJ">
-          </div>
-
           <div class="st-campo">
             <label>Senha</label>
-            <input id="input_senha" type="password" placeholder="Crie uma senha">
+            <input id="input_senha" type="password" placeholder="Senha">
           </div>
 
           <div class="st-campo">
-            <label>Confirmar senha</label>
-            <input type="password" placeholder="Confirme a senha">
+            <label>CPF </label>
+            <input id="input_cpf" type="number" placeholder="CPF">
           </div>
 
-          <button onclick="cadastrar()" class="st-botao">Cadastrar</button>
+
+          <button onclick="nextPage()" class="st-botao">Proxima página</button>
 
         </div>
 
@@ -86,6 +73,62 @@
     </div>
 
   </section>
+  <div style="display: none;" id="div_nextpage" class="st-cadastro-container">
+    <div class="st-cadastro-card">
+      <div>
+        <h2>Selecione a quantidade de DataCenters e Servidores</h2>
+
+        <div >
+
+          <div class="st-campo">
+            <label>Informe o identificador do DataCenters</label>
+            <input id="input_dt" type="text" placeholder="DataCenters:">
+          </div>
+          <div class="st-campo">
+            <label>Informe a quantidadede de Servidores</label>
+            <input id="input_servidor" type="number" placeholder="Servidores:">
+          </div>
+
+
+          <button onclick="previousPage()">Página anterior</button>
+          <button onclick="nextPage2()">Proxima página</button>
+
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div style="display: none;" id="div_nextpage2" class="st-cadastro-container">
+    <div class="st-cadastro-card">
+      <div>
+        <h2>Selecione os componentes que serão monitorados:</h2>
+
+        <div >
+
+          <div class="st-campo">
+            <label>CPU</label>
+            <input id="input_cpu" type="checkbox">
+            <label>Memoria RAM</label>
+            <input id="input_ram" type="checkbox">
+            <label>Disco</label>
+            <input id="input_disco" type="checkbox">
+
+          </div>
+
+
+          <button onclick="previousPage2()">Página anterior</button>
+          <button onclick="cadastrar()" class="st-botao">Cadastrar</button>
+
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 
 </body>
 
@@ -93,58 +136,76 @@
 
 <script>
 
-  // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
+  function previousPage2() {
+   div_nextpage2.style.display = "none";
+    div_nextpage.style.display = "block";
+  }
+  function previousPage() {
+    div_nextpage.style.display = "none";
+    div_cadastro1.style.display = "block";
+  }
+    function nextPage2() {
+
+    div_nextpage.style.display = "none";
+    div_nextpage2.style.display = "block";
+    div_cadastro1.style.display = "none";
+
+  }
+
+  function nextPage() {
+
+    div_nextpage.style.display = "block";
+    div_cadastro1.style.display = "none";
+
+  }
 
   function cadastrar() {
 
     //Recupere o valor da nova input pelo nome do id
     // Agora vá para o método fetch logo abaixo
-    var nomeEmpresa = input_razaoSocial.value;
-    var cnpj = input_cnpj.value;
+    var cpf = input_cpf.value;
+    var senha = input_senha.value;
     var nomeUsuario = input_nome.value;
     var email = input_email.value;
-    var senha = input_senha.value;
+    var dt = input_dt.value;
+    var servidor = input_servidor.value;
+
+
     // Verificando se há algum campo em branco
-   if (nomeEmpresa == "" || cnpj == "" || nomeUsuario == "" || email == "" || senha == "") {
-  alert("Preencha todos os campos!");
-  return;
-}
+    if (cpf == "" || senha == "" || nomeUsuario == "" || email == "" || dt == "" || servidor == "") {
+      alert("Preencha todos os campos!");
+      return;
+    }
 
     // Enviando o valor da nova input
-   fetch("/usuarios/cadastrarCompleto", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    nomeEmpresaServer: nomeEmpresa,
-    cnpjServer: cnpj,
-    nomeServer: nomeUsuario,
-    emailServer: email,
-    senhaServer: senha
-  }),
-}
-  )
+    fetch("/usuarios/cadastrarCompleto", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cpfServer: cpf,
+        senhaServer: senha,
+        nomeServer: nomeUsuario,
+        emailServer: email,
+        dtServer: dt,
+        servidorServer: servidor
+      }),
+    }
+    )
       .then(function (resposta) {
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
-          cardErro.style.display = "block";
-
-          sessionStorage.ID_CAMPO
-          alert('Dados salvos');
-
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de serviço...";
+          alert('Cadastro realizado com sucesso! Redirecionando...');
 
           setTimeout(() => {
-            window.location = "../dashboard/dashboard.html";
-          }, "2000");
-
+            window.location = "./dashboard/dashboard.html";
+          }, 2000);
         } else {
-          throw "Houve um erro ao tentar realizar o cadastro!";
+          alert("Houve um erro ao tentar realizar o cadastro!");
         }
+
       })
 
       .catch(function (resposta) {
@@ -174,7 +235,5 @@
   //     });
   // }
 
-  function sumirMensagem() {
-    cardErro.style.display = "none";
-  }
+
 </script>

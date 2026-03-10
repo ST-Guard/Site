@@ -749,12 +749,12 @@ body {
 }
 
 .st-campo input {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #3a3b44;
-  /* background-color: #2f3038; */
-  color: white;
-  outline: none;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #3a3b44;
+    /* background-color: #2f3038; */
+    color: black;
+    outline: none;
 }
 
 .st-campo input:focus {

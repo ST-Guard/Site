@@ -2,31 +2,30 @@ var usuarioModel = require("../models/usuarioModel");
 
 function autenticar(req, res) {
 
-    var email = req.body.emailServer;
-    var senha = req.body.senhaServer;
+    var emailVar = req.body.emailServer;
+    var senhaVar = req.body.senhaServer;
 
-    if (email == undefined) {
+
+    if (emailVar == undefined) {
         return res.status(400).send("Seu email está undefined!");
-    } else if (senha == undefined) {
+    } else if (senhaVar == undefined) {
         return res.status(400).send("Sua senha está indefinida!");
     }
 
-    usuarioModel.autenticar(email, senha)
+    usuarioModel.autenticar(emailVar, senhaVar)
         .then(function (resultadoAutenticar) {
 
             if (resultadoAutenticar.length == 1) {
                 res.json({
-                    idUsuario: resultadoAutenticar[0].idUsuario,
-                    email: resultadoAutenticar[0].email,
-                    nome: resultadoAutenticar[0].nome,
-                    fkEmpresa: resultadoAutenticar[0].fkEmpresa
+                    idToken: resultadoAutenticar[0].idToken
                 });
             } else if (resultadoAutenticar.length == 0) {
                 res.status(403).send("Email e/ou senha inválido(s)");
             } else {
                 res.status(403).send("Mais de um usuário com o mesmo login!");
             }
-        })
+        }
+        )
         .catch(function (erro) {
             console.log(erro);
             res.status(500).json(erro.sqlMessage);
@@ -38,8 +37,11 @@ function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
+    var cpf = req.body.cpfServer;
     var senha = req.body.senhaServer;
-    var fkEmpresa = req.body.idEmpresaVincularServer;
+    var dt = req.body.dtServer;
+    var servidor = req.body.servidorServer;
+
 
     // Faça as validações dos valores
     if (nome == undefined) {
@@ -48,12 +50,16 @@ function cadastrar(req, res) {
         res.status(400).send("Seu email está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
-    } else if (fkEmpresa == undefined) {
-        res.status(400).send("Sua empresa a vincular está undefined!");
+    } else if (cpf == undefined) {
+        res.status(400).send("Sua cpf está undefined!");
+    } else if (dt == undefined) {
+        res.status(400).send("Seu DataCenter está undefined!");
+    } else if (servidor == undefined) {
+        res.status(400).send("Seu Servidor está undefined!");
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, email, senha, fkEmpresa)
+        usuarioModel.cadastrar(nome, email, senha, cpf, dt, servidor)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -75,32 +81,32 @@ var usuarioModel = require("../models/usuarioModel");
 
 function cadastrarCompleto(req, res) {
 
-    var nomeEmpresa = req.body.nomeEmpresaServer;
-    var cnpj = req.body.cnpjServer;
+
+
+    var cpf = req.body.cpfServer;
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
+    var dt = req.body.dtServer;
+    var servidor = req.body.servidorServer;
 
-    if (!nomeEmpresa || !cnpj || !nome || !email || !senha) {
+    if (!cpf || !nome || !email || !senha|| !dt|| !servidor) {
         return res.status(400).send("Campos obrigatórios vazios");
     }
 
-    empresaModel.cadastrarEmpresa(nomeEmpresa, cnpj)
-        .then(function (resultadoEmpresa) {
 
-            var idEmpresa = resultadoEmpresa.insertId;
-
-            // 2️⃣ Cadastra usuário
-            return usuarioModel.cadastrar(nome, email, senha, idEmpresa);
-        })
-        .then(function (resultadoUsuario) {
-            res.status(201).json("Empresa e usuário cadastrados com sucesso!");
+    usuarioModel.cadastrar(nome, email, senha, cpf,dt , servidor)
+        .then(function (resultado) {
+            res.json(resultado);
         })
         .catch(function (erro) {
             console.log(erro);
             res.status(500).json(erro.sqlMessage);
         });
 }
+
+
+
 
 module.exports = {
     autenticar,

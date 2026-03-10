@@ -59,15 +59,15 @@
 
           <div class="st-campo">
             <label>Insira o seu e-mail:</label>
-            <input type="text">
+            <input id="email_input" type="text">
           </div>
 
           <div class="st-campo">
             <label>Insira sua senha:</label>
-            <input type="text">
+            <input id="senha_input" type="text">
           </div>
 
-          <button class="st-botao">Entrar</button>
+          <button onclick="entrar()" class="st-botao">Entrar</button>
           <br>
         </div>
 
@@ -84,22 +84,20 @@
 
 
 function entrar() {
-        aguardar();
-
-        var tokenVar = token_input.value;
         
 
-        if (tokenVar == "" ) {
+        var senhaVar = senha_input.value;
+        var emailVar = email_input.value;
+        
+
+        if (senhaVar == "" || emailVar == "" ) {
             
            div_erros_login.innerHTML = `<p style="color: red;"> Todos os campos estão vazios</p>`
             finalizarAguardar();
             return false;
         }
-        else {
-            setInterval(sumirMensagem, 5000)
-        }
-
-        console.log("FORM TOKEN: ", tokenVar);
+      
+        console.log("FORM TOKEN: ", emailVar,senhaVar);
 
         fetch("/usuarios/autenticar", {
             method: "POST",
@@ -107,7 +105,8 @@ function entrar() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                tokenServer: tokenVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
@@ -122,7 +121,7 @@ function entrar() {
                    
 
                     setTimeout(function () {
-                        window.location = "./dashboard/dashboard.html";
+                        window.location = "./cadastro.html";
                     }, 1000); 
 
                 });
@@ -144,8 +143,6 @@ function entrar() {
         return false;
     }
 
-    function sumirMensagem() {
-        cardErro.style.display = "none"
-    }
+    
 
 </script>
