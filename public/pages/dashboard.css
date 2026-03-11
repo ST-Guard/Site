@@ -1,18 +1,10 @@
 body {
     background-color: #f4f6fb;
     font-size: 0.85rem;
-<<<<<<< HEAD
     padding-bottom: 2rem;
-    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 .cartao {
-=======
-    padding-bottom: 32px;
-}
-
-.card-monitoramento {
->>>>>>> 2c087d2 (center graph card on dashboard and removing missing icons)
     border: none;
     border-radius: 20px;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 20, 40, 0.04);
@@ -39,10 +31,7 @@ body {
     color: #566b82;
     font-weight: 500;
     font-size: 0.75rem;
-<<<<<<< HEAD
     text-transform: uppercase;
-=======
->>>>>>> 2c087d2 (center graph card on dashboard and removing missing icons)
     letter-spacing: 0.03em;
 }
 
