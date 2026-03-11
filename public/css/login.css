@@ -32,15 +32,16 @@
 
 .st-login-card {
     background-color: #ffffff;
-    padding: 100px 60px;
+    padding: 60px 40px;
     border-radius: 25px;
     width: 90%;
-    max-width: 750px;
+    max-width: 600px;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    margin: 20px;
 }
 
 .st-login-card h2 {
@@ -109,19 +110,20 @@
     width: 100%;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 991px) {
     .st-login-esquerda {
         display: none;
     }
 
     .st-login-direita {
         width: 100%;
-        padding: 15px;
+        padding: 10px;        
     }
 
     .st-login-card {
         padding: 50px 25px;
-        width: 95%;
+        width: 100%;
+        max-width: 400px;
     }
 
     .st-login-card h2 {
