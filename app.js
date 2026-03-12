@@ -1,22 +1,27 @@
-// app.js (cole e substitua o existente)
+// var ambiente_processo = 'producao';
 var ambiente_processo = 'desenvolvimento';
+
 var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
+// Acima, temos o uso do operador ternário para definir o caminho do arquivo .env
+// A sintaxe do operador ternário é: condição ? valor_se_verdadeiro : valor_se_falso
+
+
 require("dotenv").config({ path: caminho_env });
 
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
+var express = require("express");
+var cors = require("cors");
+var path = require("path");
 
 // porta principal - usa APP_PORT, se não existir tenta PORTA, senão 3333
-const PORT = process.env.APP_PORT || process.env.PORTA || 3333;
-const HOST = process.env.APP_HOST || 'localhost';
+var PORT = process.env.APP_PORT || process.env.PORTA || 3333;
+var HOST = process.env.APP_HOST || 'localhost';
 
-const app = express();
+var app = express();
 
 // routers (ajuste se algum não existir)
-const indexRouter = require("./src/routes/index");
-const usuarioRouter = require("./src/routes/usuarios");
-const empresasRouter = require("./src/routes/empresas");
+var indexRouter = require("./src/routes/index");
+var usuarioRouter = require("./src/routes/usuarios");
+var empresasRouter = require("./src/routes/empresas");
 
 // middlewares
 app.use(express.json());
