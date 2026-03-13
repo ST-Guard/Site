@@ -15,6 +15,17 @@
     background-repeat: no-repeat;
 }
 
+.st-login-esquerdaCadastro {
+    width: 50%;
+    background:
+        linear-gradient(rgba(46, 83, 117, 0.4),
+            rgba(46, 83, 117, 0.3)),
+        url("../assets/fundos-home/terceira-imagem-cortada.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .st-login-direita {
     width: 50%;
     display: flex;
