@@ -5,10 +5,10 @@ window.onload = () => {
     buscarDados()
 }
 
-if (!sessionStorage.ID_USUARIO) {
-  alert("Você precisa estar logado!");
-  window.location = "login.html";
-}
+// if (!sessionStorage.ID_USUARIO) {
+//   alert("Você precisa estar logado!");
+//   window.location = "login.html";
+// }
 
 function buscarDados() {
     const idUsuario = sessionStorage.ID_USUARIO

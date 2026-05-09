@@ -1,0 +1,317 @@
+*{
+    list-style-type: none;
+}
+body {
+    width: 100%;
+    float: left;
+    overflow: hidden;
+    font-family: "Hind", sans-serif;
+}
+
+/* MAPA */
+.box-mapa {
+    position: relative;
+    z-index: 1;
+    float: left;
+    padding: 20px 0 0 15px;
+}
+
+#map {
+    display: none;
+    transform: scale(1.2);
+    transform: scale(1);
+    display: table !important;
+    margin: 0 auto;
+    float: left;
+}
+
+#map .state {
+    cursor: pointer;
+}
+
+#map .state .shape {
+    cursor: pointer;
+    -width: 0;
+}
+
+#map .state .label_icon_state {
+    fill: #fff;
+    font-family: Arial;
+    font-size: 11px;
+    line-height: 12px;
+    font-weight: normal;
+}
+
+#map .state .label_state {
+    display: none;
+    font-family: Arial;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: bold;
+}
+
+#map .model-davi .state:hover .label_state {
+    display: block;
+    fill: #FFF !important;
+}
+
+/* Adição */
+
+#map .state .shape {
+    transition: fill 0.3s ease;
+    fill: #DDD;
+}
+
+.alerta {
+    transition:
+        r 0.3s ease,
+        filter 0.3s ease;
+
+    pointer-events: none;
+}
+
+/* Hover */
+.state.active:hover .icon_state {
+    r: 13;
+}
+
+/*========*/
+
+#map .model-davi .state .icon_state {
+    fill: #284779;
+}
+
+/* #map .model-davi .state:hover .icon_state {
+    fill: #039be5;
+} */
+
+#map .model-davi .state .icon_state+.label_icon_state {
+    fill: #FFF;
+}
+
+#map .model-davi .state .label_icon_state {
+    fill: #666;
+}
+
+#map .model-davi .state:hover .label_icon_state {
+    fill: #FFF;
+}
+
+#map .model-davi .state .label_state {
+    fill: #666;
+    display: none;
+}
+
+#map .model-davi .state .shape {
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+#map .model-davi .state:hover .shape {
+    fill: #ddd;
+}
+
+.parca {
+    position: relative;
+    float: left;
+    padding: 0 0 0 15%;
+}
+
+.parca select {
+    display: none;
+    margin: 0 auto;
+    width: 230px;
+    border: 1px solid #999;
+    height: 40px;
+    padding: 9px;
+    border-radius: 0;
+}
+
+.parca .estado {
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #DDD;
+    position: absolute;
+    margin-top: 45px;
+    opacity: 0;
+    border-radius: 5px;
+    visibility: visible;
+    padding: 10px;
+    left: 0;
+    right: 0;
+    min-width: 230px;
+    display: table;
+    margin: 57px 0 0 80px;
+    box-shadow: 0 1px 80px 0 rgba(0, 0, 0, 0.3);
+}
+
+.parca .estado h3 {
+    margin-top: 0;
+    display: block;
+    background-color: #1e88e5;
+    padding: 10px;
+    text-transform: uppercase;
+    color: #FFF;
+    margin-bottom: 20px;
+}
+
+.parca .estado ul {
+    padding-left: 0px;
+}
+
+.parca .estado ul li {
+    line-height: 24px;
+}
+
+.parca .estado button {
+    background-color: #039be5;
+    border-radius: 5px;
+    border: 0;
+    color: white;
+    padding: 5px;
+    margin-top: 7px;
+}
+
+.parca .estado button:hover {
+    background-color: #039ae5ac;
+    cursor: pointer;
+}
+
+.parca #box_mg.estado {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (max-width: 1199px) {
+    #map {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 991px) {
+    .parceiros .two .parca .estado {
+        display: block;
+        margin: 45px auto;
+        float: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        min-width: 160px;
+        max-width: 306px;
+    }
+
+    .box-mapa {
+        position: relative;
+        top: 0;
+        left: initial;
+        display: table;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 500px) {
+    .box-mapa {
+        display: none;
+    }
+
+    .parca select {
+        display: block;
+    }
+}
+
+.author {
+    position: absolute;
+    bottom: 0;
+    z-index: 2;
+    width: 100%;
+    padding: 30px 15px 15px;
+    background: rgba(0, 0, 0, 0);
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.54) 54%, black 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(54%, rgba(0, 0, 0, 0.54)), color-stop(100%, black));
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.54) 54%, black 100%);
+    background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.54) 54%, black 100%);
+    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.54) 54%, black 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.54) 54%, black 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000", endColorstr="#000000", GradientType=0);
+}
+
+.author a {
+    font-size: 16px;
+    display: table;
+    margin: 0 auto;
+    text-decoration: none;
+    color: #FFF;
+    font-weight: 700;
+}
+
+.author a span {
+    color: #F7254C;
+}
+
+
+
+/*=================================================================*/
+.conteiner_mapa {
+    width: 92%;
+    margin: 0 auto 1.5rem auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+    padding: 1.2rem;
+}
+
+.conteiner_mapa .titulo {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0F1C2E;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #66C0F4;
+    display: inline-block;
+    width: 100%;
+}
+
+#voltar {
+    background-color: #039be5;
+    padding: 7px 10px 7px 10px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+#voltar:hover {
+    background-color: #039ae59d;
+}
+
+@media (min-width: 501px) {
+    .conteiner_mapa .parca .estado {
+        position: absolute;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .conteiner_mapa .parca .estado[style*="opacity: 1"] {
+        position: absolute;
+    }
+}
+
+@media (max-width: 500px) {
+    .conteiner_mapa .parca .estado {
+        position: relative;
+        margin: 10px 0;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+
+    .conteiner_mapa .parca select {
+        display: block;
+        margin-bottom: 15px;
+    }
+}
