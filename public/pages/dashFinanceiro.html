@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Data | Gestor</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="icon" href="./../assets/icon/icon.png" />
+  <link rel="stylesheet" href="./../css/dashboard.css" />
+  <link rel="stylesheet" href="./../css/dashFinanceira.css" />
+</head>
+
+<body>
+
+  
+  <div id="modalGrafico" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="fecharModal()">
+        &times;
+      </span>
+      <h2 id="tituloModal"></h2>
+      <div id="conteudoModal"></div>
+    </div>
+  </div>
+  <header>
+    <nav>
+      <div class="logo-nav" onclick="fnNavegar('/')">
+        <a href="../pages/index.html">
+          <img src="./../assets/logos/smart data branco.png" alt="">
+        </a>
+      </div>
+
+      <div class="right-nav">
+        <div class="logo-notificao">
+          <div class="icon-notificao">
+            <a href="dashAlertas.html">
+              <img src="./../assets/dashboard-icons/notificao.svg" alt="" />
+            </a>
+          </div>
+
+          <div class="qtd-notificao">
+            <img src="./../assets/dashboard-icons/circulo.svg" alt="" />
+            <p class="qtd-notificao">10</p>
+          </div>
+        </div>
+
+        <div class="separacao"></div>
+
+        <div class="logo-usuario">
+          <div class="userImg">
+            <a href="dashConfigGestor.html">
+
+              <img src="./../assets/dashboard-icons/cirucloUser.svg" alt="Usuário" id="imagemPerfilCima">
+            </a>
+          </div>
+          <div class="userInfo">
+            <h2 class="user-name" id="username">Gabriel Marques</h2>
+            <h3 class="user-cargo" id="cargoname">Gestor</h3>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+
+  <!-- SIDEBAR -->
+  <div class="corpoPagina">
+    <div class="sidebar">
+      <div class="sidebar-buttons">
+        <div class="sidebar-button" onclick="fnNavegar('../pages/dashGestor.html')">
+          <img src="../assets/dashboard-icons/icon_dashboard_azul.svg" alt="">
+          <p><a href="../pages/dashGestor.html">Dashboard</a></p>
+          <!-- <p onclick="mudarDash()">Dashboard</p> -->
+        </div>
+         <div class="sidebar-button-select" onclick="fnNavegar('../pages/dashFinanceiro.html')">
+          <img src="../assets/dashFinanceiro/coin-icon-blue.svg" alt="">
+          <p><a href="../pages/dashFinanceiro.html">Financeiro</a></p>
+          <!-- <p onclick="mudarDash()">Dashboard</p> -->
+        </div>
+        <div class="sidebar-button" onclick="fnNavegar('../pages/dashServidorGestor.html')">
+          <img src="../assets/dashboard-icons/icon_servidores_branco.svg" alt="">
+          <p><a href="../pages/dashServidorGestor.html">Servidores</a></p>
+          <!-- <p onclick="mudarServidor()">Servidores</p> -->
+        </div>
+        <div class="sidebar-button" onclick="fnNavegar('../pages/dashAlertas.html')">
+          <img src="../assets/dashboard-icons/icon_alerta_branco.svg" alt="">
+          <p><a href="../pages/dashAlertas.html">Alertas</a></p>
+          <!-- <p onclick="mudarAlerta()">Alerta</p> -->
+        </div>
+        <div class="sidebar-button" onclick="fnNavegar('../pages/dashFuncionario.html')">
+          <img src="../assets/dashboard-icons/icon_form_branco.svg" alt="">
+          <p><a href="../pages/dashFuncionario.html">Funcionários</a></p>
+          <!-- <p onclick="mudarFuncionario()">Funcionarios</p> -->
+        </div>
+        <div class="sidebar-button" onclick="fnNavegar('../pages/dashConfigGestor.html')">
+          <img src="../assets/dashboard-icons/icon_config_branco.svg" alt="">
+          <p><a href="../pages/dashConfigGestor.html">Configurações</a></p>
+          <!-- <p onclick="mudarConfig()">Configurações</p> -->
+        </div>
+        <div class="sidebar-button-sair">
+          <div class="saindo">
+            <a href="login.html" onclick="limparSessao()" class="sair">
+              <img src="../assets/dashboard-icons/sair.svg" alt="">
+              <p>Sair</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="SubcorpoPagina">
+
+      <div class="textoInicio">
+        <div class="div_titulo">
+          <h1>Panorama Financeiro — Gestora</h1>
+          <h2>Visão consolidada dos custos, receitas e consumo de toda a sua infraestrutura.</h2>
+        </div>
+      </div>
+
+      <!-- KPIS -->
+      <div id="container_kpis">
+
+        <!-- KPI 1: ROI -->
+        <div class="div_kpi positivo" id="ROI_ESTIMADO" onclick="openRoiModal()" style="cursor:pointer;">
+          <div class="info_kpi">
+            <div class="containerTitulo">
+              <h3>ROI ESTIMADO (RECEITA VS CUSTO)</h3>
+            </div>
+            <div class="div_situacao">
+              <h1>+53.0%</h1>
+              <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+            </div>
+            <h4>Margem líquida: <strong>R$ 298.000</strong>. Clique para histórico.</h4>
+            <span class="kpi-badge kpi-badge-green">▲ +0,2pp vs Nov/25</span>
+          </div>
+        </div>
+
+        <!-- KPI 2: FATURAMENTO -->
+        <div class="div_kpi kpi-faturamento" onclick="toggleLineChart('receita')" style="cursor:pointer;">
+          <div class="info_kpi">
+            <div class="containerTitulo">
+              <h3>FATURAMENTO TOTAL (MÊS)</h3>
+            </div>
+            <div class="div_situacao">
+              <h1 id="kpi-rev-val">R$ 860.000</h1>
+              <img src="../assets/dashboard-icons/icon_check.svg" alt="">
+            </div>
+            <h4>Receita estimada gerada pela infraestrutura no mês corrente.</h4>
+            <span class="kpi-badge kpi-badge-green" id="kpi-rev-delta">▲ +R$ 35.000 vs Nov/25</span>
+          </div>
+        </div>
+
+        <!-- KPI 3: CUSTO TOTAL -->
+        <div class="div_kpi kpi-custo" onclick="toggleLineChart('custo')" style="cursor:pointer;">
+          <div class="info_kpi">
+            <div class="containerTitulo">
+              <h3>CUSTO TOTAL DE INFRAESTRUTURA (MÊS)</h3>
+            </div>
+            <div class="div_situacao">
+              <h1 id="kpi-cost-val">R$ 562.000</h1>
+              <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
+            </div>
+            <h4>Soma de energia, hardware, licença e operação no mês corrente.</h4>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
+              <span class="kpi-badge kpi-badge-red" id="kpi-cost-delta">▲ +R$ 22.000 vs Nov/25</span>
+              <span class="kpi-badge" id="kpi-cost-budget-status">de <span id="kpi-cost-budget-ref">—</span> orçados</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI 4: ORÇAMENTO PRÓXIMO MÊS (com popover) -->
+        <div class="budget-popover-wrap">
+          <div class="div_kpi kpi-orcamento" id="kpi-budget-card" onclick="toggleBudgetPopover(event)" style="cursor:pointer;">
+            <div class="info_kpi">
+              <div class="containerTitulo">
+                <h3>ORÇAMENTO APROVADO (JAN/26)</h3>
+              </div>
+              <div class="div_situacao">
+                <h1 id="kpi-budget-val" style="color:var(--KPI-importante);">R$ —</h1>
+                <img src="../assets/dashboard-icons/icon_check.svg" alt="">
+              </div>
+              <h4>Baseado na previsão de regressão: <span id="kpi-budget-ref">—</span> + <span id="kpi-budget-margin-label">5</span>% de margem.</h4>
+              <span class="kpi-badge kpi-badge-yellow" style="margin-top:4px;display:inline-flex;">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;"><circle cx="12" cy="12" r="3"/></svg>
+                Clique para ajustar margem
+              </span>
+            </div>
+          </div>
+          <!-- POPOVER -->
+          <div class="budget-popover" id="budget-popover">
+            <div class="budget-popover-title">
+              Orçamento Jan/26
+              <button class="budget-popover-close" onclick="closeBudgetPopover(event)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            <div class="budget-pop-row">
+              <span class="budget-pop-label">Previsão regressão (Jan/26)</span>
+              <span class="budget-pop-value" id="budget-regression-val" style="color:var(--KPI-normal);">—</span>
+            </div>
+            <div class="budget-pop-row">
+              <span class="budget-pop-label">Orçamento aprovado (+ margem)</span>
+              <span class="budget-pop-value" id="budget-approved-val" style="color:var(--KPI-importante);">—</span>
+            </div>
+            <div class="budget-pop-row">
+              <span class="budget-pop-label">Custo real Dez/25 (referência)</span>
+              <span class="budget-pop-value" id="budget-actual-val" style="color:var(--KPI-normal);">—</span>
+            </div>
+            <div class="budget-pop-divider"></div>
+            <div class="budget-pop-slider-label">
+              Margem de segurança
+              <span><span id="budget-margin-display">5</span>%</span>
+            </div>
+            <input class="budget-pop-slider" type="range" id="budget-margin-slider" min="0" max="20" value="5" step="0.5" oninput="onBudgetMarginChange(this.value)">
+            <div class="budget-pop-note">Orçamento = regressão linear dos últimos 12 meses + margem. Recalculado automaticamente a cada mês.</div>
+          </div>
+        </div>
+
+        <!-- KPI 5: CUSTO PREVISTO -->
+        <div class="div_kpi kpi-previsto" onclick="scrollToPredict()" style="cursor:pointer;">
+          <div class="info_kpi">
+            <div class="containerTitulo">
+              <h3>CUSTO PREVISTO (JAN/26)</h3>
+            </div>
+            <div class="div_situacao">
+              <h1 id="kpi-predicted">R$ —</h1>
+              <img src="../assets/dashboard-icons/icon_check.svg" alt="">
+            </div>
+            <h4>Projeção por regressão linear sobre histórico 2025. <strong>Clique para análise</strong>.</h4>
+          </div>
+        </div>
+
+        <!-- KPI 6: ALERTAS ATIVOS -->
+        <div class="div_kpi kpi-alertas">
+          <div class="info_kpi">
+            <div class="containerTitulo">
+              <h3>ALERTAS ATIVOS NA INFRAESTRUTURA</h3>
+            </div>
+            <div class="div_situacao">
+              <div style="display:flex;align-items:baseline;gap:8px;">
+                <h1 style="color:var(--KPI-negativo);">1</h1>
+                <span style="font-size:0.9rem;font-weight:600;color:var(--corFonteTexto);">Crítico</span>
+                <h1 style="color:#F5A623;font-size:1.6rem;">2</h1>
+                <span style="font-size:0.9rem;font-weight:600;color:var(--corFonteTexto);">Alertas</span>
+              </div>
+              <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
+            </div>
+            <h4>Crítico: DC02-CACHE-3 (ocioso). Alertas: DC01-WEB-05, DC05-EDGE-2.</h4>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- GRAFICOS -->
+     
+
+
+
+
+  <!-- <script src="./../js/sessao.js"></script> -->
+  <script src="./../js/dashFinanceira.js"></script>
+  <script src="../js/modaisInfos.js"></script>
+</body>
