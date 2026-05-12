@@ -19,24 +19,17 @@
 
 <body>
 
-  
-  <div id="modalGrafico" class="modal">
-    <div class="modal-content">
-      <span class="close-modal" onclick="fecharModal()">
-        &times;
-      </span>
-      <h2 id="tituloModal"></h2>
-      <div id="conteudoModal"></div>
-    </div>
-  </div>
-  <header>
+
+
+
+  <!-- HEADER DA PAGINA -->
+    <header>
     <nav>
       <div class="logo-nav" onclick="fnNavegar('/')">
         <a href="../pages/index.html">
           <img src="./../assets/logos/smart data branco.png" alt="">
         </a>
       </div>
-
       <div class="right-nav">
         <div class="logo-notificao">
           <div class="icon-notificao">
@@ -44,19 +37,15 @@
               <img src="./../assets/dashboard-icons/notificao.svg" alt="" />
             </a>
           </div>
-
           <div class="qtd-notificao">
             <img src="./../assets/dashboard-icons/circulo.svg" alt="" />
             <p class="qtd-notificao">10</p>
           </div>
         </div>
-
         <div class="separacao"></div>
-
         <div class="logo-usuario">
           <div class="userImg">
             <a href="dashConfigGestor.html">
-
               <img src="./../assets/dashboard-icons/cirucloUser.svg" alt="Usuário" id="imagemPerfilCima">
             </a>
           </div>
@@ -69,40 +58,41 @@
     </nav>
   </header>
 
-
-  <!-- SIDEBAR -->
+  <!-- CORPO PRINCIPAL DA PAGINA -->
   <div class="corpoPagina">
+
+    <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-buttons">
         <div class="sidebar-button" onclick="fnNavegar('../pages/dashGestor.html')">
           <img src="../assets/dashboard-icons/icon_dashboard_azul.svg" alt="">
           <p><a href="../pages/dashGestor.html">Dashboard</a></p>
-          <!-- <p onclick="mudarDash()">Dashboard</p> -->
+
         </div>
          <div class="sidebar-button-select" onclick="fnNavegar('../pages/dashFinanceiro.html')">
           <img src="../assets/dashFinanceiro/coin-icon-blue.svg" alt="">
           <p><a href="../pages/dashFinanceiro.html">Financeiro</a></p>
-          <!-- <p onclick="mudarDash()">Dashboard</p> -->
+          
         </div>
         <div class="sidebar-button" onclick="fnNavegar('../pages/dashServidorGestor.html')">
           <img src="../assets/dashboard-icons/icon_servidores_branco.svg" alt="">
           <p><a href="../pages/dashServidorGestor.html">Servidores</a></p>
-          <!-- <p onclick="mudarServidor()">Servidores</p> -->
+          
         </div>
         <div class="sidebar-button" onclick="fnNavegar('../pages/dashAlertas.html')">
           <img src="../assets/dashboard-icons/icon_alerta_branco.svg" alt="">
           <p><a href="../pages/dashAlertas.html">Alertas</a></p>
-          <!-- <p onclick="mudarAlerta()">Alerta</p> -->
+          
         </div>
         <div class="sidebar-button" onclick="fnNavegar('../pages/dashFuncionario.html')">
           <img src="../assets/dashboard-icons/icon_form_branco.svg" alt="">
           <p><a href="../pages/dashFuncionario.html">Funcionários</a></p>
-          <!-- <p onclick="mudarFuncionario()">Funcionarios</p> -->
+          
         </div>
         <div class="sidebar-button" onclick="fnNavegar('../pages/dashConfigGestor.html')">
           <img src="../assets/dashboard-icons/icon_config_branco.svg" alt="">
           <p><a href="../pages/dashConfigGestor.html">Configurações</a></p>
-          <!-- <p onclick="mudarConfig()">Configurações</p> -->
+          
         </div>
         <div class="sidebar-button-sair">
           <div class="saindo">
@@ -115,20 +105,14 @@
       </div>
     </div>
 
-
+    <!-- SUBCORPO DA PAGINA (SEM O HEADER E A SIDEBAR) -->
     <div class="SubcorpoPagina">
 
-      <div class="textoInicio">
-        <div class="div_titulo">
-          <h1>Panorama Financeiro — Gestora</h1>
-          <h2>Visão consolidada dos custos, receitas e consumo de toda a sua infraestrutura.</h2>
-        </div>
-      </div>
+      <!-- TÍTULO + BOTÕES DE AÇÃO -->
+    
 
-      <!-- KPIS -->
+      <!-- KPI ROI ESTIMADO -->
       <div id="container_kpis">
-
-        <!-- KPI 1: ROI -->
         <div class="div_kpi positivo" id="ROI_ESTIMADO" onclick="openRoiModal()" style="cursor:pointer;">
           <div class="info_kpi">
             <div class="containerTitulo">
@@ -139,11 +123,11 @@
               <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
             </div>
             <h4>Margem líquida: <strong>R$ 298.000</strong>. Clique para histórico.</h4>
-            <span class="kpi-badge kpi-badge-green">▲ +0,2pp vs Nov/25</span>
+            <span class="badge-kpi badge-kpi-verde">▲ +0,2pp vs Nov/25</span>
           </div>
         </div>
-
-        <!-- KPI 2: FATURAMENTO -->
+        
+        <!-- KPI FATURAMENTO TOTAL  -->
         <div class="div_kpi kpi-faturamento" onclick="toggleLineChart('receita')" style="cursor:pointer;">
           <div class="info_kpi">
             <div class="containerTitulo">
@@ -154,11 +138,11 @@
               <img src="../assets/dashboard-icons/icon_check.svg" alt="">
             </div>
             <h4>Receita estimada gerada pela infraestrutura no mês corrente.</h4>
-            <span class="kpi-badge kpi-badge-green" id="kpi-rev-delta">▲ +R$ 35.000 vs Nov/25</span>
+            <span class="badge-kpi badge-kpi-verde" id="kpi-rev-delta">▲ +R$ 35.000 vs Nov/25</span>
           </div>
         </div>
 
-        <!-- KPI 3: CUSTO TOTAL -->
+        <!-- KPI CUSTO TOTAL DE INFRAESTRUTURA -->
         <div class="div_kpi kpi-custo" onclick="toggleLineChart('custo')" style="cursor:pointer;">
           <div class="info_kpi">
             <div class="containerTitulo">
@@ -170,14 +154,14 @@
             </div>
             <h4>Soma de energia, hardware, licença e operação no mês corrente.</h4>
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
-              <span class="kpi-badge kpi-badge-red" id="kpi-cost-delta">▲ +R$ 22.000 vs Nov/25</span>
-              <span class="kpi-badge" id="kpi-cost-budget-status">de <span id="kpi-cost-budget-ref">—</span> orçados</span>
+              <span class="badge-kpi badge-kpi-vermelho" id="kpi-cost-delta">▲ +R$ 22.000 vs Nov/25</span>
+              <span class="badge-kpi" id="kpi-cost-budget-status">de <span id="kpi-cost-budget-ref">—</span> orçados</span>
             </div>
           </div>
         </div>
 
-        <!-- KPI 4: ORÇAMENTO PRÓXIMO MÊS (com popover) -->
-        <div class="budget-popover-wrap">
+        <!-- KPI ORÇAMENTO APROVADO (PROX. MÊS) -->
+        <div class="envoltorio-popover-orcamento">
           <div class="div_kpi kpi-orcamento" id="kpi-budget-card" onclick="toggleBudgetPopover(event)" style="cursor:pointer;">
             <div class="info_kpi">
               <div class="containerTitulo">
@@ -188,43 +172,43 @@
                 <img src="../assets/dashboard-icons/icon_check.svg" alt="">
               </div>
               <h4>Baseado na previsão de regressão: <span id="kpi-budget-ref">—</span> + <span id="kpi-budget-margin-label">5</span>% de margem.</h4>
-              <span class="kpi-badge kpi-badge-yellow" style="margin-top:4px;display:inline-flex;">
+              <span class="badge-kpi badge-kpi-amarelo" style="margin-top:4px;display:inline-flex;">
                 <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;"><circle cx="12" cy="12" r="3"/></svg>
                 Clique para ajustar margem
               </span>
             </div>
           </div>
-          <!-- POPOVER -->
-          <div class="budget-popover" id="budget-popover">
-            <div class="budget-popover-title">
+            <!-- POPUP DA KPI DE CIMA DE ORÇAMENTO -->
+          <div class="popover-orcamento" id="budget-popover">
+            <div class="titulo-popover-orcamento">
               Orçamento Jan/26
-              <button class="budget-popover-close" onclick="closeBudgetPopover(event)">
+              <button class="fechar-popover-orcamento" onclick="closeBudgetPopover(event)">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
-            <div class="budget-pop-row">
-              <span class="budget-pop-label">Previsão regressão (Jan/26)</span>
-              <span class="budget-pop-value" id="budget-regression-val" style="color:var(--KPI-normal);">—</span>
+            <div class="linha-pop-orcamento">
+              <span class="rotulo-pop-orcamento">Previsão regressão (Jan/26)</span>
+              <span class="valor-pop-orcamento" id="budget-regression-val" style="color:var(--KPI-normal);">—</span>
             </div>
-            <div class="budget-pop-row">
-              <span class="budget-pop-label">Orçamento aprovado (+ margem)</span>
-              <span class="budget-pop-value" id="budget-approved-val" style="color:var(--KPI-importante);">—</span>
+            <div class="linha-pop-orcamento">
+              <span class="rotulo-pop-orcamento">Orçamento aprovado (+ margem)</span>
+              <span class="valor-pop-orcamento" id="budget-approved-val" style="color:var(--KPI-importante);">—</span>
             </div>
-            <div class="budget-pop-row">
-              <span class="budget-pop-label">Custo real Dez/25 (referência)</span>
-              <span class="budget-pop-value" id="budget-actual-val" style="color:var(--KPI-normal);">—</span>
+            <div class="linha-pop-orcamento">
+              <span class="rotulo-pop-orcamento">Custo real Dez/25 (referência)</span>
+              <span class="valor-pop-orcamento" id="budget-actual-val" style="color:var(--KPI-normal);">—</span>
             </div>
-            <div class="budget-pop-divider"></div>
-            <div class="budget-pop-slider-label">
+            <div class="divisor-pop-orcamento"></div>
+            <div class="rotulo-slider-pop-orcamento">
               Margem de segurança
               <span><span id="budget-margin-display">5</span>%</span>
             </div>
-            <input class="budget-pop-slider" type="range" id="budget-margin-slider" min="0" max="20" value="5" step="0.5" oninput="onBudgetMarginChange(this.value)">
-            <div class="budget-pop-note">Orçamento = regressão linear dos últimos 12 meses + margem. Recalculado automaticamente a cada mês.</div>
+            <input class="slider-pop-orcamento" type="range" id="budget-margin-slider" min="0" max="20" value="5" step="0.5" oninput="onBudgetMarginChange(this.value)">
+            <div class="nota-pop-orcamento">Orçamento = regressão linear dos últimos 12 meses + margem. Recalculado automaticamente a cada mês.</div>
           </div>
         </div>
 
-        <!-- KPI 5: CUSTO PREVISTO -->
+        <!-- KPI CUSTO PREVISTO (PROX. MÊS) -->
         <div class="div_kpi kpi-previsto" onclick="scrollToPredict()" style="cursor:pointer;">
           <div class="info_kpi">
             <div class="containerTitulo">
@@ -238,7 +222,7 @@
           </div>
         </div>
 
-        <!-- KPI 6: ALERTAS ATIVOS -->
+        <!-- KPI DE ALERTAS ATIVOS  -->
         <div class="div_kpi kpi-alertas">
           <div class="info_kpi">
             <div class="containerTitulo">
@@ -257,16 +241,72 @@
           </div>
         </div>
 
+        </div>
+        
+        <!-- --------GRAFICOS--------- -->
+
+        <!--  GRAFICO DE LINHA E DE DONUT -->
+      <div class="linha-graficos" id="charts-section">
+        <div class="cartao" id="line-chart-card">
+          <div class="cabecalho-cartao">
+            <div>
+              <div class="titulo-secao">Evolução de custos vs receita</div>
+              <div class="sub-secao">Período selecionável — linha tracejada = <strong>previsão</strong></div>
+            </div>
+            <div class="botoes-periodo">
+              <button class="btn-periodo" onclick="setPeriod(1,this)">30 dias</button>
+              <button class="btn-periodo" onclick="setPeriod(2,this)">6 meses</button>
+              <button class="btn-periodo active" onclick="setPeriod(3,this)">12 meses</button>
+              <button class="btn-periodo" onclick="setPeriod(4,this)">YTD</button>
+            </div>
+          </div>
+          <canvas id="lineChart" height="130"></canvas>
+          <div class="legenda-grafico">
+            <div class="item-legenda" onclick="toggleDataset(0)"><div class="ponto-legenda" style="background:#2C5D86;"></div> Custo</div>
+            <div class="item-legenda" onclick="toggleDataset(1)"><div class="ponto-legenda" style="background:#F5CC4D;"></div> Receita</div>
+            <div class="item-legenda" onclick="toggleDataset(2)"><div class="ponto-legenda tracejado" style="color:#66C0F4;"></div> Previsão Custo</div>
+            <div class="item-legenda" onclick="toggleDataset(3)"><div class="ponto-legenda tracejado" style="color:#FFF47C;"></div> Previsão Receita</div>
+            <div class="item-legenda" onclick="toggleDataset(4)"><div class="ponto-legenda tracejado" style="color:#F5CC4D;"></div> Orçamento</div>
+          </div>
+        </div>
+        <!-- GRAFICO DE DONUTS -->
+        <div class="envoltorio-donut">
+          <div class="cartao">
+            <div class="titulo-secao" style="margin-bottom:4px;">Distribuição de custos</div>
+            <div class="sub-secao">Por categoria</div>
+            <canvas id="donutChart" height="130"></canvas>
+            <div class="legenda-donut" id="donut-legend"></div>
+          </div>
+        </div>
       </div>
+      <!-- GRAFICO DE BARRAS -->
+      <div class="linha-inferior">
+        <div class="cartao">
+          <div class="cabecalho-cartao" style="margin-bottom:14px;">
+            <div>
+              <div class="titulo-secao" id="bar-title">Comparação de custo entre datacenters</div>
+              <div class="sub-secao" id="bar-sub">Custo mensal — soma = R$ 562.000</div>
+            </div>
+            <div class="alternador-vista">
+              <button class="btn-alternador active" onclick="setBarView('custo',this)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                Custo
+              </button>
+              <button class="btn-alternador" onclick="setBarView('roi',this)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                ROI por DC
+              </button>
+            </div>
+          </div>
+          <canvas id="barChart" height="220"></canvas>
+        </div>
+       
 
 
-      <!-- GRAFICOS -->
-     
-
-
-
-
-  <!-- <script src="./../js/sessao.js"></script> -->
+      </div>
+        <!-- /FIM CORPO PRINCIPAL DA PAGINA -->
+    </div>
+    <!-- /FIM SUB CORPO DA PAGINA -->
   <script src="./../js/dashFinanceira.js"></script>
-  <script src="../js/modaisInfos.js"></script>
 </body>
+</html>
