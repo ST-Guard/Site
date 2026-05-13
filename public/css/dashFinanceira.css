@@ -603,7 +603,7 @@ canvas { max-width: 100%; }
   width: calc(100% - 6%);
   margin: 0 3%;
   box-sizing: border-box;
-  display: none; /*---------------------------- rs   */
+  
 }
 
 .cabecalho-relatorios {

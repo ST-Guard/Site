@@ -22,7 +22,7 @@
   <!-- MODAL KPI ROI (GRAFICO DE LINHAS) -->
   <div class="sobreposicao-modal" id="roi-modal">
     <div class="conteudo-modal">
-      <button class="fechar-modal" onclick="closeRoiModal()">
+      <button class="fechar-modal" onclick="fecharModalRoi()">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
       <div class="cabecalho-cartao" style="margin-bottom:0;">
@@ -166,7 +166,7 @@
             </svg>
             Análise Preditiva
           </button>
-          <button class="btn-acao" id="currency-btn" onclick="toggleCurrency()">
+          <button class="btn-acao" id="currency-btn" onclick="alternarMoeda()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
             Mudar para USD
           </button>
@@ -179,14 +179,18 @@
 
       <!-- KPI ROI ESTIMADO -->
       <div id="container_kpis">
-        <div class="div_kpi positivo" id="ROI_ESTIMADO" onclick="openRoiModal()" style="cursor:pointer;">
+        <div class="div_kpi positivo" id="ROI_ESTIMADO" onclick="abrirModalRoi()" style="cursor:pointer;">
           <div class="info_kpi">
             <div class="containerTitulo">
               <h3>ROI ESTIMADO (RECEITA VS CUSTO)</h3>
             </div>
             <div class="div_situacao">
               <h1>+53.0%</h1>
-              <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" 
+                stroke="currentColor" stroke-width="2" style="color:#4CAF82;">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                <polyline points="16 7 22 7 22 13"/>
+                </svg>
             </div>
             <h4>Margem líquida: <strong>R$ 298.000</strong>. Clique para histórico.</h4>
             <span class="badge-kpi badge-kpi-verde">▲ +0,2pp vs Nov/25</span>
@@ -234,7 +238,7 @@
                 <h3>ORÇAMENTO APROVADO PARA (JAN/26)</h3>
               </div>
               <div class="div_situacao">
-                <h1 id="kpi-budget-val" style="color:var(--KPI-importante);">R$ —</h1>
+                <h1 id="kpi-budget-val" style="color:var(--KPI-importante);">R$ 360.000</h1>
                 <img src="../assets/dashboard-icons/icon_check.svg" alt="">
               </div>
               <h4>Baseado na previsão de regressão: <span id="kpi-budget-ref">—</span> + <span id="kpi-budget-margin-label">5</span>% de margem.</h4>
@@ -254,15 +258,15 @@
             </div>
             <div class="linha-pop-orcamento">
               <span class="rotulo-pop-orcamento">Previsão regressão (Jan/26)</span>
-              <span class="valor-pop-orcamento" id="budget-regression-val" style="color:var(--KPI-normal);">—</span>
+              <span class="valor-pop-orcamento" id="budget-regression-val" style="color:var(--KPI-normal);"> 568.000</span>
             </div>
             <div class="linha-pop-orcamento">
               <span class="rotulo-pop-orcamento">Orçamento aprovado (+ margem)</span>
-              <span class="valor-pop-orcamento" id="budget-approved-val" style="color:var(--KPI-importante);">—</span>
+              <span class="valor-pop-orcamento" id="budget-approved-val" style="color:var(--KPI-importante);">620.000</span>
             </div>
             <div class="linha-pop-orcamento">
               <span class="rotulo-pop-orcamento">Custo real Dez/25 (referência)</span>
-              <span class="valor-pop-orcamento" id="budget-actual-val" style="color:var(--KPI-normal);">—</span>
+              <span class="valor-pop-orcamento" id="budget-actual-val" style="color:var(--KPI-normal);">562.000</span>
             </div>
             <div class="divisor-pop-orcamento"></div>
             <div class="rotulo-slider-pop-orcamento">
@@ -281,7 +285,7 @@
               <h3>CUSTO PREVISTO (JAN/26)</h3>
             </div>
             <div class="div_situacao">
-              <h1 id="kpi-predicted">R$ —</h1>
+              <h1 id="kpi-predicted">R$ 568.000</h1>
               <img src="../assets/dashboard-icons/icon_check.svg" alt="">
             </div>
             <h4>Projeção por regressão linear sobre histórico 2025. <strong>Clique para análise</strong>.</h4>
