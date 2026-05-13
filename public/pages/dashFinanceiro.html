@@ -19,7 +19,52 @@
 
 <body>
 
+  <!-- MODAL KPI ROI (GRAFICO DE LINHAS) -->
+  <div class="sobreposicao-modal" id="roi-modal">
+    <div class="conteudo-modal">
+      <button class="fechar-modal" onclick="closeRoiModal()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="cabecalho-cartao" style="margin-bottom:0;">
+        <div>
+          <div class="titulo-secao">Evolução do ROI Estimado</div>
+          <div class="sub-secao">Histórico de rentabilidade (%)</div>
+        </div>
+        <div class="botoes-periodo">
+          <button class="btn-periodo roi-period-btn" onclick="setRoiPeriod(1,this)">30 dias</button>
+          <button class="btn-periodo roi-period-btn" onclick="setRoiPeriod(2,this)">6 meses</button>
+          <button class="btn-periodo roi-period-btn active" onclick="setRoiPeriod(3,this)">12 meses</button>
+          <button class="btn-periodo roi-period-btn" onclick="setRoiPeriod(4,this)">YTD</button>
+        </div>
+      </div>
+      <canvas id="roiChart" height="120"></canvas>
+    </div>
+  </div>
 
+  <!-- MODAL REALATORIOS -->
+  <div class="sobreposicao-modal-relatorio" id="report-full-modal">
+    <div class="caixa-modal-relatorio" id="report-modal-box">
+      <div class="barra-ferramentas-modal-relatorio">
+        <div class="esq-barra-ferramentas-modal-relatorio">
+          <div>
+            <div class="titulo-barra-ferramentas-relatorio" id="report-modal-title">Relatório Mensal — Dezembro 2025</div>
+            <div class="sub-barra-ferramentas-relatorio" id="report-modal-sub">Gerado em 02/01/2026 · Infraestrutura STEAM</div>
+          </div>
+        </div>
+        <div class="acoes-barra-ferramentas-relatorio">
+          <button class="btn-barra-ferramentas-relatorio imprimir" onclick="window.print()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Imprimir
+          </button>
+          <button class="btn-barra-ferramentas-relatorio fechar" onclick="closeReportModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            Fechar
+          </button>
+        </div>
+      </div>
+      <div class="doc-relatorio" id="report-doc-body"></div>
+    </div>
+  </div>
 
 
   <!-- HEADER DA PAGINA -->
@@ -109,7 +154,28 @@
     <div class="SubcorpoPagina">
 
       <!-- TÍTULO + BOTÕES DE AÇÃO -->
-    
+      <div class="textoInicio">
+        <div class="div_titulo">
+          <h1>Panorama Financeiro — Gestora</h1>
+          <h2>Visão consolidada dos custos, receitas e consumo de toda a sua infraestrutura.</h2>
+        </div>
+        <div class="acoes-cabecalho">
+          <button class="btn-acao btn-acao-preditiva" id="currency-btn" >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+            Análise Preditiva
+          </button>
+          <button class="btn-acao" id="currency-btn" onclick="toggleCurrency()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            Mudar para USD
+          </button>
+          <button class="btn-acao acao-primaria" onclick="document.getElementById('reports-section').scrollIntoView({behavior:'smooth',block:'start'})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Ver Relatórios
+          </button>
+        </div>
+      </div>
 
       <!-- KPI ROI ESTIMADO -->
       <div id="container_kpis">
@@ -165,7 +231,7 @@
           <div class="div_kpi kpi-orcamento" id="kpi-budget-card" onclick="toggleBudgetPopover(event)" style="cursor:pointer;">
             <div class="info_kpi">
               <div class="containerTitulo">
-                <h3>ORÇAMENTO APROVADO (JAN/26)</h3>
+                <h3>ORÇAMENTO APROVADO PARA (JAN/26)</h3>
               </div>
               <div class="div_situacao">
                 <h1 id="kpi-budget-val" style="color:var(--KPI-importante);">R$ —</h1>
@@ -174,7 +240,7 @@
               <h4>Baseado na previsão de regressão: <span id="kpi-budget-ref">—</span> + <span id="kpi-budget-margin-label">5</span>% de margem.</h4>
               <span class="badge-kpi badge-kpi-amarelo" style="margin-top:4px;display:inline-flex;">
                 <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;"><circle cx="12" cy="12" r="3"/></svg>
-                Clique para ajustar margem
+                Clique para editar a margem
               </span>
             </div>
           </div>
@@ -300,7 +366,146 @@
           </div>
           <canvas id="barChart" height="220"></canvas>
         </div>
-       
+        <!-- TABELA DE SERVIDORES -->
+        <div class="cartao">
+          <div class="cabecalho-cartao" style="margin-bottom:14px;">
+            <div>
+              <div class="titulo-secao" id="table-title">Top servidores por custo</div>
+              <div class="sub-secao" id="table-sub">Maiores consumidores do orçamento mensal</div>
+            </div>
+            <div class="alternador-vista">
+              <button class="btn-alternador active" onclick="setTableView('servidores',this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Servidores
+              </button>
+              <button class="btn-alternador" onclick="setTableView('zonas',this)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                Zonas
+              </button>
+            </div>
+          </div>
+          <div class="envoltorio-tabela" id="table-wrap"></div>
+        </div>
+      </div>
+
+      <!-- SEÇÂO PREDITIVA -->
+        <div class="modal-secao-preditiva" id="modal-preditivo">
+        <div class="secao-preditiva">
+        <div class="cabecalho-preditivo">
+          <div class="icone-preditivo">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+        
+          <div class="predict-header-text">
+            <div class="titulo-secao" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;">
+              Análise Preditiva — Projeção de Custo e Receita
+              <span id="model-mae-badge" style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(44,93,134,0.15);color:#66C0F4;">MAE —</span>
+            </div>
+            <div class="sub-secao" style="color:rgba(255,255,255,0.5);">Projeção por regressão linear sobre o histórico de 12 meses (Jan–Dez 2025)</div>
+          </div>
+        
+          <div class="badge-modelo-preditivo">
+            <div class="pulso-modelo"></div>
+            Regressão Linear 
+          </div>
+        
+          <button class="btn-fechar-modal" onclick="fecharModalPreditivo()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        
+        </div>
+
+        <div class="seletor-mes">
+          <span class="rotulo-seletor-mes">Horizonte de previsão</span>
+          <div class="btns-rapidos-mes">
+            <button class="btn-mr" onclick="setForecastMonths(1,this)">1M</button>
+            <button class="btn-mr active" onclick="setForecastMonths(3,this)">3M</button>
+            <button class="btn-mr" onclick="setForecastMonths(6,this)">6M</button>
+          </div>
+          <div class="envoltorio-slider-mes">
+            <input type="range" id="month-slider" min="1" max="12" value="3" oninput="onSliderInput(this.value)">
+            <div class="valor-slider" id="slider-display">3</div>
+            <div class="unidade-slider">meses</div>
+          </div>
+        </div>
+      
+
+        <div class="grade-preditiva" id="predict-grid"></div>
+
+        <div class="inferior-preditivo">
+          <div>
+            <div class="forecast-chart-label" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:10px;">
+              <span>Curva de custo: histórico + projeção linear com IC 95%</span>
+              <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.5);">
+                <span style="display:inline-block;width:18px;height:2px;background:repeating-linear-gradient(90deg,#F5CC4D 0,#F5CC4D 4px,transparent 4px,transparent 8px);"></span>
+                Orçamento (regressão+<span id="forecast-margin-label">5</span>%)
+              </span>
+            </div>
+            <canvas id="forecastChart" height="90"></canvas>
+          </div>
+          <div class="painel-risco">
+            <div class="titulo-risco">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Alertas Preditivos por Servidor
+            </div>
+            <div class="item-risco alto">
+              <div class="info-risco">
+                <div class="servidor-risco">DC02-CACHE-3</div>
+                <div class="motivo-risco">Ofensor: Custo ocioso detectado. RAM/CPU baixos.</div>
+              </div>
+              <div class="badge-risco alto">Alto</div>
+            </div>
+            <div class="item-risco medio">
+              <div class="info-risco">
+                <div class="servidor-risco">DC05-EDGE-2</div>
+                <div class="motivo-risco">Tendência de custo +18%/mês baseada na Latência</div>
+              </div>
+              <div class="badge-risco medio">Médio</div>
+            </div>
+            <div class="item-risco medio">
+              <div class="info-risco">
+                <div class="servidor-risco">DC01-WEB-05</div>
+                <div class="motivo-risco">Custo de energia acima da média prevista</div>
+              </div>
+              <div class="badge-risco medio">Médio</div>
+            </div>
+            <div class="item-risco baixo">
+              <div class="info-risco">
+                <div class="servidor-risco">DC04-AUTH-1</div>
+                <div class="motivo-risco">Variáveis (CPU/RAM/Custo) estáveis</div>
+              </div>
+              <div class="badge-risco baixo">Baixo</div>
+            </div>
+          </div>
+        </div>
+
+          </div>
+      </div>  
+
+      <!-- TEBELA DE RELATORIOS -->
+      <div class="cartao" id="reports-section">
+        <div class="cabecalho-relatorios">
+          <div class="esq-cabecalho-relatorios">
+            <div class="caixa-icone-relatorio">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <div>
+              <div class="titulo-secao">Relatórios mensais</div>
+              <div class="sub-secao">Gere o fecho do mês ou consulte relatórios anteriores.</div>
+            </div>
+          </div>
+          <button class="btn-primario" onclick="openReportModal({month:'Dezembro 2025',gen:'02/01/2026',cost:562000,rev:860000,roi:53.0})">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Gerar relatório de Dezembro 2025
+          </button>
+        </div>
+        <div id="reports-list"></div>
+      </div>
 
 
       </div>

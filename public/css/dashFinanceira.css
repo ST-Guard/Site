@@ -594,6 +594,7 @@ canvas { max-width: 100%; }
   width: calc(100% - 6%);
   margin: 0 3%;
   box-sizing: border-box;
+  display: none; /*---------------------------- rs   */
 }
 
 .cabecalho-relatorios {
@@ -1129,6 +1130,11 @@ input[type=range]::-webkit-slider-thumb {
   .grade-kpi-relatorio { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* Ofuscar rs */
+
+
+
+
 @media print {
   .barra-ferramentas-modal-relatorio { display: none; }
   .caixa-modal-relatorio { box-shadow: none; max-height: none; border-radius: 0; }
@@ -1141,3 +1147,6 @@ input[type=range]::-webkit-slider-thumb {
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+
+
