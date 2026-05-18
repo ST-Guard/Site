@@ -2,10 +2,10 @@ function fnNavegar(local) {
     window.location.href = local
 }
 
-if (!sessionStorage.ID_USUARIO) {
-  alert("Você precisa estar logado!");
-  window.location = "login.html";
-}
+// if (!sessionStorage.ID_USUARIO) {
+//   alert("Você precisa estar logado!");
+//   window.location = "login.html";
+// }
 
 function buscarDados() {
     
@@ -34,524 +34,220 @@ function buscarDados() {
 
 document.addEventListener("DOMContentLoaded", () => {
     buscarDados()
-    const ctxUsoRam = document.getElementById('graficoRam');
-    const ctxUsoCpu = document.getElementById('graficoCpu');
-    const ctxUsoDisco = document.getElementById('graficoDisco');
     const ctxRamCpu = document.getElementById('chartRamxCpu');
     const ctxDiskLat = document.getElementById('chartDiskxLat');
-    const ctxComponentes = document.getElementById('graficoComponentes');
-
-    new Chart(ctxUsoRam, {
-        type: 'doughnut',
-        data: {
-            labels: ['Disponível: ', 'Em uso: '],
-            datasets: [{
-                data: [22, 78],
-                backgroundColor: [
-                    '#22C55E',
-                    '#EF4444',
-                ],
-                borderWidth: 5,
-                hoverOffset: 20
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: "48%",
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Uso de RAM',
-                        align: 'start',
-                        font: {
-                            size: 18
-                        },
-                        padding: {
-                            top: 10,
-                        }
-                    },
-                    // subtitle: {
-                    //     display: true,
-                    //     text: 'Total de alertas por severidade',
-                    //     align: 'start',
-                    //     font: {
-                    //         size: 18
-                    //     },
-                    //     padding: {
-                    //         bottom: 30,
-                    //     }
-                    // },
-                    tooltip: {
-                        enabled: true
-                    }
-                },
-            }
-        
-    }),
-
-    new Chart(ctxUsoCpu, {
-        type: 'doughnut',
-        data: {
-            labels: ['Disponível: ', 'Em uso: '],
-            datasets: [{
-                data: [37, 63],
-                backgroundColor: [
-                    '#22C55E',
-                    '#EF4444',
-                ],
-                borderWidth: 5,
-                hoverOffset: 20
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: "48%",
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Uso de CPU',
-                        align: 'start',
-                        font: {
-                            size: 18
-                        },
-                        padding: {
-                            top: 10,
-                        }
-                    },
-                    // subtitle: {
-                    //     display: true,
-                    //     text: 'Total de alertas por severidade',
-                    //     align: 'start',
-                    //     font: {
-                    //         size: 18
-                    //     },
-                    //     padding: {
-                    //         bottom: 30,
-                    //     }
-                    // },
-                    tooltip: {
-                        enabled: true
-                    }
-                },
-            }
-        
-    }),
-
-    new Chart(ctxUsoDisco, {
-        type: 'doughnut',
-        data: {
-            labels: ['Disponível: ', 'Em uso: '],
-            datasets: [{
-                data: [43, 57],
-                backgroundColor: [
-                    '#22C55E',
-                    '#EF4444',
-                ],
-                borderWidth: 5,
-                hoverOffset: 20
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            cutout: "48%",
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Uso de Disco',
-                        align: 'start',
-                        font: {
-                            size: 18
-                        },
-                        padding: {
-                            top: 10,
-                        }
-                    },
-                    // subtitle: {
-                    //     display: true,
-                    //     text: 'Total de alertas por severidade',
-                    //     align: 'start',
-                    //     font: {
-                    //         size: 18
-                    //     },
-                    //     padding: {
-                    //         bottom: 30,
-                    //     }
-                    // },
-                    tooltip: {
-                        enabled: true
-                    }
-                },
-            }
-        
-    }),
-
-    new Chart(ctxRamCpu, {
-    type: 'bar',
-    data: {
-        labels: ["04:00", "08:00", "12:00", "16:00", "20:00"],
-        datasets: [
-        {
-            label: 'RAM',
-            data: [35, 61, 50, 68, 51],
-            backgroundColor: '#244770',
-            order: 2
-        },
-        {
-            label: 'CPU',
-            data: [45, 52, 70, 73, 37],
-            backgroundColor: '#C95050',
-            order: 2
-        },
-    
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            title: {
-                display: true,
-                text: 'Comparando Ram e CPU',
-                align: 'start',
-                font: {
-                    size: 18
-                },
-                padding: {
-                    top: 20,
-                    bottom: 30,
-                }
-            }
-        },
-        responsive: true,
-        scales: {
-        y: {
-            beginAtZero: true,
-            title: {
-            display: true,
-            text: 'Uso (%)'
-            }
-        },
-        }
-    }
-    }),
+    const ctxDownload = document.getElementById('chartDownload');
 
     new Chart(ctxDiskLat, {
-    type: 'bar',
-    data: {
-        labels: ["04:00", "08:00", "12:00", "16:00", "20:00"],
-        datasets: [
-        {
-            label: 'Disco',
-            data: [25.5, 40, 48, 51, 38],
-            backgroundColor: '#23B26D',
-            order: 2
-        },
-        {
-            label: 'Latencia',
-            data: [23, 40, 51, 52, 38],
-            backgroundColor: '#1D85C2',
-            order: 2
-        },  
-        
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            title: {
-                display: true,
-                text: 'Comparando Disco e Latencia',
-                align: 'start',
-                font: {
-                    size: 18
-                },
-                padding: {
-                    top: 20,
-                    bottom: 30,
-                }
-            }
-        },
-        responsive: true,
-        scales: {
-        y: {
-            beginAtZero: true,
-            title: {
-            display: true,
-            text: 'Uso (%)'
-            }
-        },
-        }
-    }
-    }),
-
-    new Chart(ctxComponentes, {
-        type: 'bar',
+        type: 'line',
         data: {
-            labels: [
-                'RAM',
-                'CPU',
-                'DISCO',
-                'LATENCIA',
-            ],
-            datasets: [{
-                data: [78, 63, 57, 37],
-                backgroundColor: [
-                    '#FF1F35',
-                    '#FF1F35',
-                    '#EAB308',
-                    '#45B84E'
-                ],
-                borderRadius: 6,
-                barThickness: 38
-            }]
+            labels: ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'],
+            datasets: [
+            {
+                label: 'Disco',
+                data: [22.5, 26.5, 40, 48, 51, 38, 22.5, 26.5, 40, 48, 51, 38, 22.5, 26.5, 40, 48, 51, 38, 22.5, 26.5, 40, 48, 51, 38],
+                fill: true,
+                borderColor: 'rgba(35, 178, 109, 0.7)',
+                backgroundColor: 'rgba(35, 178, 109, 0.18)',
+                tension: 0.5,
+                order: 2,
+                pointRadius: 0,
+                borderWidth: 1.5
+            },
+            {
+                label: 'Latencia',
+                data: [42.5, 33, 27, 23, 26, 28, 42.5, 33, 27, 23, 26, 28, 42.5, 23, 26, 28, 42.5, 33, 27, 23, 26, 28, 42.5, 23],
+                fill: true,
+                borderColor: 'rgba(29, 133, 194, 0.7)',
+                backgroundColor: 'rgba(29, 133, 194, 0.18)',
+                tension: 0.5,
+                order: 2,
+                pointRadius: 0,
+                borderWidth: 1.5
+            },  
+            
+            ]
         },
         options: {
-            indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    display: false
-                },
                 title: {
                     display: true,
-                    text: 'Ranking de componentes críticos',
+                    text: 'Correlação entre taxa de download e consumo de disco',
                     align: 'start',
-                    color: '#000',
                     font: {
-                        size: 16,
-                        weight: 'bold'
+                        size: 18
                     },
                     padding: {
-                        bottom: 30
+                        top: 20,
+                    }
+                },
+                subtitle: {
+                    display: true,
+                    text: 'Taxa em MB/s nas ultimas 24h',
+                    align: 'start',
+                    font: {
+                        size: 14
+                    },
+                    padding: {
+                        bottom: 30,
+                    }
+                },
+                legend: {
+                    labels: {
+                        padding: 5
+                    },
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
+            responsive: true,
+            scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Uso (%)'
+                },
+                min: 0,
+                max: 100
+            },
+            }
+        }
+    }),
+
+    new Chart(ctxDownload, {
+    type: 'bar',
+    data: {
+        labels: ['0h', '2h', '4h', '6h', '8h', '10h', '12h', '14h', '16h', '18h', '20h', '22h', '24h', '26h', '28h', '30h', '32h', '34h', '36h', '38h', '40h', '42h', '44h', '46h', '47h'],
+        datasets: [{
+        label: 'Downloads',
+        data: [220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240],
+        backgroundColor: 'black',
+        borderRadius: 4
+        }]
+    },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Análise de download nas últimas 48 horas',
+                    align: 'start',
+                    font: {
+                        size: 18
+                    },
+                    padding: {
+                        top: 20,
+                    }
+                },
+                subtitle: {
+                    display: true,
+                    text: 'Contagem por hora',
+                    align: 'start',
+                    font: {
+                        size: 14
+                    },
+                    padding: {
+                        bottom: 30,
                     }
                 }
             },
+            responsive: true,
             scales: {
-                x: {
-                    beginAtZero: true,
-                    max: 100,
-                    grid: {
-                        color: '#E5EAF3',
-                        borderDash: [4, 4]
+            y: {
+                beginAtZero: true,
+            },
+            }
+        }
+    }),
+
+    new Chart(ctxRamCpu, {
+    type: 'line',
+    data: {
+        labels: ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'],
+        datasets: [
+            {
+                label: 'RAM',
+                data: [32.5, 35, 61, 50, 68, 51, 32.5, 35, 61, 50, 68, 51, 32.5, 35, 50, 68, 51, 32.5, 35, 61, 50, 68, 51, 32.5],
+                fill: true,
+                borderColor: 'rgba(36, 71, 112, 0.7)',
+                backgroundColor: 'rgba(36, 71, 112, 0.18)',
+                tension: 0.5,
+                order: 2,
+                pointRadius: 0,
+                borderWidth: 1.5
+            },
+            {
+                label: 'CPU',
+                data: [32.5, 45, 52, 70, 73, 37, 32.5, 45, 52, 70, 73, 37, 32.5, 52, 70, 73, 37, 32.5, 45, 52, 70, 73, 37, 32.5],
+                fill: true,
+                borderColor: 'rgba(201, 80, 80, 0.7)',
+                backgroundColor: 'rgba(201, 80, 80, 0.18)',
+                tension: 0.5,
+                order: 2,
+                pointRadius: 0,
+                borderWidth: 1.5
+            },
+        ]
+    },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Análise de utilização de recursos',
+                    align: 'start',
+                    font: {
+                        size: 18
+                    },
+                    padding: {
+                        top: 20,
                     }
                 },
-                y: {
-                    grid: {
-                        color: '#E5EAF3',
-                        borderDash: [4, 4]
+                subtitle: {
+                    display: true,
+                    text: 'CPU e RAM % nas ultimas 24h',
+                    align: 'start',
+                    font: {
+                        size: 14
+                    },
+                    padding: {
+                        bottom: 30,
                     }
+                },
+                legend: {
+                    labels: {
+                        padding: 5
+                    },
                 }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
+            responsive: true,
+            scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Uso (%)'
+                },
+                min: 0,
+                max: 100
+            },
             }
         }
     });
 
 });
 
-function detalhes() {
-    window.location = "dashServidorGestor.html"
-}
-
 function limparSessao() {
     sessionStorage.clear();
 }
-
-new Chart(ctxLatenciaRede, {
-    type: 'bar',
-    data: {
-        labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-        datasets: [{
-            label: 'Pacotes enviados    ',
-            data: [700, 980, 867, 408, 1098, 640, 580],
-            borderColor: '#22C55E',
-            backgroundColor: '#8B5CF6',
-            tension: 0.5,
-            fill: true,
-            pointRadius: 3
-        }]
-    },
-    options: {
-        plugins: {
-            title: {
-                display: true,
-            },
-            legend: {
-                display: true,
-                position: 'bottom'
-            },
-
-        },
-        scales: {
-            y: {
-                min: 0,
-                max: 1200,
-                ticks: {
-                    stepSize: 300
-                },
-                grid: {
-                    display: true
-                },
-                title: {
-                    display: true,
-                    text: "Pacotes"
-                },
-            },
-            x: {
-                grid: {
-                    display: false
-                }
-            }
-        },
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
-
-new Chart(ctxMediaDia, {
-    type: 'bar',
-    data: {
-        labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-        datasets: [{
-            label: 'RAM',
-            data: [60, 30, 44, 82, 54, 76, 32],
-            borderColor: '#22C55E',
-            backgroundColor: '#F5CC4D',
-            tension: 0.5,
-            fill: true,
-            pointRadius: 3
-        }]
-    },
-    options: {
-        plugins: {
-            title: {
-                display: true,
-            },
-            legend: {
-                display: true,
-                position: 'bottom'
-            },
-
-        },
-        scales: {
-            y: {
-                min: 0,
-                max: 100,
-                ticks: {
-                    stepSize: 10
-                },
-                grid: {
-                    display: true
-                },
-                title: {
-                    display: true,
-                    text: "%"
-                },
-            },
-            x: {
-                grid: {
-                    display: false
-                }
-            }
-        },
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
-
-
-new Chart(ctxLatencia, {
-    type: 'line',
-    data: {
-        labels: ['02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00', '24:00'],
-        datasets: [{
-            label: 'Latência (ms)',
-            data: [47, 42, 46, 54, 73, 69, 79, 75, 90, 86, 65, 50],
-            borderColor: '#22C55E',
-            backgroundColor: 'rgba(34, 197, 94, 0.2)',
-            tension: 0.5,
-            fill: true,
-            pointRadius: 3
-        }]
-    },
-    options: {
-        plugins: {
-            title: {
-                display: true,
-            },
-            legend: {
-                display: true,
-                position: 'bottom'
-            },
-
-        },
-        scales: {
-            y: {
-                min: 0,
-                max: 100,
-                ticks: {
-                    stepSize: 20
-                },
-                grid: {
-                    display: true
-                },
-                title: {
-                    display: true,
-                    text: "MS"
-                },
-            },
-            x: {
-                grid: {
-                    display: false
-                }
-            }
-        },
-        responsive: true,
-        maintainAspectRatio: false
-    }
-});
-
-new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Em uso: ', 'Disponível: '],
-        datasets: [{
-            data: [88, 22],
-            backgroundColor: [
-                '#EF4444',
-                '#22C55E'
-            ],
-            borderWidth: 5,
-            hoverOffset: 20
-        }]
-    },
-    options: {
-        plugins: {
-            tille: {
-                display: true,
-                text: 'Uso de RAM'
-            },
-            legend: {
-                display: true,
-                position: 'bottom'
-            }
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-    }
-});

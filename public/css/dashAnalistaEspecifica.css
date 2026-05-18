@@ -20,9 +20,15 @@ body {
   --corDaFonte: #0F1C2E;
   --corFonteTexto: #6B7280;
 }
+
 h1{
-color:var(--corDaFonte)
+  color:var(--corDaFonte)
 }
+
+.containerTitulo {
+  display: flex;
+}
+
 #container_kpis {
   width: 100%;
   display: flex;
@@ -33,7 +39,7 @@ color:var(--corDaFonte)
   padding: 2% 2% 0;
   color: var(--corDaFonte);
   box-sizing: border-box;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 
 #container_kpis .div_kpi {
@@ -54,11 +60,6 @@ color:var(--corDaFonte)
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  gap: 10px;
-}
-
-.containerTitulo {
-  display: flex;
 }
 
 #container_kpis .div_kpi h1,
@@ -110,14 +111,22 @@ color:var(--corDaFonte)
 }
 
 /* KPI importante */
-#container_kpis .kpi2,
-#container_kpis .kpi5 {
+#container_kpis .kpi2 {
   border-color: var(--KPI-importante);
   box-shadow: 1.5px 1px 2px 1px #F5CC4D, 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+#container_kpis .kpi5 {
+  border-color: #244770;
+  box-shadow: 1.5px 1px 2px 1px #244770, 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 #container_kpis .kpi2 h1 {
   color: var(--KPI-importante);
+}
+
+#container_kpis .kpi5 h1 {
+  color: #244770;
 }
 
 /* KPI normal */
@@ -131,23 +140,15 @@ color:var(--corDaFonte)
 }
 
 /* KPI urgente */
-#container_kpis .kpi3 {
+#container_kpis .kpi3,
+#container_kpis .kpi1 {
   border-color: var(--KPI-urgente);
   box-shadow: 1.5px 1px 2px 1px var(--KPI-urgente), 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 #container_kpis .kpi1 h1,
-#container_kpis .kpi3 h1,
-#container_kpis .kpi5 h1 {
+#container_kpis .kpi3 h1 {
   color: var(--KPI-urgente);
-}
-
-#container_kpis .kpi1 {
-  border-color: var(--KPI-normal);
-}
-
-#container_kpis .kpi1 h1 {
-  color: var(--KPI-normal);
 }
 
 .SubcorpoPagina {
@@ -162,9 +163,53 @@ color:var(--corDaFonte)
   overflow: scroll;
 }
 
+.textoInicio {
+  display: flex;
+  margin-right: auto;
+  width: 50%;
+  padding-top: 2%;
+  padding-left: 5%;
+}
+
+.div_titulo{
+    display: flex;
+    align-items: flex-start;
+    padding-left: 2%;
+    flex-direction: column;
+    padding-top: 1%;
+}
+
+.div_titulo h1{
+    color: #1c4886;
+}
+
+.div_titulo h2{
+    color: var(--corFonteTexto);
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-top: -10px;
+}
+
+.selectServidor {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 30px;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.selectServidor select {
+  background-color: #F0F9FF;
+  border: 1px solid #66C0F4;
+  border-radius: 20px;
+  color: #244770;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px;
+}
+
 .parte1,
-.parte2,
-.parte3 {
+.parte2 {
   display: flex;
   gap: 24px;
   padding: 0 24px;
@@ -174,42 +219,26 @@ color:var(--corDaFonte)
   justify-content: center;
 }
 
-.conteinerRam,
-.conteinerCpu,
-.conteinerDisco {
-  width: 30%;
-  background: #fff;
-  border: 1px solid #dcdcdc;
-  border-radius: 16px;
-  padding: 20px 20px 16px;
-}
-
-.grafico,
-.graficoP3 {
-  width: 100%;
-  height: 380px;
-  margin-top: 10px;
-}
-
-.conteinerRam,
-.conteinerCpu,
-.conteinerDisco {
-  flex: 1 1 280px;
-  min-width: 260px;
-  max-width: 380px;
-  background: #fff;
-  border: 1px solid #dcdcdc;
-  border-radius: 16px;
-  padding: 20px 20px 16px;
-  box-sizing: border-box;
-}
-
 .grafico-RamXCpu,
-.grafico-DiscoXLatencia,
-.conteinerComponentes {
+.grafico-DiscoXLatencia {
   flex: 1 1 480px;
-  width: 100%;
-  max-width: 100%;
+  width: 60%;
+  max-width: 60%;
+  margin: 1rem 0;
+  border: solid #e5e7eb 2px;
+  box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-radius: 15px;
+  background-color: white;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.grafico-Downloads,
+.grafico-Jogos {
+  flex: 1 1 480px;
+  width: 40%;
+  max-width: 40%;
   margin: 1rem 0;
   border: solid #e5e7eb 2px;
   box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.1);
@@ -221,7 +250,9 @@ color:var(--corDaFonte)
 }
 
 #expandirRamxCpu,
-#expandirDiscoxLatencia {
+#expandirDiscoxLatencia,
+#expandirDownloads,
+#expandirJogos {
   position: relative;
   width: 100%;
   height: 350px;
@@ -229,17 +260,77 @@ color:var(--corDaFonte)
 }
 
 #chartRamxCpu,
-#chartDiskxLat {
+#chartDiskxLat,
+#chartDownload {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.conteinerComponentes {
-  display: flex;
-  width: 80%;
+.textoJogos {
+  color: #6E6E6E;
+  font-size: 12px;
+  font-weight: bold;
 }
 
+.textoJogos h3 {
+  margin-top: -15px;
+  font-weight: normal;
+}
+
+.containerListaJogos {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.boxListaJogos {
+  border: 1px solid #D72828;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+  align-items: center;
+  margin-top: 10px;
+  width: 70%;
+}
+
+.conteudoJogos {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 0 15px;
+}
+
+.conteudoJogos h4 {
+  height: 10px;
+  font-size: 14px;
+}
+
+.conteudoJogos h5 {
+  color: #374151;
+  font-size: 10px;
+}
+
+.imagemJogos {
+  margin-top: 10px;
+}
+
+.botaoJogos {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.botaoJogos button{
+  background-color: #D72828;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  height: 30px;
+  width: 80px;
+}
 
 @media (max-width: 1024px) {
 
@@ -274,34 +365,17 @@ color:var(--corDaFonte)
   }
 
   .grafico-RamXCpu,
-  .grafico-DiscoXLatencia {
+  .grafico-DiscoXLatencia,
+  .grafico-Downloads,
+  .grafico-Jogos {
     flex: 1 1 100%;
   }
 
   #expandirRamxCpu,
-  #expandirDiscoxLatencia {
+  #expandirDiscoxLatencia,
+  #expandirDownloads,
+  #expandirJogos {
     height: 320px;
-  }
-
-  .conteinerComponentes {
-    flex: 1 1 480px;
-    width: 100%;
-    max-width: 100%;
-    margin: 1rem 0;
-    border: solid #e5e7eb 2px;
-    box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.1);
-    padding: 16px;
-    border-radius: 15px;
-    background-color: white;
-    box-sizing: border-box;
-    overflow: hidden;
-  }
-
-  .conteinerRam,
-  .conteinerCpu,
-  .conteinerDisco {
-    min-width: 320px;
-    max-width: 380px;
   }
 
 }
@@ -396,7 +470,9 @@ color:var(--corDaFonte)
   }
 
   .grafico-RamXCpu,
-  .grafico-DiscoXLatencia {
+  .grafico-DiscoXLatencia,
+  .grafico-Downloads,
+  .grafico-Jogos {
     width: 100%;
     max-width: 100%;
     margin: 0;
@@ -405,14 +481,17 @@ color:var(--corDaFonte)
   }
 
   #expandirRamxCpu,
-  #expandirDiscoxLatencia {
+  #expandirDiscoxLatencia,
+  #expandirDownloads,
+  #expandirJogos {
     width: 100%;
     height: 280px;
     min-height: 280px;
   }
 
   #chartRamxCpu,
-  #chartDiskxLat {
+  #chartDiskxLat,
+  #chartDownload {
     width: 100%;
     height: 100%;
     display: block;

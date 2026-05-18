@@ -24,16 +24,6 @@
 
 <body>
 
-    <div id="modalGrafico" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">
-                &times;
-            </span>
-            <h2 id="tituloModal"></h2>
-            <div id="conteudoModal"></div>
-        </div>
-    </div>
-
     <header>
 
        <nav>
@@ -108,119 +98,96 @@
         </div>
 
         <div class="SubcorpoPagina">
-            <h1>Servidor: SRV-DC01-WEB-05</h1>
+            <div class="textoInicio">
+                <div class="div_titulo">
+                    <h1>Servidor Especifico - <span>Todos</span></h1>
+                    <h2>Metricas de servidor com downloads</h2>
+                </div>
+            </div>
             <div id="container_kpis">
-                <div class="div_kpi kpi6">
+                <div class="div_kpi kpi1">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>COMPONENTE MAIS SOBRECARREGADO DO SERVIDOR</h3>
+                            <h3>P99 TAXA DE DOWNLOAD</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1 id="qtdServidores">RAM</h1>
-                            <img src="../assets/dashboard-icons/icon_check.svg" alt="">
+                            <h1 id="kpiTaxaDownload">77%</h1>
+                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
                         </div>
-                        <h4></h4>
+                        <h4>Durante 99% do tempo, o uso ficou abaixo de 77% </h4>
                     </div>
                 </div>
                 <div class="div_kpi kpi2">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>PROCESSO COM MAIOR CONSUMO E O COMPONENTE QUE CONSOME</h3>
+                            <h3>P99 DE DISCO</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1 id="kpiMedioRam">MYSQL</h1>
+                            <h1 id="kpiP99Disco">62.4%</h1>
                             <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
                         </div>
                         <div class="status">
-                            <h4>Ram</h4>
+                            <h4>Durante 99% do tempo, o uso ficou abaixo de 62.4% </h4>
                         </div>
                     </div>
                 </div>
                 <div class="div_kpi kpi3">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>USO DE CPU</h3>
+                            <h3>P99 DE CPU</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1 id="kpiMedioCpu">95%</h1>
+                            <h1 id="kpiP99Cpu">85.7%</h1>
                             <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
                         </div>
                         <div class="status">
-                            <h4>Ultimos 5 minutos</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="div_kpi kpi2">
-                    <div class="info_kpi">
-                        <div class="containerTitulo">
-                            <h3>USO DE RAM</h3>
-                        </div>
-                        <div class="div_situacao">
-                            <h1 id="kpiMedioDisco">65%</h1>
-                            <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
-                        </div>
-                        <div class="status">
-                            <h4>Ultimos 5 minutos</h4>
+                            <h4>Durante 99% do tempo, o uso ficou abaixo de 85.7% </h4>
                         </div>
                     </div>
                 </div>
                 <div class="div_kpi kpi4">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>USO DE DISCO</h3>
+                            <h3>P99 DE RAM</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1 id="kpiMedioDisco">14%</h1>
+                            <h1 id="kpiP99Ram">37.2%</h1>
                             <img src="../assets/dashboard-icons/icon_check.svg" alt="">
                         </div>
                         <div class="status">
-                            <h4>Ultimos 5 minutos</h4>
+                            <h4>Durante 99% do tempo, o uso ficou abaixo de 37.2% </h4>
                         </div>
                     </div>
                 </div>
-                <div class="div_kpi kpi1">
+                <div class="div_kpi kpi5">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>TEMPO DE RESPOSTA (ms)</h3>
+                            <h3>TRÁFEGO DE DOWNLOAD</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1 id="kpiMedioRede">20 ms</h1>
-                            <img src="../assets/dashboard-icons/icon_check.svg" alt="">
+                            <h1 id="kpiVolumeDownload">151 Mbps</h1>
                         </div>
                         <div class="status">
-                            <h4>Ultimos 5 minutos</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="div_kpi kpi7">
-                    <div class="info_kpi">
-                        <div class="containerTitulo">
-                            <h3>COMPONENTE QUE MAIS SUBIU NA ÚLTIMA SEMANA</h3>
-                        </div>
-                        <div class="div_situacao">
-                            <h1 id="kpiMedioRede">RAM</h1>
-                            <img src="../assets/dashboard-icons/icon_check.svg" alt="">
-                        </div>
-                        <div class="status">
-                            <h4>SERVIDOR-DC02</h4>
+                            <h4>Volume de tráfego de download nas últimas 48h </h4>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="selectServidor">
+                <select id="selectSrv">
+                    <option>Todos os servidores</option>
+                    <option>SRV-DC01-WEB-05</option>
+                </select>
+            </div>
             <div class="parte1">
-                <div class="conteinerRam">
-                    <div class="grafico">
-                        <canvas id="graficoRam"></canvas>
+                <div class="grafico-DiscoXLatencia">
+                    <div id="expandirDiscoxLatencia">
+                        <canvas id="chartDiskxLat"></canvas>
                     </div>
                 </div>
-                <div class="conteinerCpu">
-                    <div class="grafico">
-                        <canvas id="graficoCpu"></canvas>
-                    </div>
-                </div>
-                <div class="conteinerDisco">
-                    <div class="grafico">
-                        <canvas id="graficoDisco"></canvas>
+                <div class="grafico-Downloads">
+                    <div id="expandirDownloads">
+                        <canvas id="chartDownload"></canvas>
                     </div>
                 </div>
             </div>
@@ -230,16 +197,86 @@
                         <canvas id="chartRamxCpu"></canvas>
                     </div>
                 </div>
-                <div class="grafico-DiscoXLatencia">
-                    <div id="expandirDiscoxLatencia">
-                        <canvas id="chartDiskxLat"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="parte3">
-                <div class="conteinerComponentes">
-                    <div class="graficoP3">
-                        <canvas id="graficoComponentes"></canvas>
+                <div class="grafico-Jogos">
+                    <div id="expandirJogos">
+                        <div class="tabelaJogos">
+                            <div class="textoJogos">
+                                <h2>Monitoramento de lançamentos Steam </h2>
+                                <h3>Possível pico de tráfego</h3>
+                            </div>
+                            <div class="containerListaJogos">
+                                <div class="boxListaJogos">
+                                    <div class="conteudoJogos">
+                                        <div class="imagemJogos">
+                                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+                                        </div>
+                                        <div class="escritaJogos">
+                                            <h4>GTA VI</h4>
+                                            <h5>2027-09-12</h5>
+                                        </div>
+                                    </div>
+                                    <div class="botaoJogos">
+                                        <button>Critico</button>
+                                    </div>
+                                </div>
+                                <div class="boxListaJogos">
+                                    <div class="conteudoJogos">
+                                        <div class="imagemJogos">
+                                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+                                        </div>
+                                        <div class="escritaJogos">
+                                            <h4>GTA VI</h4>
+                                            <h5>2027-09-12</h5>
+                                        </div>
+                                    </div>
+                                    <div class="botaoJogos">
+                                        <button>Critico</button>
+                                    </div>
+                                </div>
+                                <div class="boxListaJogos">
+                                    <div class="conteudoJogos">
+                                        <div class="imagemJogos">
+                                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+                                        </div>
+                                        <div class="escritaJogos">
+                                            <h4>GTA VI</h4>
+                                            <h5>2027-09-12</h5>
+                                        </div>
+                                    </div>
+                                    <div class="botaoJogos">
+                                        <button>Critico</button>
+                                    </div>
+                                </div>
+                                <div class="boxListaJogos">
+                                    <div class="conteudoJogos">
+                                        <div class="imagemJogos">
+                                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+                                        </div>
+                                        <div class="escritaJogos">
+                                            <h4>GTA VI</h4>
+                                            <h5>2027-09-12</h5>
+                                        </div>
+                                    </div>
+                                    <div class="botaoJogos">
+                                        <button>Critico</button>
+                                    </div>
+                                </div>
+                                <div class="boxListaJogos">
+                                    <div class="conteudoJogos">
+                                        <div class="imagemJogos">
+                                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+                                        </div>
+                                        <div class="escritaJogos">
+                                            <h4>GTA VI</h4>
+                                            <h5>2027-09-12</h5>
+                                        </div>
+                                    </div>
+                                    <div class="botaoJogos">
+                                        <button>Critico</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -250,7 +287,5 @@
 </body>
 
 <script src="../js/dashAnalistaEspecifica.js"></script>
-<script src="../js/subMenu.js"></script>
-<script src="../js/modaisInfos.js"></script>
 
 </html>
