@@ -2,14 +2,16 @@ window.onload = () => {
     buscarDados()
     mostrarServidores()
 }
+
 function fnNavegar(caminho){
     window.location.href = caminho
 }
-if (!sessionStorage.ID_USUARIO) {
-    conteiner_msg.innerHTML = "Você precisa estar logado!"
-    loadingModal()
-    window.location = "login.html";
-}
+
+// if (!sessionStorage.ID_USUARIO) {
+//     conteiner_msg.innerHTML = "Você precisa estar logado!"
+//     loadingModal()
+//     window.location = "login.html";
+// }
 
 let idDataCenterSelecionado = null;
 
@@ -237,116 +239,6 @@ function mostrarServidores() {
             console.log("SERVIDORES:", servidores);
             boxServidores.innerHTML = "";
             var mensagem = "";
-            mensagem += `
-                <div class="servidorPrincipal">
-                    <div class="inicioServidorPrincipal">
-                        <img src="../assets/dashboard-servidor/IconServidor.png">
-                        <h3>SRV-DC01-E1-06</h3>
-                        <div class="estadoServidorPrincipal">
-                            Ativo
-                        </div>
-                    </div>
-
-                    <div class="gridCompo" id="gridCompoPrincipal">
-                        <div class="boxCpu">
-                            <div class="inicioCpu">
-                                <img src="../assets/dashboard-servidor/iconCpu.png">
-                                <span>CPU USO TOTAL</span>
-                                <span class="infoSistema">8 nucleos</span>
-                            </div>
-                            <div class="porcentagemCpu">
-                                <h2 id="cpuValorPrincipal"></h2>
-                                <span>%</span>
-                            </div>
-                            <div class="barraCpu">
-                                <div class="barraPreenchimentoCpu" id="cpuBarraPrincipal"></div>
-                            </div>
-                            <div class="porcentagemLadoCpu">
-                                <div class="usuarioPorcentagem">
-                                    <img src="../assets/dashboard-servidor/user.png" alt="">
-                                    <span id="cpuUsoPrincipal">Usuario </span>
-                                </div>
-                                <div class="configPorcentagem">
-                                    <img src="../assets/dashboard-servidor/iconConfig.jpg" alt="">
-                                    <span id="cpuLivrePrincipal">Sistema </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="boxRam">
-                            <div class="inicioRam">
-                                <img src="../assets/dashboard-servidor/iconRam.png">
-                                <span>RAM - 32 GB</span>
-                                <span class="infoSistema">GB</span>
-                            </div>
-                            <div class="porcentagemRam">
-                                <h2 id="ramValorPrincipal"></h2>
-                                <span>GB</span>
-                            </div>
-                            <div class="barraRam">
-                                <div class="barraPreenchimentoRam" id="ramBarraPrincipal"></div>
-                            </div>
-                            <div class="porcentagemLadoRam">
-                                <div class="usuarioPorcentagem">
-                                    <img src="../assets/dashboard-servidor/iconBd.png" alt="">
-                                    <span id="ramUsoPrincipal">Em cache </span>
-                                </div>
-                                <div class="configPorcentagem">
-                                    <img src="../assets/dashboard-servidor/iconCheck.png" alt="">
-                                    <span id="ramLivrePrincipal">Livre </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="boxDisco">
-                            <div class="inicioDisco">
-                                <img src="../assets/dashboard-servidor/iconCache.png">
-                                <span>DISCO - 512 GB</span>
-                                <span class="infoSistema">GB</span>
-                            </div>
-                            <div class="porcentagemDisco">
-                                <h2 id="discoValorPrincipal"></h2>
-                                <span>GB</span>
-                            </div>
-                            <div class="barraDisco">
-                                <div class="barraPreenchimentoDisco" id="discoBarraPrincipal"></div>
-                            </div>
-                            <div class="porcentagemLadoDisco">
-                                <div class="usuarioPorcentagem">
-                                    <img src="../assets/dashboard-servidor/iconFolder.png" alt="">
-                                    <span id="discoUsoPrincipal">Em uso </span>
-                                </div>
-                                <div class="configPorcentagem">
-                                    <img src="../assets/dashboard-servidor/iconFolder.png" alt="">
-                                    <span id="discoLivrePrincipal">Livre </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="boxRede">
-                            <div class="inicioRede">
-                                <img src="../assets/dashboard-servidor/iconWeb.png">
-                                <span>REDE - 60</span>
-                                <span class="infoSistema">ms</span>
-                            </div>
-                            <div class="porcentagemRede">
-                                <h2 id="redeValorPrincipal"></h2>
-                                <span>ms</span>
-                            </div>
-                            <div class="barraRede">
-                                <div class="barraPreenchimentoRede" id="redeBarraPrincipal"></div>
-                            </div>
-                            <div class="porcentagemLadoDisco">
-                                <div class="usuarioPorcentagem">
-                                    <img src="../assets/dashboard-servidor/iconRede.png" alt="">
-                                    <span id="redeUsoPrincipal">Em uso </span>
-                                </div>
-                                <div class="configPorcentagem">
-                                    <img src="../assets/dashboard-servidor/iconPerda.png" alt="">
-                                    <span id="redeLivrePrincipal">Livre </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `
             for (var i = 0; i < servidores.length; i++) {
                 mensagem += `
                 <div class="servidor">
