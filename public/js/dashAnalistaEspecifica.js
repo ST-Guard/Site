@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctxDiskLat = document.getElementById('chartDiskxLat');
     const ctxDownload = document.getElementById('chartDownload');
 
-    new Chart(ctxDiskLat, {
+    const chartDiscoXLatencia = new Chart(ctxDiskLat, {
         type: 'line',
         data: {
             labels: ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'],
@@ -117,16 +117,16 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             }
         }
-    }),
+    });
 
-    new Chart(ctxDownload, {
+    const chartDownload = new Chart(ctxDownload, {
     type: 'bar',
     data: {
         labels: ['0h', '2h', '4h', '6h', '8h', '10h', '12h', '14h', '16h', '18h', '20h', '22h', '24h', '26h', '28h', '30h', '32h', '34h', '36h', '38h', '40h', '42h', '44h', '46h', '47h'],
         datasets: [{
         label: 'Downloads',
         data: [220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240],
-        backgroundColor: 'black',
+        backgroundColor: '#244770',
         borderRadius: 4
         }]
     },
@@ -164,9 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             }
         }
-    }),
+    });
 
-    new Chart(ctxRamCpu, {
+    const chartRamXCpu = new Chart(ctxRamCpu, {
     type: 'line',
     data: {
         labels: ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'],
@@ -246,7 +246,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    setInterval(atualizarGraficoDownload, 10000);
+
+    async function atualizarGraficoDownload() {
+        const resposta = await fetch("/api/steam-downloads")
+        const dados = await resposta.json()
+        
+        chartDownload.data.labels = dados.labels
+        chartDownload.data.datasets[0].data = dados.valores
+    
+        chartDownload.update()
+    }
 });
+
 
 function limparSessao() {
     sessionStorage.clear();
