@@ -33,35 +33,6 @@ app.use("/servidor", servidorRouter)
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
 
-
-app.get("/api/steam-downloads", async (req, res) => {
-  try {
-    const resposta = await fetch("https://cdn.fastly.steamstatic.com/steam/publicstats/download_traffic_per_country.jsonp?v=05-19-2026-17");
-
-    const texto = await resposta.text();
-
-    console.log("STATUS STEAM:", resposta.status);
-    console.log("RESPOSTA STEAM:", texto.slice(0, 500));
-
-    if (!texto) {
-      return res.status(500).json({ erro: "Steam retornou vazio" });
-    }
-
-    const dados = JSON.parse(texto);
-
-    res.json(dados);
-
-  } catch (erro) {
-    console.error("ERRO REAL:", erro);
-
-    res.status(500).json({
-      erro: "Erro ao buscar dados da Steam",
-      detalhe: erro.message
-    });
-  }
-});
-
-
 // inicia o servidor
 app.listen(PORT, function () {
   console.log(`Servidor rodando em http://${HOST}:${PORT}`);

@@ -247,15 +247,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     setInterval(atualizarGraficoDownload, 10000);
+async function atualizarDados() {
 
+}
     async function atualizarGraficoDownload() {
-        const resposta = await fetch("/api/steam-downloads")
-        const dados = await resposta.json()
-        
-        chartDownload.data.labels = dados.labels
-        chartDownload.data.datasets[0].data = dados.valores
-    
-        chartDownload.update()
+        try {
+            const resposta = await fetch('https://cdn.fastly.steamstatic.com/steam/publicstats/download_traffic_per_country.jsonp?v=05-19-2026-17');
+            const dados = await resposta.json();
+            chartDownload.data.labels = dados.labels
+            chartDownload.data.datasets[0].data = dados.valores
+            chartDownload.update()
+            
+            console.log(dados); 
+        } catch (erro) {
+            console.error("Erro ao buscar os dados:", erro);
+        }
+
     }
 });
 
