@@ -119,6 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    let ultimoTotal = null;
+    const labelsDownload = [];
+    const valoresDownload = [];
+
     const chartDownload = new Chart(ctxDownload, {
     type: 'bar',
     data: {
@@ -246,38 +250,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    let ultimoTotal = null;
-    const labelsDownload = [];
-    const valoresDownload = [];
-
-    atualizarGraficoDownload
+    atualizarGraficoDownload()
     setInterval(atualizarGraficoDownload, 60000);
 
     async function atualizarGraficoDownload() {
 
-        try {
-            const resposta = await fetch("/api/steam-downloads");
-            const dados = await resposta.json();
-            const agora = new Date().toLocaleTimeString();
-            const atual = Number(dados.BRA.totalbytes);
+        const resposta = await fetch("/api/steam-downloads");
+        const dados = await resposta.json();
+        const agora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit'});
+        const atual = Number(dados.BRA.totalbytes);
 
-            if (ultimoTotal !== null) {
+        labelsDownload.push(agora);
+        valoresDownload.push(
+            Number(dados.BRA.totalbytes) / 1024 / 1024 / 1024 / 1024
+        );
 
-                const diferenca = atual - ultimoTotal;
-                labelsDownload.push(agora);
-                valoresDownload.push(Number((diferenca / 1024 / 1024 / 1024).toFixed(2)));
-                
-                if (labelsDownload.length > 48) {
-                    labelsDownload.shift();
-                    valoresDownload.shift();
-                }
-                chartDownload.update();
-            }
-            ultimoTotal = atual;
-
-        } catch (erro) {
-            console.error("Erro ao atualizar gráfico:", erro);
+        if (labelsDownload.length > 48) {
+            labelsDownload.shift();
+            valoresDownload.shift();
         }
+
+        chartDownload.data.labels = labelsDownload;
+        chartDownload.data.datasets[0].data = valoresDownload;
+
+        chartDownload.update();
     }
 });
 
