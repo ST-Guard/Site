@@ -18,6 +18,7 @@ var falecosnosRouter = require("./src/routes/faleconosco")
 var servidorRouter = require("./src/routes/servidor")
 var zonaRouter = require("./src/routes/zona");
 var sessaoRouter = require("./src/routes/sessao");
+var financeira = require("./src/routes/financeiraRoute");
 
 // middlewares
 app.use(express.json());
@@ -33,6 +34,10 @@ app.use("/servidor", servidorRouter)
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
 
+//Rotas Financeira
+app.use("/financeira", financeira);
+
+// Rota grafico Steam
 let cacheSteam = null;
 
 async function atualizarDados() {

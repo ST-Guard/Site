@@ -15,6 +15,7 @@ function buscarDados() {
   const idUsuario = sessionStorage.ID_USUARIO;
   if (!idUsuario) return; 
 
+  // Puxar Kpis
   fetch(`/sessao/buscarUsuario/${idUsuario}`)
     .then(r => r.json())
     .then(dados => {
@@ -27,9 +28,56 @@ function buscarDados() {
         : '../assets/dashConfig/usuario.png';
     })
     .catch(() => {}); 
+
+
+
+    const BUCKET = 'smartdatabucket1'
+    
+        fetch("/financeira/pegarDadosFinanceira", {
+        method: "POST", 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            bucket: BUCKET
+        })
+    })
+     .then(function (resposta) {
+        return resposta.json();
+    })
+    .then(function (dados) {
+        if(dados == [] || dados == null || dados == {}){
+          console.log("Dados não encontrados")
+          return
+        }
+            console.log("Dados buscados pelo S3 com sucesso!");
+            console.log(dados)
+            plotarDados(dados)
+    });
+
+
 }
 
+function plotarDados(dadosS3){
+  
+  // ------- KPIS --------
+  
+  // ROI
+  var elmt_ROI_ESTIMADO = document.getElementById("ROI_ESTIMADO")
+  elmt_ROI_ESTIMADO.innerHTML = dadosS3.KPIS.ROI.ROI_MES_CORRENTE
 
+  var elmt_RECEITA_LIQUIDA = document.getElementById("RECEITA_LIQUIDA")
+  elmt_RECEITA_LIQUIDA.innerHTML = dadosS3.KPIS.ROI.MARGEM_LIQUIDO
+
+  var elmt_RECEITA_LIQUIDA = document.getElementById("RECEITA_LIQUIDA")
+  elmt_RECEITA_LIQUIDA.innerHTML = dadosS3.KPIS.ROI.MARGEM_LIQUIDO
+
+
+  //FATURAMENTO TOTAL
+  var elmt_FATURAMENTO_TOTAL = document.getElementById("FATURAMENTO_TOTAL")
+  elmt_FATURAMENTO_TOTAL.innerHTML = dadosS3.KPIS.FATURAMENTO_TOTAL.FATURAMENTO
+  
+
+
+}
 
 /* ══════════════════════════════════════════════  */
 //    DADOS HISTÓRICOS
