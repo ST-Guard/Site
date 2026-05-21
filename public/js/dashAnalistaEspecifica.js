@@ -122,12 +122,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const chartDownload = new Chart(ctxDownload, {
     type: 'bar',
     data: {
-        labels: ['0h', '2h', '4h', '6h', '8h', '10h', '12h', '14h', '16h', '18h', '20h', '22h', '24h', '26h', '28h', '30h', '32h', '34h', '36h', '38h', '40h', '42h', '44h', '46h', '47h'],
+        labels: [],
         datasets: [{
-        label: 'Downloads',
-        data: [220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240, 320, 280, 220, 240],
-        backgroundColor: '#244770',
-        borderRadius: 4
+            label: 'Download Brasil (Mbps)',
+            data: [],
+            backgroundColor: '#244770',
+            borderRadius: 4
         }]
     },
         options: {
@@ -246,23 +246,38 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    setInterval(atualizarGraficoDownload, 10000);
-async function atualizarDados() {
+    let ultimoTotal = null;
+    const labelsDownload = [];
+    const valoresDownload = [];
 
-}
+    atualizarGraficoDownload
+    setInterval(atualizarGraficoDownload, 60000);
+
     async function atualizarGraficoDownload() {
-        try {
-            const resposta = await fetch('https://cdn.fastly.steamstatic.com/steam/publicstats/download_traffic_per_country.jsonp?v=05-19-2026-17');
-            const dados = await resposta.json();
-            chartDownload.data.labels = dados.labels
-            chartDownload.data.datasets[0].data = dados.valores
-            chartDownload.update()
-            
-            console.log(dados); 
-        } catch (erro) {
-            console.error("Erro ao buscar os dados:", erro);
-        }
 
+        try {
+            const resposta = await fetch("/api/steam-downloads");
+            const dados = await resposta.json();
+            const agora = new Date().toLocaleTimeString();
+            const atual = Number(dados.BRA.totalbytes);
+
+            if (ultimoTotal !== null) {
+
+                const diferenca = atual - ultimoTotal;
+                labelsDownload.push(agora);
+                valoresDownload.push(Number((diferenca / 1024 / 1024 / 1024).toFixed(2)));
+                
+                if (labelsDownload.length > 48) {
+                    labelsDownload.shift();
+                    valoresDownload.shift();
+                }
+                chartDownload.update();
+            }
+            ultimoTotal = atual;
+
+        } catch (erro) {
+            console.error("Erro ao atualizar gráfico:", erro);
+        }
     }
 });
 

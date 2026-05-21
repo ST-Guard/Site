@@ -33,6 +33,31 @@ app.use("/servidor", servidorRouter)
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
 
+let cacheSteam = null;
+
+async function atualizarDados() {
+
+    const resposta = await fetch("https://cdn.fastly.steamstatic.com/steam/publicstats/download_traffic_per_country.jsonp?v=05-19-2026-17");
+
+    const texto = await resposta.text();
+
+    const jsonLimpo = texto
+        .replace(/^.*?\(/, "")
+        .replace(/\);?$/, "");
+
+    cacheSteam = JSON.parse(jsonLimpo);
+
+    console.log("Cache atualizado");
+}
+
+atualizarDados();
+
+setInterval(atualizarDados, 10000);
+
+app.get("/api/steam-downloads", (req, res) => {
+    res.json(cacheSteam);
+});
+
 // inicia o servidor
 app.listen(PORT, function () {
   console.log(`Servidor rodando em http://${HOST}:${PORT}`);
