@@ -19,6 +19,7 @@ var servidorRouter = require("./src/routes/servidor")
 var zonaRouter = require("./src/routes/zona");
 var sessaoRouter = require("./src/routes/sessao");
 var financeira = require("./src/routes/financeiraRoute");
+var steamRouter = require("./src/routes/steam");
 
 // middlewares
 app.use(express.json());
@@ -33,33 +34,33 @@ app.use("/enviar", falecosnosRouter)
 app.use("/servidor", servidorRouter)
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
+app.use("/api", steamRouter);
 
 //Rotas Financeira
 app.use("/financeira", financeira);
 
-// Rota grafico Steam
+// Rota grafico servidor especifico
 let cacheSteam = null;
 
 async function atualizarDados() {
 
-    const resposta = await fetch("https://cdn.fastly.steamstatic.com/steam/publicstats/download_traffic_per_country.jsonp?v=05-19-2026-17");
+    const resposta = await fetch("https://cdn.fastly.steamstatic.com/steam/publicstats/download_traffic_per_country.jsonp?v=05-19-2026-17")
 
-    const texto = await resposta.text();
+    const texto = await resposta.text()
 
     const jsonLimpo = texto
         .replace(/^.*?\(/, "")
-        .replace(/\);?$/, "");
+        .replace(/\);?$/, "")
 
-    cacheSteam = JSON.parse(jsonLimpo);
+    cacheSteam = JSON.parse(jsonLimpo)
 
-    console.log("Cache atualizado");
 }
 
 atualizarDados();
 
 setInterval(atualizarDados, 10000);
 
-app.get("/api/steam-downloads", (req, res) => {
+app.get("/api/steamDownloads", (req, res) => {
     res.json(cacheSteam);
 });
 

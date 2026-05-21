@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    const chartRamXCpu = new Chart(ctxRamCpu, {
+    const chartRamXCpu = new Chart(ctxRamCpu, { 
     type: 'line',
     data: {
         labels: ['0h', '1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h', '18h', '19h', '20h', '21h', '22h', '23h'],
@@ -255,15 +255,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function atualizarGraficoDownload() {
 
-        const resposta = await fetch("/api/steam-downloads");
-        const dados = await resposta.json();
+        const respostaJogadores = await fetch("/api/steamGlobal");
+        const jogadoresJson = await respostaJogadores.json();
+        const metricaUsuariosDownload = jogadoresJson.onlineAgora - jogadoresJson.jogandoAgora
+        const usuariosBrasil = metricaUsuariosDownload * 0.03
+        const usuariosDatacenter = usuariosBrasil / 3
+
+        const respostaDownload = await fetch("/api/steamDownloads");
+        const dados = await respostaDownload.json();
         const agora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit'});
         const atual = Number(dados.BRA.totalbytes);
+        const mbpsSteam = atual / 1024 / 1024 / 1024 / 1024
 
+        const menorValor = 130000
+        const maiorValor = 310000
+
+        let formulaPorcentagem = 1
+
+        if (usuariosDatacenter > menorValor) {
+            formulaPorcentagem = 1 + (((usuariosDatacenter - menorValor) / (maiorValor - menorValor) * 10) / 100)
+            formulaPorcentagem = Math.min(formulaPorcentagem, 1.10)
+        }
+        let valorAtual = mbpsSteam * formulaPorcentagem
+        console.log(usuariosDatacenter)
+        console.log(valorAtual)
+        console.log(formulaPorcentagem)
         labelsDownload.push(agora);
-        valoresDownload.push(
-            Number(dados.BRA.totalbytes) / 1024 / 1024 / 1024 / 1024
-        );
+        valoresDownload.push(valorAtual);
 
         if (labelsDownload.length > 48) {
             labelsDownload.shift();
