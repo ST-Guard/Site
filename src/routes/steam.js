@@ -4,29 +4,22 @@ var router = express.Router();
 router.get("/steamGlobal", async (req, res) => {
 
     try {
-        const resposta = await fetch(
-            "https://store.steampowered.com/stats/userdata.json"
-        );
-        if (!resposta.ok) {
-            throw new Error("Erro ao buscar dados da Steam");
-        }
-
+        const resposta = await fetch("https://store.steampowered.com/stats/userdata.json");
         const dados = await resposta.json();
-        const onlineAgora =
-            Number(dados.current_users);
-        const jogandoAgora =
-            Number(dados.current_ingame);
+        const historico = dados[0].data;
+        const ultimoRegistro = historico[historico.length - 1];
+        const onlineAgora = ultimoRegistro[1];
 
-        res.status(200).json({
-            onlineAgora,
-            jogandoAgora
-        });
+        res.json({onlineAgora});
+        
     } catch (erro) {
         console.error(erro);
+
         res.status(500).json({
             erro: "Falha ao buscar dados globais da Steam"
         });
     }
+
 });
 
 module.exports = router;
