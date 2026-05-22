@@ -328,7 +328,7 @@ header {
 .card_servidores {
     width: 50%;
     min-height: 240px;
-    border: 1px solid #9A9A9A;
+    border: 1px solid #949494;
     box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     padding: 20px;
@@ -394,6 +394,7 @@ header {
     width: 100%;
     max-height: 220px;
     overflow-y: auto;
+    background-color: #f7f7f7;
     border: 1px solid #9A9A9A;
     border-radius: 5px;
     padding: 10px;
@@ -404,6 +405,7 @@ header {
     width: 100%;
     min-height: 42px;
     border: 1px solid #9A9A9A;
+    background-color:white ;
     border-radius: 5px;
     margin-bottom: 16px;
     padding: 0 16px;
@@ -418,7 +420,7 @@ header {
 }
 
 .item_servidor p {
-    color: #6B7280;
+    color: #1c4886;
     font-size: 0.9rem;
     font-weight: 500;
 }
@@ -772,7 +774,7 @@ header {
     padding: 0 16px;
     display: flex;
     align-items: center;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 500;
     box-sizing: border-box;
 }
