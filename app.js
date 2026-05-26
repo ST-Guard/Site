@@ -19,6 +19,7 @@ var servidorRouter = require("./src/routes/servidor")
 var zonaRouter = require("./src/routes/zona");
 var sessaoRouter = require("./src/routes/sessao");
 var financeira = require("./src/routes/financeiraRoute");
+var buscarzonasRouter = require("./src/routes/buscarzona")
 
 // middlewares
 app.use(express.json());
@@ -33,6 +34,7 @@ app.use("/enviar", falecosnosRouter)
 app.use("/servidor", servidorRouter)
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
+app.use("/bzonas", buscarzonasRouter)
 
 //Rotas Financeira
 app.use("/financeira", financeira);
