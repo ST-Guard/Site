@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     atualizarGraficoDownload()
-    setInterval(atualizarGraficoDownload, 300000);
+    setInterval(atualizarGraficoDownload, 1800000);
 
     async function atualizarGraficoDownload() {
 

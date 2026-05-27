@@ -58,7 +58,7 @@ async function atualizarDados() {
 
 atualizarDados();
 
-setInterval(atualizarDados, 300000);
+setInterval(atualizarDados, 1800000);
 
 app.get("/api/steamDownloads", (req, res) => {
     res.json(cacheSteam);
