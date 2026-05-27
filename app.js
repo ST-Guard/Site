@@ -5,6 +5,7 @@ require("dotenv").config({ path: caminho_env });
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
+const cheerio = require("cheerio");
 
 var PORT = process.env.APP_PORT || process.env.PORTA || 3333;
 var HOST = process.env.APP_HOST || 'localhost';
@@ -19,11 +20,8 @@ var servidorRouter = require("./src/routes/servidor")
 var zonaRouter = require("./src/routes/zona");
 var sessaoRouter = require("./src/routes/sessao");
 var financeira = require("./src/routes/financeiraRoute");
-<<<<<<< HEAD
 var steamRouter = require("./src/routes/steam");
-=======
 var buscarzonasRouter = require("./src/routes/buscarzona")
->>>>>>> 19bdbd7fe06eb06adc9f8b52ca3c96964b604cf6
 
 // middlewares
 app.use(express.json());
@@ -67,6 +65,50 @@ setInterval(atualizarDados, 300000);
 
 app.get("/api/steamDownloads", (req, res) => {
     res.json(cacheSteam);
+});
+
+app.get("/api/volumeLancamentosSteam", async (req, res) => {
+    try {
+        const resposta = await fetch(
+            "https://store.steampowered.com/search/results/?query&start=0&count=50&dynamic_data=&sort_by=Released_DESC&force_infinite=1&category1=998&filter=popularcomingsoon&infinite=1"
+        );
+        const dados = await resposta.json();
+        const html = dados.results_html;
+        const leituraHTML = cheerio.load(html);
+        const jogos = [];
+
+        leituraHTML("a.search_result_row").each((_, row) => {
+            const nome = leituraHTML(row).find(".title").text().trim();
+            const dataLancamento = leituraHTML(row).find(".search_released").text().trim();
+
+            if (!nome) return;
+
+            jogos.push({
+                nome,
+                dataLancamento
+            });
+        });
+
+        const totalLancamentos = jogos.length;
+        let criticidade = "Aviso";
+
+        if (totalLancamentos >= 16) {
+            criticidade = "Crítico";
+        } else if (totalLancamentos >= 6) {
+            criticidade = "Relevante";
+        }
+        res.json({
+            totalLancamentos,
+            criticidade,
+            jogos
+        });
+
+    } catch (erro) {
+        console.log(erro);
+        res.status(500).json({
+            erro: "Erro ao buscar lançamentos da Steam"
+        });
+    }
 });
 
 // inicia o servidor

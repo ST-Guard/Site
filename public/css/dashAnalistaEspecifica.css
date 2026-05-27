@@ -235,7 +235,7 @@ h1{
 }
 
 .grafico-Downloads,
-.grafico-Jogos {
+.grafico-VolumeCriticidade {
   flex: 1 1 480px;
   width: 40%;
   max-width: 40%;
@@ -252,7 +252,7 @@ h1{
 #expandirRamxCpu,
 #expandirDiscoxLatencia,
 #expandirDownloads,
-#expandirJogos {
+#expandirVolumeCriticidade {
   position: relative;
   width: 100%;
   height: 350px;
@@ -261,75 +261,11 @@ h1{
 
 #chartRamxCpu,
 #chartDiskxLat,
-#chartDownload {
+#chartDownload,
+#chartVolumeCriticidade {
   width: 100%;
   height: 100%;
   display: block;
-}
-
-.textoJogos {
-  color: #6E6E6E;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.textoJogos h3 {
-  margin-top: -15px;
-  font-weight: normal;
-}
-
-.containerListaJogos {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 16px;
-  max-height: 400px;
-  overflow-y: auto;
-}
-
-.boxListaJogos {
-  border: 1px solid #D72828;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-self: center;
-  align-items: center;
-  margin-top: 10px;
-  width: 70%;
-}
-
-.conteudoJogos {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin: 0 15px;
-}
-
-.conteudoJogos h4 {
-  height: 10px;
-  font-size: 14px;
-}
-
-.conteudoJogos h5 {
-  color: #374151;
-  font-size: 10px;
-}
-
-.imagemJogos {
-  margin-top: 10px;
-}
-
-.botaoJogos {
-  margin-left: auto;
-  margin-right: 10px;
-}
-
-.botaoJogos button{
-  background-color: #D72828;
-  border: none;
-  border-radius: 10px;
-  color: white;
-  height: 30px;
-  width: 80px;
 }
 
 @media (max-width: 1024px) {

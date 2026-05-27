@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctxRamCpu = document.getElementById('chartRamxCpu');
     const ctxDiskLat = document.getElementById('chartDiskxLat');
     const ctxDownload = document.getElementById('chartDownload');
+    const ctxVolume = document.getElementById('chartVolumeCriticidade');
 
     const chartDiscoXLatencia = new Chart(ctxDiskLat, {
         type: 'line',
@@ -250,8 +251,91 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    atualizarGraficoDownload()
-    setInterval(atualizarGraficoDownload, 300000);
+    const chartVolume = new Chart(ctxVolume, { 
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Lançamentos previstos',
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: [],
+                    borderWidth: 1.5,
+                    borderRadius: 6
+                },
+                {
+                    label: 'Limite Relevante',
+                    data: [41, 41, 41, 41],
+                    type: 'line',
+                    borderColor: 'rgba(255, 193, 7, 1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    borderDash: [5, 5],
+                    fill: false
+                },
+
+                {
+                    label: 'Limite Crítico',
+                    data: [71, 71, 71, 71],
+                    type: 'line',
+                    borderColor: 'rgba(220, 53, 69, 1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    borderDash: [5, 5],
+                    fill: false
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Volume previsto de lançamentos de jogos',
+                    align: 'start',
+                    font: {
+                        size: 18
+                    },
+                    padding: {
+                        top: 20
+                    }
+                },
+                subtitle: {
+                    display: true,
+                    text: 'Criticidade operacional baseada na densidade de lançamentos',
+                    align: 'start',
+                    font: {
+                        size: 14
+                    },
+                    padding: {
+                        bottom: 30
+                    }
+                },
+                legend: {
+                    labels: {
+                        padding: 5
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Quantidade de lançamentos'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Semanas'
+                    }
+                }
+            }
+        }
+    });
 
     async function atualizarGraficoDownload() {
 
@@ -295,6 +379,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
         chartDownload.update();
     }
+
+    async function buscarVolumeLancamentos() {
+
+        const resposta = await fetch("/api/volumeLancamentosSteam");
+        const dados = await resposta.json();
+        const labels = [];
+        const valores = [];
+        const coresFundo = [];
+        const coresBorda = [];
+
+        for (let i = 0; i < dados.jogos.length; i++) {
+            const data = dados.jogos[i].dataLancamento;
+            let posicao = labels.indexOf(data);
+
+            if (posicao === -1) {
+                labels.push(data);
+                valores.push(1);
+            } else {
+                valores[posicao]++;
+            }
+        }
+
+        chartVolume.data.labels = labels;
+        chartVolume.data.datasets[0].data = valores;
+
+        for (let i = 0; i < valores.length; i++) {
+            const valor = valores[i];
+
+            if (valor >= 70) {
+                coresFundo.push('rgba(220, 53, 69, 0.7)');
+                coresBorda.push('rgba(220, 53, 69, 1)');
+            } else if (valor >= 40) {
+                coresFundo.push('rgba(255, 193, 7, 0.7)');
+                coresBorda.push('rgba(255, 193, 7, 1)');
+            } else {
+                coresFundo.push('rgba(60, 179, 113, 0.7)');
+                coresBorda.push('rgba(60, 179, 113, 1)');
+            }
+        }
+
+        chartVolume.data.datasets[0].backgroundColor = coresFundo;
+        chartVolume.data.datasets[0].borderColor = coresBorda;
+        chartVolume.data.datasets[1].data = [];
+        chartVolume.data.datasets[2].data = [];
+
+        for (let i = 0; i < labels.length; i++) {
+            chartVolume.data.datasets[1].data.push(41);
+            chartVolume.data.datasets[2].data.push(71);
+        }
+
+        chartVolume.update();
+    }
+
+    buscarVolumeLancamentos();
+    atualizarGraficoDownload()
+    setInterval(atualizarGraficoDownload, 300000);
+
 });
 
 
