@@ -6,6 +6,7 @@ var express = require("express");
 var cors = require("cors");
 var path = require("path");
 const cheerio = require("cheerio");
+const db = require("./database");
 
 var PORT = process.env.APP_PORT || process.env.PORTA || 3333;
 var HOST = process.env.APP_HOST || 'localhost';
@@ -59,8 +60,45 @@ async function atualizarDados() {
 
 }
 
+function salvarDownloadBrasil(dados) {
+    const brasil = dados.BRA;
+
+    db.prepare(`
+        INSERT INTO steam_downloads (
+            pais,
+            totalbytes,
+            avgmbps,
+            criado_em
+        )
+        VALUES (?, ?, ?, ?)
+    `).run(
+        "BRA",
+        String(brasil.totalbytes),
+        Number(brasil.avgmbps),
+        new Date().toISOString()
+    );
+}
+
+async function coletarSteamDownloads() {
+    try {
+        const resposta = await fetch(URL);
+        const texto = await resposta.text();
+        const jsonTexto = texto
+            .replace("jsonpFetch.onTrafficData(", "")
+            .replace(/\);$/, "");
+        const dados = JSON.parse(jsonTexto);
+
+        salvarDownloadBrasil(dados);
+        console.log("Dados salvos");
+    } catch (erro) {
+        console.error(erro);
+    }
+}
+
+coletarSteamDownloads();
 atualizarDados();
 
+setInterval(coletarSteamDownloads, 10 * 60 * 1000);
 setInterval(atualizarDados, 1800000);
 
 app.get("/api/steamDownloads", (req, res) => {
@@ -109,6 +147,17 @@ app.get("/api/volumeLancamentosSteam", async (req, res) => {
             erro: "Erro ao buscar lançamentos da Steam"
         });
     }
+});
+
+app.get("/api/steamDownloadsHistorico", (req, res) => {
+    const linhas = db.prepare(`
+        SELECT *
+        FROM steam_downloads
+        WHERE criado_em >= datetime('now', '-48 hours')
+        ORDER BY criado_em ASC
+    `).all();
+
+    res.json(linhas);
 });
 
 // inicia o servidor
