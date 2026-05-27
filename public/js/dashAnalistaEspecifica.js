@@ -384,6 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const resposta = await fetch("/api/volumeLancamentosSteam");
         const dados = await resposta.json();
+        console.log(dados)
         const labels = [];
         const valores = [];
         const coresFundo = [];

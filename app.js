@@ -92,9 +92,9 @@ app.get("/api/volumeLancamentosSteam", async (req, res) => {
         const totalLancamentos = jogos.length;
         let criticidade = "Aviso";
 
-        if (totalLancamentos >= 16) {
+        if (totalLancamentos >= 71) {
             criticidade = "Crítico";
-        } else if (totalLancamentos >= 6) {
+        } else if (totalLancamentos >= 41) {
             criticidade = "Relevante";
         }
         res.json({
