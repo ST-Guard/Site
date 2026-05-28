@@ -1,4 +1,4 @@
-
+﻿
 function fnNavegar(caminho) {
   window.location.href = caminho;
 }
@@ -31,8 +31,7 @@ function buscarDados() {
 
 
 
-    const BUCKET = 'smartdatabucket1'
-    
+    const BUCKET = 'smartdatabucket2'
         fetch("/financeira/pegarDadosFinanceira", {
         method: "POST", 
         headers: { "Content-Type": "application/json" },
@@ -56,35 +55,260 @@ function buscarDados() {
 
 }
 
-function plotarDados(dadosS3){
-  
-  // ------- KPIS --------
-  
-  // ROI
-  var elmt_ROI_ESTIMADO = document.getElementById("ROI_ESTIMADO")
-  elmt_ROI_ESTIMADO.innerHTML = dadosS3.KPIS.ROI.ROI_MES_CORRENTE
-
-  var elmt_RECEITA_LIQUIDA = document.getElementById("RECEITA_LIQUIDA")
-  elmt_RECEITA_LIQUIDA.innerHTML = dadosS3.KPIS.ROI.MARGEM_LIQUIDO
-
-  var elmt_RECEITA_LIQUIDA = document.getElementById("RECEITA_LIQUIDA")
-  elmt_RECEITA_LIQUIDA.innerHTML = dadosS3.KPIS.ROI.MARGEM_LIQUIDO
-
-
-  //FATURAMENTO TOTAL
-  var elmt_FATURAMENTO_TOTAL = document.getElementById("FATURAMENTO_TOTAL")
-  elmt_FATURAMENTO_TOTAL.innerHTML = dadosS3.KPIS.FATURAMENTO_TOTAL.FATURAMENTO
-  
-
-
+function formatarMoeda(valor) {
+  return Number(valor || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
 }
 
-/* ══════════════════════════════════════════════  */
-//    DADOS HISTÓRICOS
+function formatarPercentual(valor) {
+  return `${Number(valor || 0).toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })}%`;
+}
 
-const MONTHS_HIST    = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-const historicalCost = [412,428,445,461,452,478,491,503,519,528,540,562];
-const historicalRev  = [580,612,640,671,695,720,742,758,780,802,825,860];
+function formatarDeltaMoeda(valor) {
+  const numero = Number(valor || 0);
+  const seta = numero >= 0 ? '▲' : '▼';
+  const sinal = numero >= 0 ? '+' : '-';
+  return `${seta} ${sinal}${formatarMoeda(Math.abs(numero))} vs mês anterior`;
+}
+
+function formatarDeltaPercentual(valor) {
+  const numero = Number(valor || 0);
+  const seta = numero >= 0 ? '▲' : '▼';
+  const sinal = numero >= 0 ? '+' : '';
+  return `${seta} ${sinal}${numero.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })}pp vs mês anterior`;
+}
+
+function atualizarTexto(id, valor) {
+  const elemento = document.getElementById(id);
+  if (elemento) elemento.textContent = valor;
+}
+
+function atualizarBadge(id, valor, positivoVerde = true) {
+  const elemento = document.getElementById(id);
+  if (!elemento) return;
+
+  const positivo = Number(valor || 0) >= 0;
+  elemento.classList.remove('badge-kpi-verde', 'badge-kpi-vermelho');
+  elemento.classList.add(positivo === positivoVerde ? 'badge-kpi-verde' : 'badge-kpi-vermelho');
+}
+
+let projecoesPreditivas = [];
+let mesesForecast = 3;
+let forecastChartInst;
+
+function primeiroValorObjeto(objeto, chaves, padrao = undefined) {
+  if (!objeto) return padrao;
+
+  for (const chave of chaves) {
+    if (objeto[chave] !== undefined && objeto[chave] !== null) return objeto[chave];
+  }
+
+  return padrao;
+}
+
+function formatarMesGrafico(mesAno) {
+  const [ano, mes] = String(mesAno || '').split('-');
+  const nomesMeses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+  const indiceMes = Number(mes) - 1;
+
+  if (!ano || indiceMes < 0 || indiceMes > 11) return mesAno;
+  return `${nomesMeses[indiceMes]}/${ano.slice(2)}`;
+}
+
+function aplicarHistoricoMensal(historicoMensal, projecoes = []) {
+  if (!Array.isArray(historicoMensal) || historicoMensal.length === 0) return;
+
+  const tresMesesProjecao = Array.isArray(projecoes) ? projecoes.slice(0, 3) : [];
+  const ultimoCustoHistorico = Number(historicoMensal[historicoMensal.length - 1]?.custo || 0) / 1000;
+  const ultimaReceitaHistorica = Number(historicoMensal[historicoMensal.length - 1]?.receita || 0) / 1000;
+
+  HISTORICO_MESES = historicoMensal.map(item => formatarMesGrafico(item.mes));
+  custoHistorico = historicoMensal.map(item => Number(item.custo || 0) / 1000);
+  receitaHistorica = historicoMensal.map(item => Number(item.receita || 0) / 1000);
+  historicoRoi = historicoMensal.map(item => Number(item.roi || 0));
+
+  todosRotulos = [...HISTORICO_MESES, ...tresMesesProjecao.map(item => formatarMesGrafico(item.mes))];
+  todosCustos = [...custoHistorico, ...tresMesesProjecao.map(() => null)];
+  todasReceitas = [...receitaHistorica, ...tresMesesProjecao.map(() => null)];
+  prevCustoLn = [...HISTORICO_MESES.slice(0, -1).map(() => null), ultimoCustoHistorico, ...tresMesesProjecao.map(item => Number(item.custo_previsto || 0) / 1000)];
+  prevReceitaLn = [...HISTORICO_MESES.slice(0, -1).map(() => null), ultimaReceitaHistorica, ...tresMesesProjecao.map(item => Number(item.receita_prevista || 0) / 1000)];
+  orcamentoLn = [...HISTORICO_MESES.map(() => null), ...tresMesesProjecao.map(item => Number(item.orcamento || 0) / 1000)];
+
+  const botaoAtivo = document.querySelector('.btn-periodo.active:not(.roi-period-btn)');
+  const periodoAtivo = botaoAtivo
+    ? Array.from(document.querySelectorAll('.btn-periodo:not(.roi-period-btn)')).indexOf(botaoAtivo) + 1
+    : 3;
+
+  definirPeriodo(periodoAtivo, botaoAtivo);
+}
+
+function plotarDados(dadosS3){
+  const kpis = dadosS3.KPIS || {};
+  const roi = kpis.ROI || {};
+  const faturamento = kpis.FATURAMENTO_TOTAL || {};
+  const custo = kpis.CUSTO_TOTAL || {};
+  const orcamento = kpis.ORCAMENTO || {};
+  const previsto = kpis.CUSTO_PREVISTO || {};
+
+
+  // KPIS
+  atualizarTexto("ROI_ESTIMADO", formatarPercentual(roi.ROI_MES_CORRENTE));
+  atualizarTexto("RECEITA_LIQUIDA", formatarMoeda(roi.MARGEM_LIQUIDO));
+  atualizarTexto("DELTA_ROI", formatarDeltaPercentual(roi.DELTA_ROI));
+  atualizarBadge("DELTA_ROI", roi.DELTA_ROI);
+
+  atualizarTexto("kpi-rev-val", formatarMoeda(faturamento.FATURAMENTO));
+  atualizarTexto("kpi-rev-delta", formatarDeltaMoeda(faturamento.DELTA_FATURAMENTO));
+  atualizarBadge("kpi-rev-delta", faturamento.DELTA_FATURAMENTO);
+
+  atualizarTexto("kpi-cost-val", formatarMoeda(custo.CUSTO));
+  atualizarTexto("kpi-cost-delta", formatarDeltaMoeda(custo.DELTA_CUSTO));
+  atualizarBadge("kpi-cost-delta", custo.DELTA_CUSTO, false);
+
+  atualizarTexto("kpi-cost-budget-ref", formatarMoeda(orcamento.CUSTO_PREVISTO));
+  atualizarTexto("kpi-budget-val", formatarMoeda(orcamento.CUSTO_PREVISTO));
+  atualizarTexto("kpi-budget-ref", formatarMoeda(previsto.CUSTO_PREVISTO || orcamento.CUSTO_PREVISTO));
+  atualizarTexto("budget-regression-val", formatarMoeda(previsto.CUSTO_PREVISTO || orcamento.CUSTO_PREVISTO));
+  atualizarTexto("budget-approved-val", formatarMoeda(orcamento.CUSTO_PREVISTO));
+  atualizarTexto("budget-actual-val", formatarMoeda(orcamento.CUSTO_CORRENTE || custo.CUSTO));
+  atualizarTexto("kpi-predicted", formatarMoeda(previsto.CUSTO_PREVISTO));
+
+  // GRAFICOS
+  projecoesPreditivas = Array.isArray(dadosS3.PROJECOES) ? dadosS3.PROJECOES : [];
+  aplicarHistoricoMensal(dadosS3.HISTORICO_MENSAL, dadosS3.PROJECOES);
+  aplicarDadosGraficos(dadosS3.GRAFICOS);
+  renderizarPreditivo();
+}
+
+function aplicarDadosGraficos(graficos) {
+  if (!graficos) return;
+
+  if (graficos.DONUT_CUSTOS) {
+    aplicarDonutCustos(graficos.DONUT_CUSTOS);
+  }
+
+  if (Array.isArray(graficos.BARRAS_DATACENTER)) {
+    aplicarBarrasDatacenter(graficos.BARRAS_DATACENTER);
+  }
+
+  if (Array.isArray(graficos.TOP_SERVIDORES)) {
+    aplicarTopServidores(graficos.TOP_SERVIDORES);
+  }
+}
+
+function abrirModalPreditivo() {
+  const modal = document.getElementById('modal-preditivo');
+  if (!modal) return;
+
+  modal.classList.add('active');
+  renderizarPreditivo();
+}
+
+function fecharModalPreditivo() {
+  const modal = document.getElementById('modal-preditivo');
+  if (modal) modal.classList.remove('active');
+}
+
+function scrollToPredict() {
+  abrirModalPreditivo();
+}
+
+function setForecastMonths(qtdMeses, botao) {
+  mesesForecast = Number(qtdMeses || 3);
+  document.querySelectorAll('.btn-mr').forEach(btn => btn.classList.remove('active'));
+  if (botao) botao.classList.add('active');
+
+  const slider = document.getElementById('month-slider');
+  if (slider) slider.value = mesesForecast;
+  atualizarTexto('slider-display', mesesForecast);
+  renderizarPreditivo();
+}
+
+function onSliderInput(valor) {
+  mesesForecast = Number(valor || 3);
+  atualizarTexto('slider-display', mesesForecast);
+  document.querySelectorAll('.btn-mr').forEach(btn => btn.classList.toggle('active', Number(btn.textContent.replace('M', '')) === mesesForecast));
+  renderizarPreditivo();
+}
+
+function renderizarPreditivo() {
+  const grid = document.getElementById('predict-grid');
+  const canvas = document.getElementById('forecastChart');
+  if (!grid || !canvas) return;
+
+  const projecoes = projecoesPreditivas.slice(0, mesesForecast);
+  grid.innerHTML = projecoes.length
+    ? projecoes.map((item, i) => `
+      <div class="cartao-mes-preditivo">
+        <div class="rotulo-mes-preditivo"><span class="num-mes">${i + 1}</span>${formatarMesGrafico(item.mes)}</div>
+        <div class="linha-preditiva">
+          <span class="rotulo-linha-preditiva">Custo</span>
+          <span class="valor-linha-preditiva custo">${formatarMoeda(item.custo_previsto)}</span>
+        </div>
+        <div class="linha-preditiva">
+          <span class="rotulo-linha-preditiva">Receita</span>
+          <span class="valor-linha-preditiva receita">${formatarMoeda(item.receita_prevista)}</span>
+        </div>
+        <div class="linha-preditiva">
+          <span class="rotulo-linha-preditiva">ROI</span>
+          <span class="valor-linha-preditiva roi">${formatarPercentual(item.roi_previsto)}</span>
+        </div>
+        <div class="confianca-preditiva">
+          Confiança ${Number(item.confianca || 0)}%
+          <div class="barra-confianca"><div class="preenchimento-confianca" style="width:${Number(item.confianca || 0)}%"></div></div>
+        </div>
+      </div>
+    `).join('')
+    : '<div class="cartao-mes-preditivo"><div class="rotulo-mes-preditivo">Sem projeções carregadas</div></div>';
+
+  const historicoLabels = HISTORICO_MESES.slice(-6);
+  const historicoCustos = custoHistorico.slice(-6);
+  const labels = [...historicoLabels, ...projecoes.map(item => formatarMesGrafico(item.mes))];
+  const custosHistoricos = [...historicoCustos, ...projecoes.map(() => null)];
+  const ultimoCusto = historicoCustos[historicoCustos.length - 1] || null;
+  const custosPrevistos = [
+    ...historicoCustos.slice(0, -1).map(() => null),
+    ultimoCusto,
+    ...projecoes.map(item => Number(item.custo_previsto || 0) / 1000)
+  ];
+  const orcamentos = [
+    ...historicoCustos.map(() => null),
+    ...projecoes.map(item => Number(item.orcamento || 0) / 1000)
+  ];
+
+  if (forecastChartInst) forecastChartInst.destroy();
+  forecastChartInst = new Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Custo histórico', data: custosHistoricos, borderColor: '#66C0F4', backgroundColor: 'rgba(102,192,244,0.08)', borderWidth: 2, pointRadius: 3, tension: 0.35, fill: true },
+        { label: 'Custo previsto', data: custosPrevistos, borderColor: '#66C0F4', borderDash: [6,4], borderWidth: 2, pointRadius: 4, tension: 0.35, fill: false, spanGaps: false },
+        { label: 'Orçamento', data: orcamentos, borderColor: '#F5CC4D', borderDash: [4,4], borderWidth: 1.5, pointRadius: 0, tension: 0.35, fill: false, spanGaps: false }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${formatarMoeda(Number(ctx.raw || 0) * 1000)}` } }
+      },
+      scales: {
+        y: { ticks: { callback: valor => `${valor}k` }, grid: { color: 'rgba(255,255,255,0.08)' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+}
 
 
 
@@ -146,8 +370,14 @@ function definirPeriodoRoi(periodo, botao) {
   if (botao) botao.classList.add('active');
   
   let inicio = 0;
-  if (periodo === 1) inicio = 11;
-  else if (periodo === 2) inicio = 6;
+  if (periodo === 1) inicio = Math.max(HISTORICO_MESES.length - 1, 0);
+  else if (periodo === 2) inicio = Math.max(HISTORICO_MESES.length - 6, 0);
+  else if (periodo === 3) inicio = Math.max(HISTORICO_MESES.length - 12, 0);
+  else if (periodo === 4) {
+    const ultimoAno = HISTORICO_MESES[HISTORICO_MESES.length - 1]?.split('/')[1];
+    const indiceYtd = HISTORICO_MESES.findIndex(mes => mes.endsWith(`/${ultimoAno}`) && mes.startsWith('Jan'));
+    inicio = indiceYtd >= 0 ? indiceYtd : 0;
+  }
   
   construirGraficoRoi(HISTORICO_MESES.slice(inicio), historicoRoi.slice(inicio));
 }
@@ -169,9 +399,9 @@ function fecharModalRoi() {
 // ══════════════════════════════════════════════
 // GRAFICO DE LINHAS (Custo x Receita)
 
-const HISTORICO_MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-const custoHistorico = [12, 14, 13, 15, 14, 16, 15, 17, 18, 16, 19, 20]; 
-const receitaHistorica = [25, 28, 26, 30, 29, 32, 34, 33, 36, 35, 38, 40]; 
+let HISTORICO_MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+let custoHistorico = [12, 14, 13, 15, 14, 16, 15, 17, 18, 16, 19, 20]; 
+let receitaHistorica = [25, 28, 26, 30, 29, 32, 34, 33, 36, 35, 38, 40]; 
 const mesAtual = 11; 
 const margemOrcamentoPct = 10; 
 
@@ -208,13 +438,14 @@ function gerarPrevisoes(quantidade) {
 const previsoesL3 = gerarPrevisoes(3);
 
 
-const todosRotulos = [...HISTORICO_MESES, ...previsoesL3.map((_, i) => rotuloMes(i))];
-const todosCustos = [...custoHistorico, ...Array(3).fill(null)];
-const todasReceitas = [...receitaHistorica, ...Array(3).fill(null)];
-const prevCustoLn = [...custoHistorico.map(() => null), custoHistorico[11], ...previsoesL3.map(f => f.custo)];
-const prevReceitaLn = [...receitaHistorica.map(() => null), receitaHistorica[11], ...previsoesL3.map(f => f.receita)];
+let todosRotulos = [...HISTORICO_MESES, ...previsoesL3.map((_, i) => rotuloMes(i))];
+let todosCustos = [...custoHistorico, ...Array(3).fill(null)];
+let todasReceitas = [...receitaHistorica, ...Array(3).fill(null)];
+let prevCustoLn = [...custoHistorico.map(() => null), custoHistorico[11], ...previsoesL3.map(f => f.custo)];
+let prevReceitaLn = [...receitaHistorica.map(() => null), receitaHistorica[11], ...previsoesL3.map(f => f.receita)];
+let orcamentoLn = todosRotulos.map((_, i) => Math.round(calcularPrevisao(mesAtual, i + 1) * (1 + margemOrcamentoPct / 100)));
 
-const historicoRoi = custoHistorico.map((c, i) => parseFloat((((receitaHistorica[i] - c) / c) * 100).toFixed(1)));
+let historicoRoi = custoHistorico.map((c, i) => parseFloat((((receitaHistorica[i] - c) / c) * 100).toFixed(1)));
 const previsaoRoi = previsoesL3.map(f => parseFloat(f.roi));
 const todoHistoricoRoi = [...historicoRoi, ...Array(3).fill(null)];
 const todaPrevisaoRoi = [...Array(11).fill(null), historicoRoi[11], ...previsaoRoi];
@@ -225,8 +456,7 @@ Chart.defaults.color = '#6B7E91';
 let graficoLinha;
 let estadoFiltroGrafico = 'todos';
 
-function construirGraficoLinha(rotulos, custo, receita, prevCusto, prevReceita) {
-  const linhaOrcamento = rotulos.map((_, i) => Math.round(calcularPrevisao(mesAtual, i + 1) * (1 + margemOrcamentoPct / 100)));
+function construirGraficoLinha(rotulos, custo, receita, prevCusto, prevReceita, orcamento) {
   if (graficoLinha) graficoLinha.destroy();
   
   graficoLinha = new Chart(document.getElementById('lineChart').getContext('2d'), {
@@ -239,7 +469,7 @@ function construirGraficoLinha(rotulos, custo, receita, prevCusto, prevReceita) 
         { label: 'Receita',          data: receita,           borderColor: '#F5CC4D', backgroundColor: 'rgba(245,204,77,0.06)', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#F5CC4D', tension: 0.35, fill: true, spanGaps: false },
         { label: 'Previsão Custo',   data: prevCusto,         borderColor: '#66C0F4', borderWidth: 2, borderDash: [6,4], pointRadius: 5, pointStyle: 'rectRot', pointBackgroundColor: '#66C0F4', tension: 0.35, fill: false, spanGaps: false },
         { label: 'Previsão Receita', data: prevReceita,       borderColor: '#FFF47C', borderWidth: 2, borderDash: [6,4], pointRadius: 5, pointStyle: 'rectRot', pointBackgroundColor: '#FFF47C', tension: 0.35, fill: false, spanGaps: false },
-        { label: 'Orçamento',        data: linhaOrcamento,    borderColor: '#F5CC4D', borderWidth: 1.5, borderDash: [3,3], pointRadius: 0, tension: 0.35, fill: false, spanGaps: true, backgroundColor: 'transparent' },
+        { label: 'Orçamento',        data: orcamento,         borderColor: '#F5CC4D', borderWidth: 1.5, borderDash: [3,3], pointRadius: 0, tension: 0.35, fill: false, spanGaps: true, backgroundColor: 'transparent' },
       ]
     },
     options: {
@@ -249,7 +479,7 @@ function construirGraficoLinha(rotulos, custo, receita, prevCusto, prevReceita) 
         legend: { display: false },
         tooltip: { 
             callbacks: { 
-                label: c => `${c.dataset.label}: R$ ${c.raw ? c.raw.toLocaleString('pt-BR', { minimumFractionDigits: emDolar ? 1 : 0, maximumFractionDigits: 1 }) : '--'}k` 
+                label: c => `${c.dataset.label}: R$ ${c.raw ? c.raw.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 1 }) : '--'}k` 
             } 
         }
       },
@@ -266,10 +496,16 @@ function definirPeriodo(periodo, botao) {
   if (botao) botao.classList.add('active');
   
   let inicio = 0;
-  if (periodo === 1) inicio = 11;
-  else if (periodo === 2) inicio = 6;
+  if (periodo === 1) inicio = Math.max(HISTORICO_MESES.length - 1, 0);
+  else if (periodo === 2) inicio = Math.max(HISTORICO_MESES.length - 6, 0);
+  else if (periodo === 3) inicio = Math.max(HISTORICO_MESES.length - 12, 0);
+  else if (periodo === 4) {
+    const ultimoAno = HISTORICO_MESES[HISTORICO_MESES.length - 1]?.split('/')[1];
+    const indiceYtd = HISTORICO_MESES.findIndex(mes => mes.endsWith(`/${ultimoAno}`) && mes.startsWith('Jan'));
+    inicio = indiceYtd >= 0 ? indiceYtd : 0;
+  }
   
-  construirGraficoLinha(todosRotulos.slice(inicio), todosCustos.slice(inicio), todasReceitas.slice(inicio), prevCustoLn.slice(inicio), prevReceitaLn.slice(inicio));
+  construirGraficoLinha(todosRotulos.slice(inicio), todosCustos.slice(inicio), todasReceitas.slice(inicio), prevCustoLn.slice(inicio), prevReceitaLn.slice(inicio), orcamentoLn.slice(inicio));
   
   if (estadoFiltroGrafico !== 'todos') alternarGraficoLinha(estadoFiltroGrafico, true);
 }
@@ -305,11 +541,15 @@ function alternarGraficoLinha(tipo, ignorarRolagem = false) {
    
 
 const dColors = ['#66C0F4','#0F1C2E','#F5CC4D','#F5A623','#E05050'];
-const dLabels = ['Energia','Hardware','Licenças','Manutenção','Rede'];
-const dValues = [38,28,16,12,6];
+let dLabels = ['Energia','Hardware','Licenças','Manutenção','Rede'];
+let dValues = [38,28,16,12,6];
+let dAbsValues = [];
+let donutChartInst;
 
 function buildDonutChart() {
-  new Chart(document.getElementById('donutChart').getContext('2d'), {
+  if (donutChartInst) donutChartInst.destroy();
+
+  donutChartInst = new Chart(document.getElementById('donutChart').getContext('2d'), {
     type: 'doughnut',
     data: {
       labels: dLabels,
@@ -326,8 +566,9 @@ function buildDonutChart() {
   });
 
   const dl = document.getElementById('donut-legend');
+  dl.innerHTML = '';
   dLabels.forEach((l, i) => {
-    const absVal = Math.round(562000 * dValues[i] / 100);
+    const absVal = dAbsValues[i] ?? Math.round(562000 * dValues[i] / 100);
     dl.innerHTML += `<div class="item-legenda-donut">
       <div class="esq-legenda-donut">
         <div class="ponto-donut" style="background:${dColors[i]}"></div>
@@ -335,20 +576,39 @@ function buildDonutChart() {
       </div>
       <div style="text-align:right;">
         <span class="pct-donut">${dValues[i]}%</span>
-        <div id="donut-abs-${i}" style="font-size:10px;color:var(--text-muted);margin-top:1px;">${absVal}</div>
+        <div id="donut-abs-${i}" style="font-size:10px;color:var(--text-muted);margin-top:1px;">${formatarMoeda(absVal)}</div>
       </div>
     </div>`;
   });
+}
+
+function aplicarDonutCustos(donutCustos) {
+  const entradas = Object.entries(donutCustos);
+  const total = entradas.reduce((soma, [, valor]) => soma + Number(valor || 0), 0);
+  if (total <= 0) return;
+
+  const nomes = {
+    energia: 'Energia',
+    rede: 'Rede',
+    hardware: 'Hardware',
+    fixo_global: 'Fixo global'
+  };
+
+  dLabels = entradas.map(([chave]) => nomes[chave] || chave.replace(/_/g, ' '));
+  dAbsValues = entradas.map(([, valor]) => Number(valor || 0));
+  dValues = dAbsValues.map(valor => Number(((valor / total) * 100).toFixed(1)));
+
+  buildDonutChart();
 }
 
 
 // ══════════════════════════════════════════════
 // GRAFICO DE BARRA (custo / ROI por datacenter)
    
-const dcLabels = ['DC01-SP','DC02-RJ','DC03-MG','DC04-RS','DC05-PE'];
-const dcCosts  = [180000, 138000, 102000, 80000, 62000];
-const dcRevs   = [302000, 223000, 172000, 115000, 48000];
-const dcRois   = dcCosts.map((c, i) => parseFloat((((dcRevs[i] - c) / c) * 100).toFixed(1)));
+let dcLabels = ['DC01-SP','DC02-RJ','DC03-MG','DC04-RS','DC05-PE'];
+let dcCosts  = [180000, 138000, 102000, 80000, 62000];
+let dcRevs   = [302000, 223000, 172000, 115000, 48000];
+let dcRois   = dcCosts.map((c, i) => parseFloat((((dcRevs[i] - c) / c) * 100).toFixed(1)));
 
 let barChartInst;
 let barView = 'custo';
@@ -362,6 +622,24 @@ function setBarView(view, btn) {
     : 'ROI por datacenter';
   document.getElementById('bar-sub').textContent = view === 'custo'
     ? 'Custo mensal — soma = ' + 562000
+    : 'Receita sobre custo por DC (negativo = prejuízo)';
+  buildBarChart();
+}
+
+function aplicarBarrasDatacenter(barrasDatacenter) {
+  if (!barrasDatacenter.length) return;
+
+  dcLabels = barrasDatacenter.map(item => primeiroValorObjeto(item, ['datacenter', 'DATACENTER', 'dc', 'DC', 'nome', 'NOME', 'name', 'label'], 'DC'));
+  dcCosts = barrasDatacenter.map(item => Number(primeiroValorObjeto(item, ['custo', 'CUSTO', 'custo_total', 'CUSTO_TOTAL', 'cost', 'valor', 'VALOR'], 0)));
+  dcRevs = barrasDatacenter.map(item => Number(primeiroValorObjeto(item, ['receita', 'RECEITA', 'receita_total', 'RECEITA_TOTAL', 'rev', 'revenue'], 0)));
+  dcRois = barrasDatacenter.map((item, i) => {
+    const roi = primeiroValorObjeto(item, ['roi', 'ROI'], null);
+    if (roi !== null) return Number(roi);
+    return dcCosts[i] > 0 ? Number((((dcRevs[i] - dcCosts[i]) / dcCosts[i]) * 100).toFixed(1)) : 0;
+  });
+
+  document.getElementById('bar-sub').textContent = barView === 'custo'
+    ? 'Custo mensal — soma = ' + formatarMoeda(dcCosts.reduce((soma, valor) => soma + valor, 0))
     : 'Receita sobre custo por DC (negativo = prejuízo)';
   buildBarChart();
 }
@@ -401,7 +679,7 @@ function buildBarChart() {
 // ══════════════════════════════════════════════
 // Tabela (Servidores / Zonas)
    
-const servidoresRows = [
+let servidoresRows = [
   { name:'DC02-CACHE-3', dc:'DC02-RJ', zona:'Zona Beta',    cost:17200,  energy:5400,  st:'critico', stl:'Custo Ocioso' },
   { name:'FK02-GH-02',   dc:'DC01-SP', zona:'Zona Alpha',   cost:28400,  energy:9200,  st:'ativo',   stl:'Ativo' },
   { name:'DC01-WEB-05',  dc:'DC01-SP', zona:'Zona Alpha',   cost:24100,  energy:7800,  st:'alerta',  stl:'Alerta' },
@@ -410,7 +688,7 @@ const servidoresRows = [
   { name:'DC04-AUTH-1',  dc:'DC04-RS', zona:'Zona Delta',   cost:15600,  energy:4800,  st:'ativo',   stl:'Ativo' },
   { name:'DC05-EDGE-2',  dc:'DC05-PE', zona:'Zona Épsilon', cost:12900,  energy:3900,  st:'alerta',  stl:'Alerta' },
 ];
-const zonasRows = [
+let zonasRows = [
   { zona:'Zona Alpha',   dc:'DC01-SP', serv:2, cost:52500, energy:17000, st:'alerta',  stl:'Alerta' },
   { zona:'Zona Beta',    dc:'DC02-RJ', serv:2, cost:39850, energy:13800, st:'critico', stl:'Ofensor' },
   { zona:'Zona Gama',    dc:'DC03-MG', serv:1, cost:19800, energy:6100,  st:'ativo',   stl:'Ativo' },
@@ -443,6 +721,24 @@ function renderZonas() {
     <td>${badge(r.st, r.stl)}</td>
   </tr>`).join('')}
   </tbody></table>`;
+}
+
+function aplicarTopServidores(topServidores) {
+  if (!topServidores.length) return;
+
+  servidoresRows = topServidores.map(item => ({
+    name: primeiroValorObjeto(item, ['servidor', 'SERVIDOR', 'nomeServidor', 'name', 'nome', 'NOME', 'host'], '-'),
+    dc: primeiroValorObjeto(item, ['datacenter', 'DATACENTER', 'dc', 'DC'], '-'),
+    zona: primeiroValorObjeto(item, ['zona', 'ZONA', 'zone'], '-'),
+    cost: Number(primeiroValorObjeto(item, ['custo', 'CUSTO', 'custo_total', 'CUSTO_TOTAL', 'cost', 'valor', 'VALOR'], 0)),
+    energy: Number(primeiroValorObjeto(item, ['energia', 'ENERGIA', 'energy', 'custo_energia'], 0)),
+    st: primeiroValorObjeto(item, ['statusClasse', 'status_classe', 'st', 'status', 'STATUS'], 'ativo'),
+    stl: primeiroValorObjeto(item, ['statusLabel', 'status_label', 'stl', 'status', 'STATUS'], 'Ativo')
+  }));
+
+  if (curView === 'servidores') {
+    document.getElementById('table-wrap').innerHTML = renderServ();
+  }
 }
 
 let curView = 'servidores';
@@ -514,6 +810,10 @@ document.getElementById('report-full-modal').addEventListener('click', function 
 
 document.getElementById('roi-modal').addEventListener('click', function (e) {
   if (e.target === this) closeRoiModal();
+});
+
+document.getElementById('modal-preditivo').addEventListener('click', function (e) {
+  if (e.target === this) fecharModalPreditivo();
 });
 
 // ══════════════════════════════════════════════

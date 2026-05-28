@@ -3,8 +3,8 @@ var database = require("../database/config");
 
 
 async function pegarDadosFinanceiro(bucket) {
-
-    const urlS3 = `https://${bucket}.s3.amazonaws.com/client/financeiro_master.json`;
+    
+    const urlS3 = `https://${bucket}.s3.amazonaws.com/client/dashboard_financeiro.json`;
     try {
         console.log("Entrou no try")
         const resposta = await fetch(urlS3);

@@ -702,6 +702,10 @@ canvas { max-width: 100%; }
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  padding: 24px;
+}
+.modal-secao-preditiva.active {
+  display: flex;
 }
 .secao-preditiva {
    background: linear-gradient(135deg, #0F1C2E 0%, #162639 100%);
@@ -709,8 +713,8 @@ canvas { max-width: 100%; }
   padding: 18px 20px;
   border: 1px solid rgba(102,192,244,0.2) !important;
   position: relative;
-  width: 82%;
-  height: 90%;
+  width: min(1180px, 100%);
+  max-height: calc(100vh - 48px);
   overflow-y: auto;
   box-sizing: border-box;
   box-shadow: 0 24px 64px rgba(0,0,0,0.5);
@@ -725,7 +729,7 @@ canvas { max-width: 100%; }
   gap: 10px;
   margin-bottom: 12px;
   height: auto;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .icone-preditivo {
   width: 30px; height: 30px;
@@ -902,6 +906,11 @@ input[type=range]::-webkit-slider-thumb {
   display: grid;
   grid-template-columns: 1fr 240px;
   gap: 14px;
+  align-items: start;
+}
+
+.inferior-preditivo > div:first-child {
+  min-width: 0;
 }
 
 .painel-risco { display: flex; flex-direction: column; gap: 7px; }
@@ -1119,6 +1128,8 @@ input[type=range]::-webkit-slider-thumb {
   .SubcorpoPagina { margin-left: 80px; }
   #container_kpis .div_kpi { flex: 1 1 calc(50% - 16px); max-width: calc(50% - 16px); }
   .envoltorio-popover-orcamento    { flex: 1 1 calc(50% - 16px); max-width: calc(50% - 16px); }
+  .cabecalho-preditivo { flex-wrap: wrap; }
+  .badge-modelo-preditivo { margin-left: 0; }
 }
 
 @media (max-width: 768px) {
