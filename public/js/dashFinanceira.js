@@ -7,9 +7,7 @@ function limparSessao() {
   sessionStorage.clear();
 }
 
-window.onload = () => {
-  buscarDados();
-};
+
 
 function buscarDados() {
   const idUsuario = sessionStorage.ID_USUARIO;
@@ -108,7 +106,18 @@ function primeiroValorObjeto(objeto, chaves, padrao = undefined) {
   if (!objeto) return padrao;
 
   for (const chave of chaves) {
-    if (objeto[chave] !== undefined && objeto[chave] !== null) return objeto[chave];
+    if (objeto[chave] !== undefined && objeto[chave] !== null) 
+      return objeto[chave];
+  }
+
+  const mapaChaves = Object.keys(objeto).reduce((acc, chave) => {
+    acc[chave.toLowerCase()] = objeto[chave];
+    return acc;
+  }, {});
+
+  for (const chave of chaves) {
+    const valor = mapaChaves[String(chave).toLowerCase()];
+    if (valor !== undefined && valor !== null) return valor;
   }
 
   return padrao;
@@ -199,9 +208,8 @@ function aplicarDadosGraficos(graficos) {
     aplicarBarrasDatacenter(graficos.BARRAS_DATACENTER);
   }
 
-  if (Array.isArray(graficos.TOP_SERVIDORES)) {
-    aplicarTopServidores(graficos.TOP_SERVIDORES);
-  }
+  aplicarDadosTabela(graficos);
+
 }
 
 function abrirModalPreditivo() {
@@ -696,63 +704,115 @@ let zonasRows = [
   { zona:'Zona Épsilon', dc:'DC05-PE', serv:1, cost:12900, energy:3900,  st:'alerta',  stl:'Alerta' },
 ];
 
-function badge(s, l) { return `<span class="badge-status ${s}"><span class="ponto-status"></span>${l}</span>`; }
+function badge(s, l) { 
+  return `<span class="badge-status ${normalizarStatusClasse(s)}"><span class="ponto-status"></span>${l || 'Ativo'}</span>`; 
+}
+
+function normalizarStatusClasse(status) {
+  const texto = String(status || 'ativo').toLowerCase();
+  if (texto.includes('critic') || texto.includes('ofensor') || texto.includes('alto')) return 'critico';
+  if (texto.includes('alert') || texto.includes('medio') || texto.includes('médio')) return 'alerta';
+  return 'ativo';
+}
 
 function renderServ() {
   return `<table class="tabela-dados"><thead><tr><th>Servidor</th><th>Datacenter</th><th>Zona</th><th>Custo/Mês</th><th>Energia</th><th>Status</th></tr></thead><tbody>
   ${servidoresRows.map(r => `<tr>
     <td><span class="link-servidor">${r.name}</span></td>
     <td>${r.dc}</td><td>${r.zona}</td>
-    <td><span class="valor-custo">${r.cost}</span></td>
-    <td>${r.energy}</td>
+    <td><span class="valor-custo">${formatarMoeda(r.cost)}</span></td>
+    <td>${formatarMoeda(r.energy)}</td>
     <td>${badge(r.st, r.stl)}</td>
   </tr>`).join('')}
   </tbody></table>`;
 }
 
-function renderZonas() {
+function renderZonas(){
   return `<table class="tabela-dados"><thead><tr><th>Zona</th><th>Datacenter</th><th>Servidores</th><th>Custo Total</th><th>Energia</th><th>Status</th></tr></thead><tbody>
   ${zonasRows.map(r => `<tr>
     <td><span class="link-servidor">${r.zona}</span></td>
     <td>${r.dc}</td>
     <td style="font-weight:600;">${r.serv} servidor${r.serv > 1 ? 'es' : ''}</td>
-    <td><span class="valor-custo">${r.cost}</span></td>
-    <td>${r.energy}</td>
+    <td><span class="valor-custo">${formatarMoeda(r.cost)}</span></td>
+    <td>${formatarMoeda(r.energy)}</td>
     <td>${badge(r.st, r.stl)}</td>
   </tr>`).join('')}
   </tbody></table>`;
 }
 
+function aplicarDadosTabela(graficos) {
+  if (!graficos) return;
+
+  if (Array.isArray(graficos.TOP_SERVIDORES)) {
+    aplicarTopServidores(graficos.TOP_SERVIDORES);
+  }
+
+  if (Array.isArray(graficos.TOP_ZONAS)) {
+    aplicarTopZonas(graficos.TOP_ZONAS);
+  }
+
+  renderTabelaAtual(false);
+}
+
 function aplicarTopServidores(topServidores) {
-  if (!topServidores.length) return;
+  if (!topServidores.length) 
+    return;
 
   servidoresRows = topServidores.map(item => ({
-    name: primeiroValorObjeto(item, ['servidor', 'SERVIDOR', 'nomeServidor', 'name', 'nome', 'NOME', 'host'], '-'),
-    dc: primeiroValorObjeto(item, ['datacenter', 'DATACENTER', 'dc', 'DC'], '-'),
-    zona: primeiroValorObjeto(item, ['zona', 'ZONA', 'zone'], '-'),
-    cost: Number(primeiroValorObjeto(item, ['custo', 'CUSTO', 'custo_total', 'CUSTO_TOTAL', 'cost', 'valor', 'VALOR'], 0)),
-    energy: Number(primeiroValorObjeto(item, ['energia', 'ENERGIA', 'energy', 'custo_energia'], 0)),
-    st: primeiroValorObjeto(item, ['statusClasse', 'status_classe', 'st', 'status', 'STATUS'], 'ativo'),
-    stl: primeiroValorObjeto(item, ['statusLabel', 'status_label', 'stl', 'status', 'STATUS'], 'Ativo')
+    name: primeiroValorObjeto(item, ['SERVIDOR', 'servidor', 'nome_servidor', 'nomeServidor', 'name', 'nome', 'host'], '-'),
+    dc: primeiroValorObjeto(item, ['DATACENTER', 'datacenter', 'DC', 'dc'], '-'),
+    zona: primeiroValorObjeto(item, ['ZONA', 'zona', 'zone'], '-'),
+    cost: Number(primeiroValorObjeto(item, ['CUSTO', 'custo', 'custo_total', 'CUSTO_TOTAL', 'cost', 'valor'], 0)),
+    energy: Number(primeiroValorObjeto(item, ['CUSTO_ENERGIA', 'custo_energia', 'ENERGIA', 'energia', 'energy'], 0)),
+    st: primeiroValorObjeto(item, ['STATUS', 'status', 'statusClasse', 'status_classe'], 'ativo'),
+    stl: primeiroValorObjeto(item, ['STATUS_LABEL', 'status_label', 'statusLabel', 'STATUS', 'status'], 'Ativo')
   }));
+}
 
-  if (curView === 'servidores') {
-    document.getElementById('table-wrap').innerHTML = renderServ();
-  }
+function aplicarTopZonas(topZonas) {
+  if (!topZonas.length) 
+    return;
+
+  zonasRows = topZonas.map(item => ({
+    zona: primeiroValorObjeto(item, ['ZONA', 'zona', 'zone', 'nome', 'name'], '-'),
+    dc: primeiroValorObjeto(item, ['DATACENTER', 'datacenter', 'DC', 'dc'], '-'),
+    serv: Number(primeiroValorObjeto(item, ['SERVIDORES', 'servidores', 'qtd_servidores', 'quantidade_servidores', 'total_servidores'], 0)),
+    cost: Number(primeiroValorObjeto(item, ['CUSTO_TOTAL', 'custo_total', 'CUSTO', 'custo', 'cost', 'valor'], 0)),
+    energy: Number(primeiroValorObjeto(item, ['ENERGIA', 'energia', 'CUSTO_ENERGIA', 'custo_energia', 'energy'], 0)),
+    st: primeiroValorObjeto(item, ['STATUS', 'status', 'statusClasse', 'status_classe'], 'ativo'),
+    stl: primeiroValorObjeto(item, ['STATUS_LABEL', 'status_label', 'statusLabel', 'STATUS', 'status'], 'Ativo')
+  }));
 }
 
 let curView = 'servidores';
 
+function renderTabelaAtual(animar = true) {
+  const w = document.getElementById('table-wrap');
+  if (!w) return;
+
+  const html = curView === 'servidores' ? renderServ() : renderZonas();
+  if (!animar) {
+    w.innerHTML = html;
+    return;
+  }
+
+  w.classList.add('fading');
+  setTimeout(() => {
+    w.innerHTML = html;
+    w.classList.remove('fading');
+  }, 200);
+}
+
 function setTableView(view, btn) {
-  if (view === curView && btn) return;
   curView = view;
-  document.querySelectorAll('.btn-alternador').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+  const grupoTabela = btn ? btn.closest('.alternador-vista') : null;
+  const botoes = grupoTabela ? grupoTabela.querySelectorAll('.btn-alternador') : document.querySelectorAll('.btn-alternador');
+  botoes.forEach(b => b.classList.remove('active'));
+  if (btn) 
+    btn.classList.add('active');
   document.getElementById('table-title').textContent = view === 'servidores' ? 'Top servidores por custo' : 'Top zonas por custo';
   document.getElementById('table-sub').textContent   = view === 'servidores' ? 'Maiores consumidores do orçamento mensal' : 'Custo consolidado por zona de disponibilidade';
-  const w = document.getElementById('table-wrap');
-  w.classList.add('fading');
-  setTimeout(() => { w.innerHTML = view === 'servidores' ? renderServ() : renderZonas(); w.classList.remove('fading'); }, 200);
+  renderTabelaAtual(Boolean(btn));
 }
 
 
@@ -821,8 +881,9 @@ document.getElementById('modal-preditivo').addEventListener('click', function (e
  
 document.addEventListener('DOMContentLoaded', () => {
 
-
- 
+  //Plotar grafico
+  buscarDados();
+  
   // Gráfico de linha (período padrão: 12 meses)
   definirPeriodo(3, document.querySelector('.btn-periodo.active:not(.roi-period-btn)'));
 
@@ -833,7 +894,7 @@ document.addEventListener('DOMContentLoaded', () => {
   buildBarChart();
 
   // Tabela
-  setTableView('servidores', null);
+  // setTableView('servidores', true);
 
      // Relatórios
   renderReportsList();

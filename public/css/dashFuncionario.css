@@ -430,19 +430,7 @@ nav {
 }
 
 /* ######## SIDEBAR ######## */
-.sidebar {
-    width: 18%;
-    height: calc(100vh - 10vh);
-    max-width: 100%;
-    background-color: var(--azul-mais-escuro);
-    border-top: solid var(--azul-escuro) 0.5px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    overflow: hidden;
-    position: sticky;
-    top: 10vh;
-}
+
 
 .sidebar-buttons {
     width: 100%;
