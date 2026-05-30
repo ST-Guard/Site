@@ -10,7 +10,6 @@
   "author": "Feito pelos desenvolvedores @ São Paulo Tech School / Bandtec Digital School",
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^12.10.0",
     "bootstrap": "^5.3.8",
     "cheerio": "^1.2.0",
     "cors": "^2.8.5",

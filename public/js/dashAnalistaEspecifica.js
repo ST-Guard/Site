@@ -433,6 +433,13 @@ document.addEventListener("DOMContentLoaded", () => {
         chartVolume.update();
     }
 
+    async function buscarVolumeComprados() {
+        const resposta = await fetch("/api/volumeCompradosSteam");
+        const dados = await resposta.json();
+        console.log(dados)
+    }
+
+    buscarVolumeComprados()
     buscarVolumeLancamentos();
     atualizarGraficoDownload()
     setInterval(atualizarGraficoDownload, 300000);
