@@ -44,8 +44,8 @@ h1{
 
 #container_kpis .div_kpi {
   flex: 1 1 220px;
-  min-width: 220px;
-  max-width: 246px;
+  min-width: 200px;
+  max-width: 200px;
   min-height: 13rem;
   border-radius: 12px;
   padding: 16px;
@@ -168,7 +168,7 @@ h1{
   margin-right: auto;
   width: 50%;
   padding-top: 2%;
-  padding-left: 5%;
+  padding-left: 1.5%;
 }
 
 .div_titulo{
