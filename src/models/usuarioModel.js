@@ -27,14 +27,14 @@ function cadastrar(nome, email, cpf, telefone, senha, fkPapel, fkZona) {
             var idUsuario = resultado.insertId;
 
             var instrucaoZona = `
-            UPDATE usuario
-            SET fkZona = ?
-            WHERE idUsuario = ?;
+
+            INSERT INTO analista_zona (usuario_id, zona_id, ativo) VALUES
+				(?, ?, 1);
             `;
 
             console.log("Executando a instrução SQL da zona: \n" + instrucaoZona);
 
-            return database.executar(instrucaoZona, [fkZona, idUsuario]);
+            return database.executar(instrucaoZona, [idUsuario, fkZona]);
         });
 }
 
@@ -42,7 +42,7 @@ function cadastrar(nome, email, cpf, telefone, senha, fkPapel, fkZona) {
 function listar() {
     
     var instrucao = `
-        SELECT 
+                SELECT 
             u.idUsuario,
             u.nome,
             u.email,
@@ -50,8 +50,10 @@ function listar() {
             u.status,
             z.nome AS zona
         FROM usuario u
-        LEFT JOIN zona z 
-            ON z.idZona = u.fkZona
+        LEFT JOIN analista_zona az
+        ON u.idUsuario = az.usuario_id
+        JOIN zona z
+            ON z.idZona = az.zona_id
         WHERE u.fkPapel = 2;
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);

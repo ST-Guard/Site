@@ -29,7 +29,7 @@ function buscarDados() {
         console.log(dados)
         username.innerHTML = dados.nomePessoa
         cargoname.innerHTML = dados.cargo
-        // zonaTitulo.innerHTML = dados.nomeZona
+        // dataCenterTitulo.innerHTML = dados.nomeDataCenter
         dataCenterTitulo.innerHTML = dados.nomeDataCenter
         if (dados.imagem) {
             imagemPerfilCima.src = `/assets/imgsBd/${dados.imagem}`
@@ -139,12 +139,14 @@ function carregarDatabases() {
     fetch(`/servidor/carregarDatabases/${fkEmpresa}`)
         .then(resposta => resposta.json())
         .then(lista => {
+
+            console.log("olha a lista aqui o aqui: ", lista)
             const selectDatabase = document.getElementById("selectDataBase");
             selectDatabase.innerHTML = `<option disabled selected>Selecione um datacenter</option>`;
 
             for (let i = 0; i < lista.length; i++) {
                 selectDatabase.innerHTML += `
-                    <option value="${lista[i].idDataCenter}">
+                    <option value="${lista[i].idDatacenter}">
                         ${lista[i].nome}
                     </option>
                 `;
@@ -215,7 +217,7 @@ function carregarDatabases() {
 
             for (let i = 0; i < lista.length; i++) {
                 selectDatabase.innerHTML += `
-                    <option value="${lista[i].idDataCenter}">
+                    <option value="${lista[i].idDatacenter}">
                         ${lista[i].nome}
                     </option>
                 `;
@@ -549,7 +551,7 @@ function mostrarServidores() {
                 document.querySelector('#container_kpis .kpi3').style.borderColor = '#23B26D';
                 document.querySelector('#container_kpis .kpi3 h1').style.color = '#23B26D';
                 document.querySelector('#container_kpis .kpi3').style.boxShadow = `1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi3.src = "../assets/dashboard-icons/icon_Check.svg"
+                imgKpi3.src = "../assets/dashboard-icons/icon_check.svg"
             }
 
             if (P99Ram >= 75) {
@@ -561,12 +563,12 @@ function mostrarServidores() {
                 document.querySelector('#container_kpis .kpi2').style.borderColor = '#F5CC4D';
                 document.querySelector('#container_kpis .kpi2 h1').style.color = '#F5CC4D';
                 document.querySelector('#container_kpis .kpi2').style.boxShadow = `1.5px 1px 2px 1px #F5CC4D, 0 4px 12px rgba(0,0,0,0.1)`;   
-                imgKpi2.src = "../assets/dashboard-icons/icon_Atencao.svg"        
+                imgKpi2.src = "../assets/dashboard-icons/icon_atencao.svg"        
             } else {
                 document.querySelector('#container_kpis .kpi2').style.borderColor = '#23B26D';
                 document.querySelector('#container_kpis .kpi2 h1').style.color = '#23B26D';
                 document.querySelector('#container_kpis .kpi2').style.boxShadow = `1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi2.src = "../assets/dashboard-icons/icon_Check.svg"
+                imgKpi2.src = "../assets/dashboard-icons/icon_check.svg"
             }
 
             if (P99Disco >= 75) {
@@ -578,12 +580,12 @@ function mostrarServidores() {
                 document.querySelector('#container_kpis .kpi4').style.borderColor = '#F5CC4D';
                 document.querySelector('#container_kpis .kpi4 h1').style.color = '#F5CC4D';
                 document.querySelector('#container_kpis .kpi4').style.boxShadow = `1.5px 1px 2px 1px #F5CC4D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi4.src = "../assets/dashboard-icons/icon_Atencao.svg"        
+                imgKpi4.src = "../assets/dashboard-icons/icon_atencao.svg"        
             } else {
                 document.querySelector('#container_kpis .kpi4').style.borderColor = '#23B26D';
                 document.querySelector('#container_kpis .kpi4 h1').style.color = '#23B26D';
                 document.querySelector('#container_kpis .kpi4').style.boxShadow = `1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi4.src = "../assets/dashboard-icons/icon_Check.svg"
+                imgKpi4.src = "../assets/dashboard-icons/icon_check.svg"
             }
 
             if (P99Rede >= 35) {
@@ -600,7 +602,7 @@ function mostrarServidores() {
                 document.querySelector('#container_kpis .kpi5').style.borderColor = '#23B26D';
                 document.querySelector('#container_kpis .kpi5 h1').style.color = '#23B26D';
                 document.querySelector('#container_kpis .kpi5').style.boxShadow = `1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi5.src = "../assets/dashboard-icons/icon_Check.svg"
+                imgKpi5.src = "../assets/dashboard-icons/icon_check.svg"
             }
 
             // for (var i = 0; i < servidores.length; i++) {
@@ -819,8 +821,8 @@ function limparSessao() {
 
 //                 boxServidores.innerHTML = mensagem;
 
-            for (var i = 0; i < servidores.length; i++) {
-                carregarComponentes(servidores[i].idServidor);
-            }
+//                 // for (var i = 0; i < servidores.length; i++) {
+//                 //     carregarComponentes(servidores[i].idServidor);
+//                 // }
 //             });
 //     }

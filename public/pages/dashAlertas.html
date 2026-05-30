@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Center Map</title>
+    <title>Dashboard Aletas</title>
     <link rel="stylesheet" href="../css/dashAlertas.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/dashMaps.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 <body>
@@ -54,8 +53,13 @@
             <div class="sidebar-buttons">
                 <div class="sidebar-button" onclick="fnNavegar('../pages/dashGestor.html')">
                     <img src="../assets/dashboard-icons/icon_dashboard_azul.svg" alt="">
-                    <p><a href="../pages/dashGestor.html">Dashboard</a></p>
+                    <p><a href="../pages/dashOperacionalGestor.html">Dashboard</a></p>
                     <!-- <p onclick="mudarServidor()">Servidores</p> -->
+                </div>
+                <div class="sidebar-button" onclick="fnNavegar('../pages/dashFinanceiro.html')">
+                  <img src="../assets/dashFinanceiro/coin-icon-white.svg" alt="">
+                  <p><a href="../pages/dashFinanceiro.html">Financeiro</a></p>
+                  <!-- <p onclick="mudarDash()">Dashboard</p> -->
                 </div>
                 <div class="sidebar-button" onclick="fnNavegar('../pages/dashServidorGestor.html')">
                     <img src="../assets/dashboard-icons/icon_servidores_branco.svg" alt="">
@@ -449,6 +453,20 @@
                         </div>
                     </div>
                 </div>
+                <div class="div_kpi kpi5" id="serverAlerta">
+                    <div class="info_kpi">
+                        <div class="containerTitulo">
+                            <h3>Servidor com mais alertas ativos</h3>
+                        </div>
+                        <div class="div_situacao">
+                            <h1 id="qtdMedios">SERVIDOR-DH-01</h1>
+                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+                        </div>
+                        <div class="status">
+                            <h4>12 Alertas</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="parte1" id="parte1" style="display: none;">
@@ -457,26 +475,6 @@
                         <div class="grafico_chart">
                             <canvas id="Alerta"></canvas>
                         </div>
-
-                        <div class="grafico_kpis">
-                            <div class="grafico_kp1">
-                                <h1>Total Alertas</h1>
-                                <p>80</p>
-                            </div>
-                            <div class="grafico_kp2">
-                                <h1>Semana mais crítica</h1>
-                                <p>Semana 1</p>
-                            </div>
-                            <div class="grafico_kp3">
-                                <h1>Severidade dominante</h1>
-                                <p>Baixa</p>
-                            </div>
-                            <div class="grafico_kp4">
-                                <h1>Alertas dominante</h1>
-                                <p>42</p>
-                            </div>
-                        </div>
-
                         <div class="boxTendencia">
                             <div class="tendencia">
                                 <img src="../assets/icone_certo.png" alt="">
@@ -495,6 +493,182 @@
                 </div>
             </div>
 
+            <section class="grafico_mttr" id="graficoMttr" style="display: none;">
+                <div class="grafico">
+                    <div class="grafico_chart">
+                        <canvas id="mttr"></canvas>
+                    </div>
+
+                    <div class="grafico_kpis">
+                        <div class="grafico_kp1">
+                            <h1>Maior tempo para baixos</h1>
+                            <p>SERVIDOR-DH-08</p>
+                        </div>
+                        <div class="grafico_kp2">
+                            <h1>Maior tempo para médios</h1>
+                            <p>SERVIDOR-DH-05</p>
+                        </div>
+                        <div class="grafico_kp3">
+                            <h1>Maior tempo para críticos</h1>
+                            <p>SERVIDOR-DH-06</p>
+                        </div>
+                        <div class="grafico_kp4">
+                            <h1>Melhor MTTR</h1>
+                            <p>SERVIDOR-DH-01</p>
+                        </div>
+                    </div>
+
+                    <div class="boxTendencia">
+                        <div class="tendencia">
+                            <img src="../assets/icone_certo.png" alt="">
+                            <div class="textos">
+                                <h1>Tendência Positiva</h1>
+                                <p>Alertas Criticos com queda significativa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="slaArea" id="slaArea">
+                <div class="titulo">
+                    Verificação de responsáveis por servidor e seus MTTRs.
+                </div>
+                <div class="infos">
+                    <div class="coluna">
+                        <div class="subtitulo">Servidor:</div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/server.png"><span>Servidor-dh-01</span>
+                        </div>
+                    </div>
+
+                    <div class="coluna">
+                        <div class="subtitulo">Responsável:</div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                        <div class="item"><img src="../assets/dashAlerta/user.png"><span>Erick Santos</span>
+                        </div>
+                    </div>
+
+                    <div class="coluna">
+                        <div class="subtitulo">MTTR por alerta: (HRs)</div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                        <div class="item mttr-group">
+                            <img src="../assets/dashAlerta/baixo.png">
+                            <div class="baixo">20</div> |
+                            <img src="../assets/dashAlerta/medio.png">
+                            <div class="medio">5</div> |
+                            <img src="../assets/dashAlerta/critico.png">
+                            <div class="critico">1</div>
+                        </div>
+                    </div>
+
+                    <div class="coluna">
+                        <div class="subtitulo">SLA:</div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                        <div class="item"><img src="../assets/icon/icon.png" alt=""></div>
+                    </div>
+                </div>
+            </section>
             <section class="lista_alertas" id="lista_alertas" style="display: none;">
                 <div class="div_lista_alertas">
                     <div class="div_alertas-conteudo">
@@ -676,7 +850,6 @@
 
                 </div>
             </section>
-
         </div>
     </div>
 
@@ -693,5 +866,6 @@
 <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
 <script src="../js/scriptMaps.js"></script>
 <script src="../js/modaisInfos.js"></script>
+<script src="../js/dashAlertas.js"></script>
 
 </html>
