@@ -152,7 +152,7 @@ h1{
 }
 
 .SubcorpoPagina {
-  width: 82%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -235,10 +235,11 @@ h1{
 }
 
 .grafico-Downloads,
-.grafico-VolumeCriticidade {
+.grafico-VolumeCriticidade,
+.grafico-Reviews {
   flex: 1 1 480px;
-  width: 40%;
-  max-width: 40%;
+  width: 33%;
+  max-width: 33%;
   margin: 1rem 0;
   border: solid #e5e7eb 2px;
   box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.1);
@@ -252,7 +253,8 @@ h1{
 #expandirRamxCpu,
 #expandirDiscoxLatencia,
 #expandirDownloads,
-#expandirVolumeCriticidade {
+#expandirVolumeCriticidade,
+#expandirReviews {
   position: relative;
   width: 100%;
   height: 350px;
@@ -262,7 +264,8 @@ h1{
 #chartRamxCpu,
 #chartDiskxLat,
 #chartDownload,
-#chartVolumeCriticidade {
+#chartVolumeCriticidade,
+#chartReviews {
   width: 100%;
   height: 100%;
   display: block;

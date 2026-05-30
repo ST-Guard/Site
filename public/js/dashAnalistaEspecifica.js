@@ -38,6 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ctxDiskLat = document.getElementById('chartDiskxLat');
     const ctxDownload = document.getElementById('chartDownload');
     const ctxVolume = document.getElementById('chartVolumeCriticidade');
+    const ctxReviews = document.getElementById('chartReviews');
 
     const chartDiscoXLatencia = new Chart(ctxDiskLat, {
         type: 'line',
@@ -266,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 {
                     label: 'Limite Relevante',
-                    data: [41, 41, 41, 41],
+                    data: [10, 10, 10, 10],
                     type: 'line',
                     borderColor: 'rgba(255, 193, 7, 1)',
                     borderWidth: 2,
@@ -277,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 {
                     label: 'Limite Crítico',
-                    data: [71, 71, 71, 71],
+                    data: [15, 15, 15, 15],
                     type: 'line',
                     borderColor: 'rgba(220, 53, 69, 1)',
                     borderWidth: 2,
@@ -293,7 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Volume previsto de lançamentos de jogos',
+                    text: 'Volume da quantidade de lançamentos de jogos',
                     align: 'start',
                     font: {
                         size: 18
@@ -337,15 +338,65 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    const labelsReview = [];
+    const valoresReview = [];
+
+    const chartReview = new Chart(ctxReviews, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Quantidade de reviews',
+                data: [],
+                borderColor: '#244770',
+                backgroundColor: '#244770',
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Volume semanal de reviews dos jogos em alta',
+                    align: 'start',
+                    font: {
+                        size: 18
+                    },
+                    padding: {
+                        top: 20
+                    }
+                },
+                subtitle: {
+                    display: true,
+                    text: 'Reviews dos últimos 7 dias por jogo',
+                    align: 'start',
+                    font: {
+                        size: 14
+                    },
+                    padding: {
+                        bottom: 30
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
     async function atualizarGraficoDownload() {
 
-        const respostaJogadores = await fetch("/api/steamGlobal");
+        const respostaJogadores = await fetch("/steam/steamGlobal");
         const jogadoresJson = await respostaJogadores.json();
         const metricaUsuariosDownload = jogadoresJson.onlineAgora - (Math.random() * (10000000 - 5000000) + 5000000)
         const usuariosBrasil = metricaUsuariosDownload * 0.03
         const usuariosDatacenter = usuariosBrasil / 3
 
-        const respostaDownload = await fetch("/api/steamDownloads");
+        const respostaDownload = await fetch("/steam/steamDownloads");
         const dados = await respostaDownload.json();
         const agora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit'});
         const atual = Number(dados.BRA.totalbytes);
@@ -382,7 +433,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function buscarVolumeLancamentos() {
 
-        const resposta = await fetch("/api/volumeLancamentosSteam");
+        const resposta = await fetch("/steam/volumeLancamentosSteam");
         const dados = await resposta.json();
         console.log(dados)
         const labels = [];
@@ -408,10 +459,10 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < valores.length; i++) {
             const valor = valores[i];
 
-            if (valor >= 70) {
+            if (valor >= 15) {
                 coresFundo.push('rgba(220, 53, 69, 0.7)');
                 coresBorda.push('rgba(220, 53, 69, 1)');
-            } else if (valor >= 40) {
+            } else if (valor >= 10) {
                 coresFundo.push('rgba(255, 193, 7, 0.7)');
                 coresBorda.push('rgba(255, 193, 7, 1)');
             } else {
@@ -426,19 +477,38 @@ document.addEventListener("DOMContentLoaded", () => {
         chartVolume.data.datasets[2].data = [];
 
         for (let i = 0; i < labels.length; i++) {
-            chartVolume.data.datasets[1].data.push(41);
-            chartVolume.data.datasets[2].data.push(71);
+            chartVolume.data.datasets[1].data.push(10);
+            chartVolume.data.datasets[2].data.push(15);
         }
 
         chartVolume.update();
     }
 
     async function buscarVolumeComprados() {
-        const resposta = await fetch("/api/volumeCompradosSteam");
+        const resposta = await fetch("/steam/volumeCompradosSteam");
         const dados = await resposta.json();
         console.log(dados)
     }
 
+    async function carregarGraficoReviews() {
+        const respostaTop = await fetch("/steam/topSellers");
+        const topSellers = await respostaTop.json();
+
+        for (let i = 0; i < topSellers.length; i++) {
+            const jogo = topSellers[i];
+            const respostaReviews = await fetch( `/steam/reviews/nome/${encodeURIComponent(jogo.nome)}`);
+            const dados = await respostaReviews.json();
+
+            labelsReview.push(jogo.nome);
+            valoresReview.push(dados.reviewsUltimos7Dias);
+        }
+
+        chartReview.data.labels = labelsReview;
+        chartReview.data.datasets[0].data = valoresReview;
+        chartReview.update();
+    }
+
+    carregarGraficoReviews();
     buscarVolumeComprados()
     buscarVolumeLancamentos();
     atualizarGraficoDownload()
