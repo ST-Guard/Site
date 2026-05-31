@@ -168,7 +168,7 @@ header {
   flex-wrap: wrap;
   justify-content: center;
   align-items: flex-start;
-  gap: 12px;
+  gap: 16px;
   padding: 0 var(--finance-content-padding);
   color: var(--corDaFonte);
   box-sizing: border-box;
@@ -176,12 +176,12 @@ header {
 
 
 #container_kpis .div_kpi {
-  flex: 1 1 180px;
-  min-width: 180px;
+  flex: 1 1 230px;
+  min-width: 230px;
   max-width: 360px;
   position: relative;
   border-radius: 8px;
-  padding: 15px 14px;
+  padding: 20px 18px;
   min-height: 0;
   display: flex;
   justify-content: space-between;
@@ -261,27 +261,27 @@ header {
 .info_kpi {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
-  gap: 3px;
-  overflow: hidden;
+  gap: 8px;
+  
 }
 
 .containerTitulo { display: flex; }
 #container_kpis .div_kpi h3 {
   color: var(--tituloKPI);
   font-weight: 700;
-  font-size: 0.7rem;
-  line-height: 1.2;
+  font-size: 0.78rem;
+  line-height: 1.25;
   text-transform: uppercase;
   margin: 0;
 }
 
 #container_kpis .div_kpi h1 {
-  font-size: clamp(1.05rem, 1.2vw, 1.4rem);
-  font-weight: 600;
+  font-size: clamp(1.55rem, 1.8vw, 2.1rem);
+  font-weight: 700;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.1;
   overflow-wrap: break-word;
 }
 
@@ -306,26 +306,26 @@ header {
 
 #container_kpis img {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
 }
 
 #container_kpis .div_situacao svg {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
 }
 
 .div_situacao {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 .kpis-baixo-center {
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 /* Cores por variante de KPI */
@@ -367,9 +367,9 @@ header {
 .badge-kpi {
   display: inline-flex;
   align-items: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 3px 7px;
+  padding: 5px 9px;
   border-radius: 20px;
   background: rgba(150,150,150,0.1);
   color: var(--corFonteTexto);
@@ -392,15 +392,15 @@ header {
  
 .envoltorio-popover-orcamento {
   position: relative;
-  flex: 1 1 180px;
-  min-width: 180px;
-  max-width: 280px;
+  flex: 1 1 230px;
+  min-width: 230px;
+  max-width: 360px;
 }
 
 /* Top 4 KPIs: altura fixa e compacta */
 #container_kpis > .div_kpi,
 #container_kpis > .envoltorio-popover-orcamento {
-  height: 100px;
+  height: 148px;
 }
 
 .envoltorio-popover-orcamento > .div_kpi {
