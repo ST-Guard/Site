@@ -1,5 +1,4 @@
-﻿
-function fnNavegar(caminho) {
+﻿function fnNavegar(caminho) {
   window.location.href = caminho;
 }
 
@@ -81,7 +80,7 @@ function formatarDeltaPercentual(valor) {
   return `${seta} ${sinal}${numero.toLocaleString('pt-BR', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  })}pp vs mês anterior`;
+  })}% vs mês anterior`;
 }
 
 function atualizarTexto(id, valor) {
@@ -101,6 +100,31 @@ function atualizarBadge(id, valor, positivoVerde = true) {
 let projecoesPreditivas = [];
 let mesesForecast = 3;
 let forecastChartInst;
+let budgetRegressionValue = 0;
+let budgetActualValue = 0;
+let budgetMarginPct = 5;
+let budgetApprovedValue = 0;
+const STORAGE_BUDGET_MARGIN = 'financeira_margem_orcamento_pct';
+const STORAGE_BUDGET_APPROVED = 'financeira_orcamento_aprovado';
+function limitarNumero(valor, minimo, maximo) {
+  const numero = Number(valor);
+  if (Number.isNaN(numero)) return minimo;
+  return Math.min(Math.max(numero, minimo), maximo);
+}
+function limitarHorizontePredicao(valor) {
+  return limitarNumero(valor || 3, 1, 6);
+}
+function lerMargemOrcamentoSalva() {
+  const margemSalva = sessionStorage.getItem(STORAGE_BUDGET_MARGIN);
+  return margemSalva === null ? 5 : limitarNumero(margemSalva, 0, 20);
+}
+function calcularOrcamentoAprovado(base, margemPct) {
+  return Number(base || 0) * (1 + Number(margemPct || 0) / 100);
+}
+function salvarOrcamentoSessao() {
+  sessionStorage.setItem(STORAGE_BUDGET_MARGIN, String(budgetMarginPct));
+  sessionStorage.setItem(STORAGE_BUDGET_APPROVED, String(budgetApprovedValue));
+}
 
 function primeiroValorObjeto(objeto, chaves, padrao = undefined) {
   if (!objeto) return padrao;
@@ -132,6 +156,7 @@ function formatarMesGrafico(mesAno) {
   return `${nomesMeses[indiceMes]}/${ano.slice(2)}`;
 }
 
+
 function aplicarHistoricoMensal(historicoMensal, projecoes = []) {
   if (!Array.isArray(historicoMensal) || historicoMensal.length === 0) return;
 
@@ -149,7 +174,6 @@ function aplicarHistoricoMensal(historicoMensal, projecoes = []) {
   todasReceitas = [...receitaHistorica, ...tresMesesProjecao.map(() => null)];
   prevCustoLn = [...HISTORICO_MESES.slice(0, -1).map(() => null), ultimoCustoHistorico, ...tresMesesProjecao.map(item => Number(item.custo_previsto || 0) / 1000)];
   prevReceitaLn = [...HISTORICO_MESES.slice(0, -1).map(() => null), ultimaReceitaHistorica, ...tresMesesProjecao.map(item => Number(item.receita_prevista || 0) / 1000)];
-  orcamentoLn = [...HISTORICO_MESES.map(() => null), ...tresMesesProjecao.map(item => Number(item.orcamento || 0) / 1000)];
 
   const botaoAtivo = document.querySelector('.btn-periodo.active:not(.roi-period-btn)');
   const periodoAtivo = botaoAtivo
@@ -168,7 +192,7 @@ function plotarDados(dadosS3){
   const previsto = kpis.CUSTO_PREVISTO || {};
 
 
-  // KPIS
+ // KPIS
   atualizarTexto("ROI_ESTIMADO", formatarPercentual(roi.ROI_MES_CORRENTE));
   atualizarTexto("RECEITA_LIQUIDA", formatarMoeda(roi.MARGEM_LIQUIDO));
   atualizarTexto("DELTA_ROI", formatarDeltaPercentual(roi.DELTA_ROI));
@@ -182,16 +206,17 @@ function plotarDados(dadosS3){
   atualizarTexto("kpi-cost-delta", formatarDeltaMoeda(custo.DELTA_CUSTO));
   atualizarBadge("kpi-cost-delta", custo.DELTA_CUSTO, false);
 
-  atualizarTexto("kpi-cost-budget-ref", formatarMoeda(orcamento.CUSTO_PREVISTO));
-  atualizarTexto("kpi-budget-val", formatarMoeda(orcamento.CUSTO_PREVISTO));
-  atualizarTexto("kpi-budget-ref", formatarMoeda(previsto.CUSTO_PREVISTO || orcamento.CUSTO_PREVISTO));
-  atualizarTexto("budget-regression-val", formatarMoeda(previsto.CUSTO_PREVISTO || orcamento.CUSTO_PREVISTO));
-  atualizarTexto("budget-approved-val", formatarMoeda(orcamento.CUSTO_PREVISTO));
-  atualizarTexto("budget-actual-val", formatarMoeda(orcamento.CUSTO_CORRENTE || custo.CUSTO));
+  
+  
+  budgetRegressionValue = Number(previsto.CUSTO_PREVISTO || orcamento.CUSTO_PREVISTO || 0);
+  budgetActualValue = Number(orcamento.CUSTO_CORRENTE || custo.CUSTO || 0);
+  budgetMarginPct = lerMargemOrcamentoSalva();
+  budgetApprovedValue = calcularOrcamentoAprovado(budgetRegressionValue, budgetMarginPct);
+  updateBudgetPanel();
   atualizarTexto("kpi-predicted", formatarMoeda(previsto.CUSTO_PREVISTO));
 
   // GRAFICOS
-  projecoesPreditivas = Array.isArray(dadosS3.PROJECOES) ? dadosS3.PROJECOES : [];
+  projecoesPreditivas = Array.isArray(dadosS3.PROJECOES) ? dadosS3.PROJECOES.slice(0, 6) : [];
   aplicarHistoricoMensal(dadosS3.HISTORICO_MENSAL, dadosS3.PROJECOES);
   aplicarDadosGraficos(dadosS3.GRAFICOS);
   renderizarPreditivo();
@@ -229,8 +254,9 @@ function scrollToPredict() {
   abrirModalPreditivo();
 }
 
+
 function setForecastMonths(qtdMeses, botao) {
-  mesesForecast = Number(qtdMeses || 3);
+  mesesForecast = limitarHorizontePredicao(qtdMeses);
   document.querySelectorAll('.btn-mr').forEach(btn => btn.classList.remove('active'));
   if (botao) botao.classList.add('active');
 
@@ -240,8 +266,11 @@ function setForecastMonths(qtdMeses, botao) {
   renderizarPreditivo();
 }
 
+
 function onSliderInput(valor) {
-  mesesForecast = Number(valor || 3);
+  mesesForecast = limitarHorizontePredicao(valor);
+  const slider = document.getElementById('month-slider');
+  if (slider) slider.value = mesesForecast;
   atualizarTexto('slider-display', mesesForecast);
   document.querySelectorAll('.btn-mr').forEach(btn => btn.classList.toggle('active', Number(btn.textContent.replace('M', '')) === mesesForecast));
   renderizarPreditivo();
@@ -252,6 +281,7 @@ function renderizarPreditivo() {
   const canvas = document.getElementById('forecastChart');
   if (!grid || !canvas) return;
 
+  mesesForecast = limitarHorizontePredicao(mesesForecast);
   const projecoes = projecoesPreditivas.slice(0, mesesForecast);
   grid.innerHTML = projecoes.length
     ? projecoes.map((item, i) => `
@@ -293,14 +323,13 @@ function renderizarPreditivo() {
   ];
 
   if (forecastChartInst) forecastChartInst.destroy();
-  forecastChartInst = new Chart(canvas.getContext('2d'), {
+   forecastChartInst = new Chart(canvas.getContext('2d'), {
     type: 'line',
     data: {
       labels,
       datasets: [
         { label: 'Custo histórico', data: custosHistoricos, borderColor: '#66C0F4', backgroundColor: 'rgba(102,192,244,0.08)', borderWidth: 2, pointRadius: 3, tension: 0.35, fill: true },
-        { label: 'Custo previsto', data: custosPrevistos, borderColor: '#66C0F4', borderDash: [6,4], borderWidth: 2, pointRadius: 4, tension: 0.35, fill: false, spanGaps: false },
-        { label: 'Orçamento', data: orcamentos, borderColor: '#F5CC4D', borderDash: [4,4], borderWidth: 1.5, pointRadius: 0, tension: 0.35, fill: false, spanGaps: false }
+        { label: 'Custo previsto', data: custosPrevistos, borderColor: '#66C0F4', borderDash: [6,4], borderWidth: 2, pointRadius: 4, tension: 0.35, fill: false, spanGaps: false }
       ]
     },
     options: {
@@ -320,6 +349,7 @@ function renderizarPreditivo() {
 
 
 
+
 // ══════════════════════════════════════════════
 //  POPUP DO ORÇAMENTO
   
@@ -329,12 +359,29 @@ function toggleBudgetPopover(e) {
   if (pop.classList.contains('open')) updateBudgetPanel();
 }
 
+
 function closeBudgetPopover(e) {
   document.getElementById('budget-popover').classList.remove('open');
 }
-
-
-
+function updateBudgetPanel() {
+  budgetMarginPct = limitarNumero(budgetMarginPct, 0, 20);
+  budgetApprovedValue = calcularOrcamentoAprovado(budgetRegressionValue, budgetMarginPct);
+  atualizarTexto("kpi-cost-budget-ref", formatarMoeda(budgetApprovedValue));
+  atualizarTexto("kpi-budget-val", formatarMoeda(budgetApprovedValue));
+  atualizarTexto("kpi-budget-ref", formatarMoeda(budgetRegressionValue));
+  atualizarTexto("kpi-budget-margin-label", budgetMarginPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }));
+  atualizarTexto("budget-margin-display", budgetMarginPct.toLocaleString('pt-BR', { maximumFractionDigits: 1 }));
+  atualizarTexto("budget-regression-val", formatarMoeda(budgetRegressionValue));
+  atualizarTexto("budget-approved-val", formatarMoeda(budgetApprovedValue));
+  atualizarTexto("budget-actual-val", formatarMoeda(budgetActualValue));
+  const slider = document.getElementById('budget-margin-slider');
+  if (slider) slider.value = budgetMarginPct;
+  salvarOrcamentoSessao();
+}
+function onBudgetMarginChange(valor) {
+  budgetMarginPct = limitarNumero(valor, 0, 20);
+  updateBudgetPanel();
+}
 // ══════════════════════════════════════════════
 // MODAL DA KPIA ROI (GRAFICO DE LINHA)
    
@@ -411,7 +458,6 @@ let HISTORICO_MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', '
 let custoHistorico = [12, 14, 13, 15, 14, 16, 15, 17, 18, 16, 19, 20]; 
 let receitaHistorica = [25, 28, 26, 30, 29, 32, 34, 33, 36, 35, 38, 40]; 
 const mesAtual = 11; 
-const margemOrcamentoPct = 10; 
 
 
 function rotuloMes(indice) {
@@ -451,8 +497,6 @@ let todosCustos = [...custoHistorico, ...Array(3).fill(null)];
 let todasReceitas = [...receitaHistorica, ...Array(3).fill(null)];
 let prevCustoLn = [...custoHistorico.map(() => null), custoHistorico[11], ...previsoesL3.map(f => f.custo)];
 let prevReceitaLn = [...receitaHistorica.map(() => null), receitaHistorica[11], ...previsoesL3.map(f => f.receita)];
-let orcamentoLn = todosRotulos.map((_, i) => Math.round(calcularPrevisao(mesAtual, i + 1) * (1 + margemOrcamentoPct / 100)));
-
 let historicoRoi = custoHistorico.map((c, i) => parseFloat((((receitaHistorica[i] - c) / c) * 100).toFixed(1)));
 const previsaoRoi = previsoesL3.map(f => parseFloat(f.roi));
 const todoHistoricoRoi = [...historicoRoi, ...Array(3).fill(null)];
@@ -464,7 +508,7 @@ Chart.defaults.color = '#6B7E91';
 let graficoLinha;
 let estadoFiltroGrafico = 'todos';
 
-function construirGraficoLinha(rotulos, custo, receita, prevCusto, prevReceita, orcamento) {
+function construirGraficoLinha(rotulos, custo, receita, prevCusto, prevReceita) {
   if (graficoLinha) graficoLinha.destroy();
   
   graficoLinha = new Chart(document.getElementById('lineChart').getContext('2d'), {
@@ -477,7 +521,6 @@ function construirGraficoLinha(rotulos, custo, receita, prevCusto, prevReceita, 
         { label: 'Receita',          data: receita,           borderColor: '#F5CC4D', backgroundColor: 'rgba(245,204,77,0.06)', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#F5CC4D', tension: 0.35, fill: true, spanGaps: false },
         { label: 'Previsão Custo',   data: prevCusto,         borderColor: '#66C0F4', borderWidth: 2, borderDash: [6,4], pointRadius: 5, pointStyle: 'rectRot', pointBackgroundColor: '#66C0F4', tension: 0.35, fill: false, spanGaps: false },
         { label: 'Previsão Receita', data: prevReceita,       borderColor: '#FFF47C', borderWidth: 2, borderDash: [6,4], pointRadius: 5, pointStyle: 'rectRot', pointBackgroundColor: '#FFF47C', tension: 0.35, fill: false, spanGaps: false },
-        { label: 'Orçamento',        data: orcamento,         borderColor: '#F5CC4D', borderWidth: 1.5, borderDash: [3,3], pointRadius: 0, tension: 0.35, fill: false, spanGaps: true, backgroundColor: 'transparent' },
       ]
     },
     options: {
@@ -513,7 +556,7 @@ function definirPeriodo(periodo, botao) {
     inicio = indiceYtd >= 0 ? indiceYtd : 0;
   }
   
-  construirGraficoLinha(todosRotulos.slice(inicio), todosCustos.slice(inicio), todasReceitas.slice(inicio), prevCustoLn.slice(inicio), prevReceitaLn.slice(inicio), orcamentoLn.slice(inicio));
+  construirGraficoLinha(todosRotulos.slice(inicio), todosCustos.slice(inicio), todasReceitas.slice(inicio), prevCustoLn.slice(inicio), prevReceitaLn.slice(inicio));
   
   if (estadoFiltroGrafico !== 'todos') alternarGraficoLinha(estadoFiltroGrafico, true);
 }

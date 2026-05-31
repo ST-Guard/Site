@@ -166,8 +166,8 @@ header {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: stretch;
+  justify-content: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 0 var(--finance-content-padding);
   color: var(--corDaFonte);
@@ -176,13 +176,15 @@ header {
 
 
 #container_kpis .div_kpi {
-  flex: 1 1 160px;
-  min-width: 160px;
-  max-width: none;
+  flex: 1 1 180px;
+  min-width: 180px;
+  max-width: 360px;
+  position: relative;
   border-radius: 8px;
-  padding: 12px 14px;
-  min-height: 132px;
+  padding: 15px 14px;
+  min-height: 0;
   display: flex;
+  justify-content: space-between;
   border: 1px solid #9c9a9a;
   box-shadow: 0 2px 8px rgba(15, 28, 46, 0.08);
   box-sizing: border-box;
@@ -193,35 +195,98 @@ header {
 #container_kpis .div_kpi:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(15, 28, 46, 0.12);
+  z-index: 20;
+}
+
+#container_kpis .div_kpi::before,
+#container_kpis .div_kpi .tooltip-kpi {
+  position: absolute;
+  left: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 400;
+}
+
+#container_kpis .div_kpi::before {
+  content: "";
+  bottom: -10px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid var(--blue-dark);
+  transform: translateY(-4px);
+}
+
+#container_kpis .div_kpi .tooltip-kpi {
+  top: calc(100% + 10px);
+  width: min(320px, calc(100vw - 48px));
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--blue-dark);
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(15, 28, 46, 0.24);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.45;
+  text-transform: none;
+  transform: translateY(-4px);
+}
+
+#container_kpis .div_kpi .tooltip-kpi p {
+  margin: 0 0 8px;
+}
+
+#container_kpis .div_kpi .tooltip-kpi div {
+  margin-top: 4px;
+}
+
+.tooltip-bom {
+  color: var(--KPI-positivo);
+  font-weight: 800;
+}
+
+.tooltip-atencao {
+  color: var(--KPI-importante);
+  font-weight: 800;
+}
+
+#container_kpis .div_kpi:hover::before,
+#container_kpis .div_kpi:hover .tooltip-kpi,
+#container_kpis .div_kpi:focus-within::before,
+#container_kpis .div_kpi:focus-within .tooltip-kpi {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .info_kpi {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
-  gap: 9px;
+  gap: 3px;
+  overflow: hidden;
 }
 
 .containerTitulo { display: flex; }
 #container_kpis .div_kpi h3 {
   color: var(--tituloKPI);
   font-weight: 700;
-  font-size: 0.68rem;
-  line-height: 1.25;
+  font-size: 0.7rem;
+  line-height: 1.2;
   text-transform: uppercase;
   margin: 0;
 }
 
 #container_kpis .div_kpi h1 {
-  font-size: clamp(1.05rem, 1.15vw, 1.45rem);
+  font-size: clamp(1.05rem, 1.2vw, 1.4rem);
   font-weight: 600;
   margin: 0;
+  line-height: 1.2;
   overflow-wrap: break-word;
 }
 
 #container_kpis .div_kpi h4 {
-  display: none;
+  display: none !important;
   font-size: 0.72rem;
   font-weight: 400;
   color: var(--corFonteTexto);
@@ -229,8 +294,9 @@ header {
   margin: 0;
 }
 
+/* h4 oculto em todos — info disponível no tooltip */
 #container_kpis .div_kpi.positivo h4 {
-  display: block;
+  display: none !important;
 }
 
 #RECEITA_LIQUIDA {
@@ -255,6 +321,12 @@ header {
   align-items: center;
   gap: 8px;
 }
+.kpis-baixo-center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
 
 /* Cores por variante de KPI */
 #container_kpis .div_kpi.positivo,
@@ -274,7 +346,6 @@ header {
 
 .kpi-orcamento {
   border-color: var(--KPI-normal) !important;
-  height: auto;
   box-shadow: 0 2px 10px rgba(44, 93, 134, 0.18) !important;
 }
 .kpi-orcamento h1,
@@ -321,14 +392,26 @@ header {
  
 .envoltorio-popover-orcamento {
   position: relative;
-  flex: 1 1 160px;
-  min-width: 160px;
-  max-width: none;
+  flex: 1 1 180px;
+  min-width: 180px;
+  max-width: 280px;
+}
+
+/* Top 4 KPIs: altura fixa e compacta */
+#container_kpis > .div_kpi,
+#container_kpis > .envoltorio-popover-orcamento {
+  height: 100px;
 }
 
 .envoltorio-popover-orcamento > .div_kpi {
   width: 100%;
   height: 100%;
+}
+
+/* Bottom row: sem altura fixa */
+.kpis-baixo-center .div_kpi {
+  height: auto !important;
+  min-height: 0;
 }
 
 .popover-orcamento {
@@ -398,7 +481,11 @@ header {
   justify-content: space-between;
   align-items: center;
 }
-.rotulo-slider-pop-orcamento span { font-size: 14px; font-weight: 700; color: var(--gold); }
+.rotulo-slider-pop-orcamento span { 
+  font-size: 14px; 
+  font-weight: 700; 
+  color: var(--gold); 
+}
 
 .slider-pop-orcamento {
   width: 100%;
@@ -412,7 +499,8 @@ header {
 }
 .slider-pop-orcamento::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px; height: 16px;
+  width: 16px; 
+  height: 16px;
   border-radius: 50%;
   background: var(--gold);
   cursor: pointer;
@@ -681,7 +769,7 @@ canvas { max-width: 100%; }
   /* RELATÓRIOS */
   
 #reports-section {
-  width: auto;
+  width: 96%;
   margin: 0 var(--finance-content-padding);
   box-sizing: border-box;
   
