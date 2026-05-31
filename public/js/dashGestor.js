@@ -1,20 +1,25 @@
-function fnNavegar(caminho){
-    window.location.href = caminho
-}
+
 
 window.onload = () => {
     buscarDados()
     atualizarDiaSemana()
+    carregarDatacentersDoGestor()
 }
 
-//if (!sessionStorage.ID_USUARIO) {
- // alert("Você precisa estar logado!");
-  //window.location = "login.html";
-//}
+if (!sessionStorage.ID_USUARIO) {
+    conteiner_msg.innerHTML = "Você precisa estar logado!"
+    loadingModal()
+    window.location = "login.html";
+}
 
+function voltar(){
+    window.location.href = 'inicioGestor.html';
+
+}
  function atualizarDiaSemana(){
         var dataAtual = new Date();
-
+        var regiao = sessionStorage.UF
+        var regiaoMaiuscula = regiao.toUpperCase()
         var diasDaSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
         var mesesDoAno = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
@@ -22,7 +27,7 @@ window.onload = () => {
         var diaDoMes = dataAtual.getDate();
         var nomeMes = mesesDoAno[dataAtual.getMonth()];
         var ano = dataAtual.getFullYear();
-
+        cidade.innerHTML=regiaoMaiuscula;
         dia_da_semana.innerHTML=`${nomeDia}, ${diaDoMes} de ${nomeMes} de ${ano}`
     }
 
@@ -187,6 +192,42 @@ document.getElementById("div_relatorios").style.display = "none";
 
 }
 
+const idUsuario = sessionStorage.ID_USUARIO;
+const idRegiao = sessionStorage.ID_REGIAO;
+
+function carregarDatacentersDoGestor() {
+fetch(`/dashOperacional/listarDatacenters/${idUsuario}/${idRegiao}`)
+        .then(resposta => {
+            if (!resposta.ok) {
+                throw new Error("Erro ao buscar datacenters do gestor");
+            }
+
+            return resposta.json();
+        })
+        .then(datacenters => {
+
+            selectDatacenter.innerHTML = `<option value="">Selecione um datacenter</option>`;
+
+            datacenters.forEach(dc => {
+                selectDatacenter.innerHTML += `
+                    <option value="${dc.fk_datacenter}">
+                        ${dc.nome}
+                    </option>
+                `;
+
+                dc.fk_datacenter.selected = function (event) {
+                event.preventDefault();
+                sessionStorage.NOME_DC = dc.nome;
+
+            };
+            });
+
+            
+        })
+        .catch(erro => {
+            console.error("Erro ao carregar datacenters:", erro);
+        });
+}
 function limparSessao() {
     sessionStorage.clear();
 }
