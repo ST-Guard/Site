@@ -20,4 +20,3 @@ router.get("/buscarGestoraOpJson", function (req, res) {
 });
 module.exports = router;
 
-
