@@ -16,10 +16,10 @@ function voltar(){
     window.location.href = 'inicioGestor.html';
 
 }
+
  function atualizarDiaSemana(){
         var dataAtual = new Date();
-        var regiao = sessionStorage.UF
-        var regiaoMaiuscula = regiao.toUpperCase()
+      const regiao = sessionStorage.getItem("CIDADE");
         var diasDaSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
         var mesesDoAno = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
@@ -27,7 +27,7 @@ function voltar(){
         var diaDoMes = dataAtual.getDate();
         var nomeMes = mesesDoAno[dataAtual.getMonth()];
         var ano = dataAtual.getFullYear();
-        cidade.innerHTML=regiaoMaiuscula;
+        cidade.innerHTML=regiao ;
         dia_da_semana.innerHTML=`${nomeDia}, ${diaDoMes} de ${nomeMes} de ${ano}`
     }
 
@@ -51,6 +51,23 @@ function buscarDados() {
         }
     })
 }
+//------------------------------------------------ CHAMANDO DADOS DO BUCKET E RENDERIZANDO ----------------------------------------------------------
+//let dadosGestora = null;
+//let empresaSelecionada = "Steam";
+////let datacenterSelecionado = null;
+
+//async function carregarDashboardGestora() {
+ ////   const resposta = await fetch("../json/dashGestoraOperacional.json");
+ //   dadosGestora = await resposta.json();
+
+ //   preencherSelectDatacenters();
+//    selecionarDatacenterMaisCritico();
+ //   renderizarDashboardDatacenter();
+
+
+
+//}//---------------------------------------------------------------------------------------------------------------------------------------------
+
 
 // Precisa do DOMcontentLoaded, pq garante que os elementos do html carreguem antes de pegar o id do char, saco?
 document.addEventListener('DOMContentLoaded', () => {
@@ -192,11 +209,22 @@ document.getElementById("div_relatorios").style.display = "none";
 
 }
 
-const idUsuario = sessionStorage.ID_USUARIO;
-const idRegiao = sessionStorage.ID_REGIAO;
 
 function carregarDatacentersDoGestor() {
-fetch(`/dashOperacional/listarDatacenters/${idUsuario}/${idRegiao}`)
+    const idUsuario = sessionStorage.getItem("ID_USUARIO");
+    const idRegiao = sessionStorage.getItem("ID_REGIAO");
+
+    if (!idUsuario) {
+        console.error("ID_USUARIO não encontrado no sessionStorage");
+        return;
+    }
+
+    if (!idRegiao) {
+        console.error("ID_REGIAO não encontrado no sessionStorage");
+        return;
+    }
+
+    fetch(`/dashOperacional/listarDatacenters/${idUsuario}/${idRegiao}`)
         .then(resposta => {
             if (!resposta.ok) {
                 throw new Error("Erro ao buscar datacenters do gestor");
@@ -205,7 +233,6 @@ fetch(`/dashOperacional/listarDatacenters/${idUsuario}/${idRegiao}`)
             return resposta.json();
         })
         .then(datacenters => {
-
             selectDatacenter.innerHTML = `<option value="">Selecione um datacenter</option>`;
 
             datacenters.forEach(dc => {
@@ -214,15 +241,7 @@ fetch(`/dashOperacional/listarDatacenters/${idUsuario}/${idRegiao}`)
                         ${dc.nome}
                     </option>
                 `;
-
-                dc.fk_datacenter.selected = function (event) {
-                event.preventDefault();
-                sessionStorage.NOME_DC = dc.nome;
-
-            };
             });
-
-            
         })
         .catch(erro => {
             console.error("Erro ao carregar datacenters:", erro);
