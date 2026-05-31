@@ -20,6 +20,7 @@ var zonaRouter = require("./src/routes/zona");
 var sessaoRouter = require("./src/routes/sessao");
 var financeira = require("./src/routes/financeiraRoute");
 var steamRouter = require("./src/routes/steam");
+var especificoRouter = require("./src/routes/especifico")
 var buscarzonasRouter = require("./src/routes/buscarzona")
 
 // middlewares
@@ -36,6 +37,7 @@ app.use("/servidor", servidorRouter)
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
 app.use("/steam", steamRouter);
+app.use("/especifico", especificoRouter);
 app.use("/bzonas", buscarzonasRouter)
 
 //Rotas Financeira

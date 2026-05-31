@@ -100,7 +100,7 @@
         <div class="SubcorpoPagina">
             <div class="textoInicio">
                 <div class="div_titulo">
-                    <h1>Servidor Especifico - <span>Todos</span></h1>
+                    <h1>Servidor Especifico - <span id="nomeTopoServer">Todos</span></h1>
                     <h2>Metricas de servidor com downloads</h2>
                 </div>
             </div>
@@ -179,7 +179,7 @@
                     <option>SRV-DC01-WEB-05</option>
                 </select>
             </div>
-            <div class="parte1">
+            <div class="parte1" id="p1">
                 <div class="grafico-DiscoXLatencia">
                     <div id="expandirDiscoxLatencia">
                         <canvas id="chartDiskxLat"></canvas>
@@ -191,15 +191,15 @@
                     </div>
                 </div>
             </div>
-            <div class="parte2">
-                <div class="grafico-Downloads">
-                    <div id="expandirDownloads">
-                        <canvas id="chartDownload"></canvas>
-                    </div>
-                </div>
+            <div class="parte2" id="p2">
                 <div class="grafico-VolumeCriticidade">
                     <div id="expandirVolumeCriticidade">
                         <canvas id="chartVolumeCriticidade"></canvas>
+                    </div>
+                </div>
+                <div class="grafico-Downloads">
+                    <div id="expandirDownloads">
+                        <canvas id="chartDownload"></canvas>
                     </div>
                 </div>
                 <div class="grafico-Reviews">
@@ -209,7 +209,7 @@
                 </div>
             </div>
         </div>
-
+        
     </div>
 
 </body>

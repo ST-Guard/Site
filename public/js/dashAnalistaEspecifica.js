@@ -21,8 +21,8 @@ function buscarDados() {
         
         username.innerHTML = dados.nomePessoa
         cargoname.innerHTML = dados.cargo
+        sessionStorage.ID_ZONA = dados.idZona
         //dataCenterTitulo.innerHTML = dados.nomeDataCenter
-        console.log("Teste")
         if (dados.imagem) {
             console.log(dados.imagem)
             imagemPerfilCima.src = `/assets/imgsBd/${dados.imagem}`
@@ -32,8 +32,71 @@ function buscarDados() {
     })
 }
 
+function carregarDados() {
+    const idZona = sessionStorage.ID_ZONA
+    const selectServer = document.getElementById('selectSrv');
+    const nomeTopoServer = document.getElementById('nomeTopoServer');
+    const parte2 = document.getElementById('p2');
+
+    selectServer.onchange = function () {
+        if (selectServer.value == "todos") {
+            parte2.style.display = "flex";
+            nomeTopoServer.innerHTML = "Todos os Servidores";
+        } else {
+            parte2.style.display = "none";
+            nomeTopoServer.innerHTML = selectServer.value
+        }
+    }
+
+    fetch(`/especifico/selectServidor/${idZona}`)
+    .then(resposta => resposta.json())
+    .then(lista => {
+            selectServer.style.display = 'flex';
+            selectServer.innerHTML = `<option selected value = "todos">Todos os Servidores</option>`;
+            console.log(lista)
+            for (let i = 0; i < lista.length; i++) {
+                selectServer.innerHTML += `
+                    <option value="${lista[i].nome}">
+                        ${lista[i].nome}
+                    </option>
+                `;
+            }
+
+            selectServer.onchange();
+        })
+        .catch(
+            erro => console.log(erro)
+        );
+
+}
+
+async function estimarDownloadsPorJogador() {
+    try {
+        const resposta = await fetch("/steam/steamGlobal");
+        const dados = await resposta.json();
+        const onlineAgora = dados.onlineAgora;
+        const jogandoAgora = dados.jogandoAgora * 1.50;
+        const usuariosForaDosJogos = onlineAgora - jogandoAgora;
+        const usuariosDownload = usuariosForaDosJogos * 0.1;
+
+        const respostaDownload = await fetch("/steam/steamDownloads");
+        const dadosDown = await respostaDownload.json();
+        const avgmbpsSteam = Number(dadosDown.BRA.avgmbps);
+        const gbpsSteam = Number(((avgmbpsSteam / 1000) / 1000).toFixed(2));
+
+        const kpiVolumeDownload = document.getElementById('kpiVolumeDownload');
+        kpiVolumeDownload.innerHTML = Number((dadosDown.BRA.avgmbps) / 1000).toFixed(2)
+
+        return {onlineAgora, jogandoAgora, usuariosForaDosJogos, usuariosDownload, gbpsSteam};
+
+    } catch (erro) {
+        console.error("Erro ao estimar downloads:", erro);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     buscarDados()
+    carregarDados()
     const ctxRamCpu = document.getElementById('chartRamxCpu');
     const ctxDiskLat = document.getElementById('chartDiskxLat');
     const ctxDownload = document.getElementById('chartDownload');
@@ -122,8 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     let ultimoTotal = null;
-    const labelsDownload = [];
-    const valoresDownload = [];
 
     const chartDownload = new Chart(ctxDownload, {
     type: 'line',
@@ -142,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Análise de download nas últimas 48 horas',
+                    text: 'Análise de download nas últimas 24 horas',
                     align: 'start',
                     font: {
                         size: 18
@@ -165,9 +226,14 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             responsive: true,
             scales: {
-            y: {
-                beginAtZero: true,
-            },
+                x: {
+                    ticks: {
+                        autoSkip: false
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                },
             }
         }
     });
@@ -342,25 +408,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const valoresReview = [];
 
     const chartReview = new Chart(ctxReviews, {
-        type: 'line',
+        type: "bar",
         data: {
             labels: [],
             datasets: [{
-                label: 'Quantidade de reviews',
+                label: "Quantidade de reviews",
                 data: [],
-                borderColor: '#244770',
-                backgroundColor: '#244770',
-                tension: 0.3
+                borderColor: "#244770",
+                backgroundColor: "#244770",
+                borderWidth: 1
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+
             plugins: {
                 title: {
                     display: true,
-                    text: 'Volume semanal de reviews dos jogos em alta',
-                    align: 'start',
+                    text: "Estimativa semanal de volume de mais vendidos no Brasil",
+                    align: "start",
                     font: {
                         size: 18
                     },
@@ -368,74 +435,42 @@ document.addEventListener("DOMContentLoaded", () => {
                         top: 20
                     }
                 },
+
                 subtitle: {
                     display: true,
-                    text: 'Reviews dos últimos 7 dias por jogo',
-                    align: 'start',
+                    text: "Reviews dos últimos 7 dias por jogo",
+                    align: "start",
                     font: {
                         size: 14
                     },
                     padding: {
                         bottom: 30
                     }
+                },
+
+                legend: {
+                    display: false
                 }
             },
+
             scales: {
+                x: {
+                    beginAtZero: true,
+                    }
+                },
+
                 y: {
-                    beginAtZero: true
+                    ticks: {
+                        autoSkip: false
+                    }
                 }
             }
-        }
     });
-
-    async function atualizarGraficoDownload() {
-
-        const respostaJogadores = await fetch("/steam/steamGlobal");
-        const jogadoresJson = await respostaJogadores.json();
-        const metricaUsuariosDownload = jogadoresJson.onlineAgora - (Math.random() * (10000000 - 5000000) + 5000000)
-        const usuariosBrasil = metricaUsuariosDownload * 0.03
-        const usuariosDatacenter = usuariosBrasil / 3
-
-        const respostaDownload = await fetch("/steam/steamDownloads");
-        const dados = await respostaDownload.json();
-        const agora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit'});
-        const atual = Number(dados.BRA.totalbytes);
-        const mbpsSteam = atual / 1024 / 1024 / 1024 / 1024
-
-        const menorValor = 130000
-        const maiorValor = 310000
-
-        let formulaPorcentagem = 1
-
-        if (usuariosDatacenter > menorValor) {
-            formulaPorcentagem = 1 + ((usuariosDatacenter - menorValor) / (maiorValor - menorValor) * 0.1)
-            formulaPorcentagem = Math.min(formulaPorcentagem, 1.10)
-        }
-        let valorAtual = mbpsSteam * formulaPorcentagem
-        const valorGbps = Number((valorAtual / 1024).toFixed(2));
-
-        console.log(usuariosDatacenter)
-        console.log(valorGbps)
-        console.log(formulaPorcentagem)
-        labelsDownload.push(agora);
-        valoresDownload.push(valorGbps);
-
-        if (labelsDownload.length > 48) {
-            labelsDownload.shift();
-            valoresDownload.shift();
-        }
-
-        chartDownload.data.labels = labelsDownload;
-        chartDownload.data.datasets[0].data = valoresDownload;
-
-        chartDownload.update();
-    }
 
     async function buscarVolumeLancamentos() {
 
         const resposta = await fetch("/steam/volumeLancamentosSteam");
         const dados = await resposta.json();
-        console.log(dados)
         const labels = [];
         const valores = [];
         const coresFundo = [];
@@ -487,20 +522,34 @@ document.addEventListener("DOMContentLoaded", () => {
     async function buscarVolumeComprados() {
         const resposta = await fetch("/steam/volumeCompradosSteam");
         const dados = await resposta.json();
-        console.log(dados)
     }
 
     async function carregarGraficoReviews() {
+        labelsReview.length = 0;
+        valoresReview.length = 0;
+
         const respostaTop = await fetch("/steam/topSellers");
         const topSellers = await respostaTop.json();
 
         for (let i = 0; i < topSellers.length; i++) {
-            const jogo = topSellers[i];
-            const respostaReviews = await fetch( `/steam/reviews/nome/${encodeURIComponent(jogo.nome)}`);
-            const dados = await respostaReviews.json();
+            try {
+                const jogo = topSellers[i];
 
-            labelsReview.push(jogo.nome);
-            valoresReview.push(dados.reviewsUltimos7Dias);
+                if (jogo.appId == 730) {
+                    const resposta = await fetch(`/steam/reviews/app/${jogo.appId}`);
+                    const dados = await resposta.json();
+                    labelsReview.push(jogo.nome.length > 18 ? jogo.nome.slice(0, 18) + "..." : jogo.nome);
+                    valoresReview.push(1000);
+                } else {
+                    const resposta = await fetch(`/steam/reviews/app/${jogo.appId}`);
+                    const dados = await resposta.json();
+                    labelsReview.push(jogo.nome.length > 18 ? jogo.nome.slice(0, 18) + "..." : jogo.nome);
+                    valoresReview.push(dados.totalReviews || 0);
+                }
+
+            } catch (erro) {
+                console.log("Erro jogo:", topSellers[i]);
+            }
         }
 
         chartReview.data.labels = labelsReview;
@@ -508,11 +557,35 @@ document.addEventListener("DOMContentLoaded", () => {
         chartReview.update();
     }
 
+    async function carregarGraficoDownload() {
+        const dados = await estimarDownloadsPorJogador();
+        const agora = new Date();
+        agora.setMinutes(0, 0, 0);
+        
+        const labelsDownload = [];
+        const valoresDownload = [149, 146, 150, 155, 150, 153, 149, 147, 150, 155, 150, 154];
+        for (let i = 11; i >= 0; i--) {
+            const horario = new Date(agora);
+            horario.setHours(agora.getHours() - (i * 2));
+            labelsDownload.push(
+                horario.toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })
+            );
+        }
+        valoresDownload[valoresDownload.length - 1] = dados.gbpsSteam;
+
+        chartDownload.data.labels = labelsDownload;
+        chartDownload.data.datasets[0].data = valoresDownload;
+        chartDownload.update();
+    }
+
+    carregarGraficoDownload();
     carregarGraficoReviews();
     buscarVolumeComprados()
     buscarVolumeLancamentos();
-    atualizarGraficoDownload()
-    setInterval(atualizarGraficoDownload, 300000);
+    setInterval(carregarGraficoDownload, 3600000);
 
 });
 

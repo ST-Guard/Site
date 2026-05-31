@@ -97,7 +97,7 @@ router.get("/volumeCompradosSteam", async (req, res) => {
 
 router.get("/topSellers", async (req, res) => {
     try {
-        const resposta = await fetch( "https://store.steampowered.com/charts/topselling/BR",
+        const resposta = await fetch( "https://store.steampowered.com/search/results/?query&start=0&count=10&dynamic_data=&sort_by=_ASC&os=win&filter=topsellers&cc=BR&l=portuguese&infinite=1",
             {
                 headers: {
                     "User-Agent": "Mozilla/5.0"
@@ -105,16 +105,17 @@ router.get("/topSellers", async (req, res) => {
             }
         );
 
-        const html = await resposta.text();
-        const leituraHTML = cheerio.load(html);
+        const dados = await resposta.json();
+        const leituraHTML = cheerio.load(dados.results_html);
         const jogos = [];
 
         leituraHTML("a[href*='/app/']").each((i, elemento) => {
-            const nome = leituraHTML(elemento).text().trim();
+            const nome = leituraHTML(elemento).find(".title").text().trim();
             const link = leituraHTML(elemento).attr("href");
+            const appId = leituraHTML(elemento).attr("data-ds-appid");
 
             if (nome && link) {
-                jogos.push({nome,link});
+                jogos.push({nome, link, appId});
             }
         });
         res.json(jogos.slice(0, 10));
@@ -192,6 +193,32 @@ router.get("/reviews/nome/:nomeJogo", async (req, res) => {
     }
 });
 
+router.get("/reviews/app/:appId", async (req, res) => {
+    const appId = req.params.appId;
+
+    try {
+        const resposta = await fetch(
+            `https://store.steampowered.com/appreviews/${appId}?json=1&language=portuguese&purchase_type=all`
+        );
+
+        const dados = await resposta.json();
+
+        res.json({
+            totalReviews: dados.query_summary.total_reviews || 0,
+            positivas: dados.query_summary.total_positive || 0,
+            negativas: dados.query_summary.total_negative || 0,
+            score: dados.query_summary.review_score_desc || "Sem dados"
+        });
+
+    } catch (erro) {
+        console.error(erro);
+
+        res.status(500).json({
+            erro: erro.message
+        });
+    }
+});
+
 router.get("/reviews/:appid", async (req, res) => {
     const appid = req.params.appid;
     let cursor = "*";
@@ -200,7 +227,7 @@ router.get("/reviews/:appid", async (req, res) => {
 
     try {
         while (true) {
-            const url = `https://store.steampowered.com/appreviews/${appid}` + `?json=1&filter=recent&language=all` + `&purchase_type=all&num_per_page=100` + `&cursor=${encodeURIComponent(cursor)}`;
+            const url = `https://store.steampowered.com/appreviews/${appid}?json=1&filter=recent&language=all&purchase_type=all&num_per_page=100&cursor=${encodeURIComponent(cursor)}`;
             const resposta = await fetch(url);
             const dados = await resposta.json();
 
@@ -237,24 +264,47 @@ router.get("/reviews/:appid", async (req, res) => {
 });
 
 router.get("/steamGlobal", async (req, res) => {
-
     try {
-        const resposta = await fetch("https://store.steampowered.com/stats/userdata.json");
-        const dados = await resposta.json();
-        const historico = dados[0].data;
-        const ultimoRegistro = historico[historico.length - 1];
-        const onlineAgora = ultimoRegistro[1];
+        const resposta = await fetch("https://store.steampowered.com/stats/stats/?l=english", {
+            headers: {
+                "User-Agent": "Mozilla/5.0"
+            }
+        });
 
-        res.json({onlineAgora});
-        
+        const html = await resposta.text();
+        const leituraHTML = cheerio.load(html);
+        const textoPagina = leituraHTML("body").text().replace(/\s+/g, " ");
+
+        const online = textoPagina.match(/Concurrent Steam Users:\s*([\d,]+)/i);
+
+        const onlineAgora = online
+            ? Number(online[1].replace(/,/g, ""))
+            : 0;
+
+        let jogandoAgora = 0;
+
+        leituraHTML("tr").each((_, linha) => {
+            const textoLinha = leituraHTML(linha).text().replace(/\s+/g, " ").trim();
+
+            const matchJogadores = textoLinha.match(/^([\d,]+)\s+[\d,]+\s+/);
+
+            if (matchJogadores) {
+                jogandoAgora += Number(matchJogadores[1].replace(/,/g, ""));
+            }
+        });
+
+        res.json({
+            onlineAgora,
+            jogandoAgora
+        });
+
     } catch (erro) {
         console.error(erro);
 
         res.status(500).json({
-            erro: "Falha ao buscar dados globais da Steam"
+            erro: erro.message
         });
     }
-
 });
 
 atualizarDados();
