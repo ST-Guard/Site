@@ -27,7 +27,7 @@ function buscarDados() {
         console.log(dados)
         username.innerHTML = dados.nomePessoa
         cargoname.innerHTML = dados.cargo
-        zonaTitulo.innerHTML = dados.nomeZona
+        dataCenterTitulo.innerHTML = dados.nomeDataCenter
         //dataCenterTitulo.innerHTML = dados.nomeDataCenter
         if (dados.imagem) {
             imagemPerfilCima.src = `/assets/imgsBd/${dados.imagem}`
@@ -137,12 +137,14 @@ function carregarDatabases() {
     fetch(`/servidor/carregarDatabases/${fkEmpresa}`)
         .then(resposta => resposta.json())
         .then(lista => {
+
+            console.log("olha a lista aqui o aqui: ", lista)
             const selectDatabase = document.getElementById("selectDataBase");
             selectDatabase.innerHTML = `<option disabled selected>Selecione um datacenter</option>`;
 
             for (let i = 0; i < lista.length; i++) {
                 selectDatabase.innerHTML += `
-                    <option value="${lista[i].idDataCenter}">
+                    <option value="${lista[i].idDatacenter}">
                         ${lista[i].nome}
                     </option>
                 `;
@@ -213,7 +215,7 @@ function carregarDatabases() {
 
             for (let i = 0; i < lista.length; i++) {
                 selectDatabase.innerHTML += `
-                    <option value="${lista[i].idDataCenter}">
+                    <option value="${lista[i].idDatacenter}">
                         ${lista[i].nome}
                     </option>
                 `;
@@ -657,7 +659,7 @@ function mostrarServidores() {
                 document.querySelector('#container_kpis .kpi3').style.borderColor = '#23B26D';
                 document.querySelector('#container_kpis .kpi3 h1').style.color = '#23B26D';
                 document.querySelector('#container_kpis .kpi3').style.boxShadow = `1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi3.src = "../assets/dashboard-icons/icon_Check.svg"
+                imgKpi3.src = "../assets/dashboard-icons/icon_check.svg"
             }
 
             if (P99Ram >= 75) {
@@ -669,12 +671,12 @@ function mostrarServidores() {
                 document.querySelector('#container_kpis .kpi2').style.borderColor = '#F5CC4D';
                 document.querySelector('#container_kpis .kpi2 h1').style.color = '#F5CC4D';
                 document.querySelector('#container_kpis .kpi2').style.boxShadow = `1.5px 1px 2px 1px #F5CC4D, 0 4px 12px rgba(0,0,0,0.1)`;   
-                imgKpi2.src = "../assets/dashboard-icons/icon_Atencao.svg"        
+                imgKpi2.src = "../assets/dashboard-icons/icon_atencao.svg"        
             } else {
                 document.querySelector('#container_kpis .kpi2').style.borderColor = '#23B26D';
                 document.querySelector('#container_kpis .kpi2 h1').style.color = '#23B26D';
                 document.querySelector('#container_kpis .kpi2').style.boxShadow = `1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi2.src = "../assets/dashboard-icons/icon_Check.svg"
+                imgKpi2.src = "../assets/dashboard-icons/icon_check.svg"
             }
 
             if (P99Disco >= 75) {
@@ -686,12 +688,12 @@ function mostrarServidores() {
                 document.querySelector('#container_kpis .kpi4').style.borderColor = '#F5CC4D';
                 document.querySelector('#container_kpis .kpi4 h1').style.color = '#F5CC4D';
                 document.querySelector('#container_kpis .kpi4').style.boxShadow = `1.5px 1px 2px 1px #F5CC4D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi4.src = "../assets/dashboard-icons/icon_Atencao.svg"        
+                imgKpi4.src = "../assets/dashboard-icons/icon_atencao.svg"        
             } else {
                 document.querySelector('#container_kpis .kpi4').style.borderColor = '#23B26D';
                 document.querySelector('#container_kpis .kpi4 h1').style.color = '#23B26D';
                 document.querySelector('#container_kpis .kpi4').style.boxShadow = `1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi4.src = "../assets/dashboard-icons/icon_Check.svg"
+                imgKpi4.src = "../assets/dashboard-icons/icon_check.svg"
             }
 
             if (P99Rede >= 35) {
@@ -708,7 +710,7 @@ function mostrarServidores() {
                 document.querySelector('#container_kpis .kpi5').style.borderColor = '#23B26D';
                 document.querySelector('#container_kpis .kpi5 h1').style.color = '#23B26D';
                 document.querySelector('#container_kpis .kpi5').style.boxShadow = `1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0,0,0,0.1)`;
-                imgKpi5.src = "../assets/dashboard-icons/icon_Check.svg"
+                imgKpi5.src = "../assets/dashboard-icons/icon_check.svg"
             }
 
             // for (var i = 0; i < servidores.length; i++) {
@@ -834,101 +836,3 @@ function carregarComponentes(idServidor) {
 function limparSessao() {
     sessionStorage.clear();
 }
-
-
-//  Usar quando for puxar os dados, e arrumar o carregar componentes, sem funcionar por agora -->
-//     function mostrarServidores() {
-
-//         var idEmpresa = sessionStorage.FK_EMPRESA;
-
-//         fetch(`/servidor/listarServidores/${idEmpresa}`)
-//             .then(res => res.json())
-//             .then(servidores => {
-//                 console.log("SERVIDORES:", servidores);
-
-//                 var box = document.getElementById("boxServidores");
-//                 box.innerHTML = "";
-
-//                 var mensagem = "";
-
-//                 for (var i = 0; i < servidores.length; i++) {
-
-//                     mensagem += `
-//                     <div class="servidor">
-//                         <div class="inicioServidor">
-//                             <img src="../assets/dashboard-servidor/IconServidor.png">
-//                             <h3>${servidores[i].nome}</h3>
-//                             <div class="estadoServidor">
-//                                 ${servidores[i].estado}
-//                             </div>
-//                         </div>
-
-//                         <div class="gridCompo" id="gridCompo${servidores[i].idServidor}">
-//                             <div class="boxCpu">
-//                                 <div class="inicioCpu">
-//                                     <img src="../assets/dashboard-servidor/iconCpu.png">
-//                                     <span>CPU</span>
-//                                     <span class="infoSistema">%</span>
-//                                 </div>
-//                                 <div class="porcentagemCpu">
-//                                     <h2 id="cpuValor${servidores[i].idServidor}">--</h2>
-//                                     <span>%</span>
-//                                 </div>
-//                                 <div class="barraCpu">
-//                                     <div class="barraPreenchimentoCpu" id="cpuBarra${servidores[i].idServidor}"></div>
-//                                 </div>
-//                             </div>
-//                             <div class="boxRam">
-//                                 <div class="inicioRam">
-//                                     <img src="../assets/dashboard-servidor/iconRam.png">
-//                                     <span>RAM</span>
-//                                     <span class="infoSistema">GB</span>
-//                                 </div>
-//                                 <div class="porcentagemRam">
-//                                     <h2 id="ramValor${servidores[i].idServidor}">--</h2>
-//                                     <span>GB</span>
-//                                 </div>
-//                                 <div class="barraRam">
-//                                     <div class="barraPreenchimentoRam" id="ramBarra${servidores[i].idServidor}"></div>
-//                                 </div>
-//                             </div>
-//                             <div class="boxDisco">
-//                                 <div class="inicioDisco">
-//                                     <img src="../assets/dashboard-servidor/iconCache.png">
-//                                     <span>DISCO</span>
-//                                     <span class="infoSistema">GB</span>
-//                                 </div>
-//                                 <div class="porcentagemDisco">
-//                                     <h2 id="discoValor${servidores[i].idServidor}">--</h2>
-//                                     <span>GB</span>
-//                                 </div>
-//                                 <div class="barraDisco">
-//                                     <div class="barraPreenchimentoDisco" id="discoBarra${servidores[i].idServidor}"></div>
-//                                 </div>
-//                             </div>
-//                             <div class="boxRede">
-//                                 <div class="inicioRede">
-//                                     <img src="../assets/dashboard-servidor/iconWeb.png">
-//                                     <span>REDE - LATÊNCIA</span>
-//                                     <span class="infoSistema">ms</span>
-//                                 </div>
-//                                 <div class="porcentagemRede">
-//                                     <h2 id="redeValor${servidores[i].idServidor}">--</h2>
-//                                     <span>ms</span>
-//                                 </div>
-//                                 <div class="barraRede">
-//                                     <div class="barraPreenchimentoRede" id="redeBarra${servidores[i].idServidor}"></div>
-//                                 </div>
-//                             </div>
-//                         </div>
-//                     </div>
-//                     `;
-//                 }
-
-//                 boxServidores.innerHTML = mensagem;
-
-//                 // for (var i = 0; i < servidores.length; i++) {
-//                 //     carregarComponentes(servidores[i].idServidor);
-//                 // }
-//             });
-//     }

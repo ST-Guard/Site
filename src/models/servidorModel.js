@@ -3,19 +3,23 @@ var database = require("../database/config");
 function carregarDatabases(fkEmpresa) {
 
     const instrucaoSql = `
-        SELECT dc.idDataCenter, dc.nome
-        FROM datacenter dc
-        JOIN usuario u ON dc.fkUsuarioDataCenter = u.idUsuario
-        JOIN papel p ON u.fkPapel = p.idPapel
-        WHERE p.fkEmpresa = ${fkEmpresa};
+		SELECT dc.idDatacenter, dc.nome FROM
+        datacenter as dc JOIN datacenters_gestores 
+        ON fk_datacenter = idDataCenter 
+        JOIN usuario 
+        ON idUsuario = fk_usuario
+        JOIN papel ON fkPapel = idPapel
+        WHERE fkEmpresa = ${fkEmpresa};
     `;
     return database.executar(instrucaoSql);
 }
 
 function listarZonas(idDataCenter) {
+
+    console.log(`o id do datacenter é: ${idDataCenter}`)
     const instrucaoSql = `
         SELECT idZona, nome FROM zona
-        WHERE fkDataCenter = ?;
+        WHERE fkDatacenter = ?;
     `;
     return database.executar(instrucaoSql, [idDataCenter]);
 }
@@ -40,7 +44,7 @@ async function cadastrarComponente(nome, tipo, unidade, capacidade, fkServidor) 
     const idComponente = componenteResult.insertId;
 
     await database.executar(`
-        INSERT INTO componentes_servidor (limite, fkServidor, fkComponentes)
+        INSERT INTO componentes_servidores (limite, fkServidor, fkComponentes)
         VALUES (?, ?, ?);
     `, [capacidade, fkServidor, idComponente]);
 }
@@ -48,7 +52,7 @@ async function cadastrarComponente(nome, tipo, unidade, capacidade, fkServidor) 
 function listarServidores(idEmpresa) {
 
     var instrucao = `
-        SELECT
+                SELECT
             s.idServidor,
             s.nome,
             s.estado,
@@ -60,12 +64,15 @@ function listarServidores(idEmpresa) {
 
         FROM servidor s JOIN zona z ON z.idZona = s.fkZona
             JOIN datacenter d ON d.idDataCenter = z.fkDataCenter
-            JOIN usuario u ON u.idUsuario = d.fkUsuarioDataCenter
-            JOIN papel p ON p.idPapel = u.fkPapel
-            LEFT JOIN componentes_servidor cs ON cs.fkServidor = s.idServidor
+		JOIN datacenters_gestores dg 
+        ON dg.fk_datacenter = d.idDataCenter 
+        JOIN usuario u
+        ON u.idUsuario = dg.fk_usuario
+        JOIN papel p ON u.fkPapel = p.idPapel
+            LEFT JOIN componentes_servidores cs ON cs.fkServidor = s.idServidor
             LEFT JOIN componentes c ON c.idComponente = cs.fkComponentes
 
-        WHERE p.fkEmpresa = ?
+        WHERE p.fkEmpresa =  ? 
         GROUP BY s.idServidor, s.nome, s.estado
         ORDER BY s.idServidor;
     `;

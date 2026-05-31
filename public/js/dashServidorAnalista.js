@@ -184,8 +184,7 @@ function adicionarComponente() {
             unidade,
             capacidade
         })
-    })
-        .then(async res => {
+    }).then(async res => {
 
             const data = await res.json();
             if (!res.ok) {
@@ -195,8 +194,7 @@ function adicionarComponente() {
             loadingModal()
             fecharComponente();
             mostrarServidores();
-        })
-        .catch(err => {
+        }).catch(err => {
             console.error(err);
             alert(err);
         });

@@ -119,6 +119,8 @@ function selecionarAlerta(data) {
 	const mapa = document.getElementById("mapa");
 	const titulo = document.getElementById("dataCenterTitulo")
 	const voltar = document.getElementById("voltar")
+	const mttr = document.getElementById("graficoMttr");
+	const sla = document.getElementById("slaArea");
 
 	let dataSelecionado = data;
 	let nome;
@@ -133,11 +135,13 @@ function selecionarAlerta(data) {
 
 	titulo.innerHTML = nome
 
+	mttr.style.display = "flex"
 	voltar.style.display = "flex";
 	kpis.style.display = "flex";
 	parte1.style.display = "flex";
 	scrollAlertas.style.display = "flex";
 	mapa.style.display = "none";
+	sla.style.display = "block"
 }
 
 function voltar() {
@@ -147,12 +151,16 @@ function voltar() {
 	const mapa = document.getElementById("mapa");
 	const titulo = document.getElementById("dataCenterTitulo")
 	const voltar = document.getElementById("voltar")
+	const mttr = document.getElementById("graficoMttr");
+	const sla = document.getElementById("slaArea");
 
 	titulo.innerHTML = ""
 
+	mttr.style.display = "none"
 	voltar.style.display = "none";
 	kpis.style.display = "none";
 	parte1.style.display = "none";
 	scrollAlertas.style.display = "none";
 	mapa.style.display = "block";
+	sla.style.display = "none"
 }

@@ -18,6 +18,8 @@ var falecosnosRouter = require("./src/routes/faleconosco")
 var servidorRouter = require("./src/routes/servidor")
 var zonaRouter = require("./src/routes/zona");
 var sessaoRouter = require("./src/routes/sessao");
+var financeira = require("./src/routes/financeiraRoute");
+var buscarzonasRouter = require("./src/routes/buscarzona")
 var dashOperacionalRouter = require("./src/routes/dashOperacional");
 
 // middlewares
@@ -33,8 +35,6 @@ app.use("/enviar", falecosnosRouter)
 app.use("/servidor", servidorRouter)
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
-app.use("/dashOperacional", dashOperacionalRouter);
-
 
 
 

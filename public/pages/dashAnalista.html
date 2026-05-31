@@ -18,17 +18,9 @@
 
 </head>
 
-<body>
-    <div id="modalGrafico" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">
-                &times;
-            </span>
-            <h2 id="tituloModal"></h2>
-            <div id="conteudoModal"></div>
-        </div>
-    </div>
-    <header>
+<body onload="buscarDadosZona()">
+
+    <header>        
         <nav>
             <div class="logo-nav" onclick="fnNavegar('/')">
                 <a href="../pages/index.html">
@@ -101,416 +93,536 @@
         </div>
 
         <div class="corpoDash">
+
+
             <div class="div_titulo">
-                <h1>Panaroma Geral</h1>
+                <h1>Panoroma Geral</h1>
                 <h2>Visão consolidada de toda a sua infraestrutura.</h2>
             </div>
 
             <div id="container_kpis">
-                <div class="div_kpi kpi1">
+                <div class="div_kpi kpi1" onclick="abrirModal()">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>SERVIDORES CRÍTICOS</h3>
+                            <h3 style="font-size: 18px;">ZONA COM A MAIOR QUANTIDADE DE ALERTAS EM ABERTO</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1>1/3</h1>
+                            <h1>ZONA-A</h1>
                             <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
                         </div>
-                        <h4>  Servidores em estado críticos X Total.</h4>
+                        <div class="div_situacao">
+                            <h1 style="font-size: 20px;">06/30 EM ALERTA</h1>
+                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="div_kpi kpi2">
+                <div class="div_kpi kpi2" onclick="abrirModal()">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>P99 RAM</h3>
+                            <h3>ZONA COM MAIOR MTTR</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1>78.4%</h1>
+                            <h1>ZONA-B</h1>
+                            <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
+                        </div>
+                        <div class="div_situacao">
+                            <h1 style="font-size: 20px;">2 HORAS</h1>
                             <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
                         </div>
                         <div class="status">
-                            <h4>99% do tempo, o uso está ≤ este valor.</h4>
+                            <h4>TEMPO ESTIPULADO PELA SLA: 3 HORAS</h4>
                         </div>
                     </div>
                 </div>
 
-                <div class="div_kpi kpi3">
+                <div class="div_kpi kpi3" onclick="abrirModal()">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>P99 CPU</h3>
+                            <h3>TRAFEGO TOTAL DE JOGADORES NO DATACENTER</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1>85.7%</h1>
+                            <h1>1000</h1>
                             <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
                         </div>
                         <div class="div_especiCrit">
                             
-                            <div class="div_esp2">
-                                <div class="conteudo_esp">
-                                    <img src="./../assets/dashboard-icons/icon_checkCinza.svg" alt="">
-                                    <h5>Livre: <span id="qntLivre">4.1</span><span class="uniMedidaRAM">GB</span></h5>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
 
-                <div class="div_kpi kpi4">
+                <div class="div_kpi kpi4" onclick="abrirModal()">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>USO DE DISCO</h3>
+                            <h3 style="font-size: 18px;">ZONA COM A MAIOR QUANTIDADE DE SERVIDORES SOBRECARREGADOS</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1>65.9%</h1>
+                            <h1>ZONA-A</h1>
                             <img src="../assets/dashboard-icons/icon_check.svg" alt="">
                         </div>
-                        <div class="status">
-                            <h4><span id="qntUsadaDisco">31</span><span class="uniMedidaDisco">TB</span> <span
-                                    id="qntTotalDisco">47</span><span class="uniMedidaDisco">TB</span></h4>
+                        <div class="div_situacao">
+                            <h1 style="font-size: 20px;">39/40 SOBRECARREGADOS</h1>
+                            <img src="../assets/dashboard-icons/icon_check.svg" alt="">
                         </div>
+
                     </div>
                 </div>
 
-                <div class="div_kpi kpi5">
-                    <div class="info_kpi">
-                        <div class="containerTitulo">
-                            <h3>ALTA LATÊNCIA</h3>
-                        </div>
-                        <div class="div_situacao">
-                            <h1>2/3</h1>
-                            <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
-                        </div>
-                        <div class="status">
-                            <h4>Quantidade de servidores com alta latência.</h4>
-                        </div>
-                    </div>
-                </div>
+
             </div>
+
+                           <div id="modal" style="display: none; background-color:  brown; height: 100%; width: 100%;     z-index: 999; position: fixed;">
+    <h1>lalalalalal</h1>
+   </div>
 
             <div id="container_graficosP1">
                 <div id="servidores_criticos">
                     <div id="conteudoServCrit">
                         <div class="conteudoTitulo">
-                            <h1>Servidores Críticos</h1>
-                            <button onclick="verTodosServidores()">Ver todos os servidores (<span
+                            <h1>Servidores - Ordem de Criticidade</h1>
+                            <button onclick="">Ver todos os servidores (<span
                                     id="qntServ">4</span>)</button>
                         </div>
 
                         <div class="div_server">
+                            
                             <div class="div_nomeServer">
+                                <div class="div_titulos_info">
+                                <h1>1-</h1>
+                                
                                 <img src="./../assets/dashboard-icons/server.svg" alt="">
-                                <h4><span id="nomeServer">SRV-DC01-WEB-05</span></h4>
-                            </div>
 
-                            <div class="div_compCadastrados">
-                                <div class="div_componente">
-                                    <div class="compTitulo">
-                                        <div class="compIcon">
-                                            <img src="./../assets/dashboard-icons/icon_kpiCPU.svg" alt="">
-                                            <h5>CPU</h5>
-                                        </div>
-                                    </div>
-                                    <div class="divStatus">
-                                        <h5><span id="qntUsoCPU">95.7</span>%</h5>
-                                        <div class="barra">
-                                            <div class="progresso" style="width: 95.7%; background-color: #FF5252;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="div_especiCrit">
-                                        <div class="div_esp1">
-                                            <div class="conteudo_esp">
-                                                <img src="./../assets/dashboard-icons/user.svg" alt="">
-                                                <h5>Usuário: <span id="porcentagemUsoUser">24</span>%</h5>
-                                            </div>
-                                        </div>
-                                        <div class="div_esp2">
-                                            <div class="conteudo_esp">
-                                                <img src="./../assets/dashboard-icons/settings.svg" alt="">
-                                                <h5>Sistema: <span id="porcentagemUsoSys">18</span>%</h5>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="titulos_info">
+
+                                <h4><span id="nomeServer">ZONA-A</span></h4>
+                                <h4><span id="nomeServer">SERVIDOR-DC01</span></h4>
                                 </div>
-
-                                <div class="div_componente">
-                                    <div class="compTitulo">
-                                        <div class="compIcon">
-                                            <img src="./../assets/dashboard-icons/icon_kpiRAM.svg" alt="">
-                                            <h5>RAM</h5>
-                                        </div>
-                                    </div>
-                                    <div class="divStatus">
-                                        <h5><span id="qntUsoRAM">65.2</span>%</h5>
-                                        <div class="barra">
-                                            <div class="progresso" style="width: 65.2%; background-color: #F5CC4D;">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="div_especiCrit">
-                                        <div class="div_esp1">
-                                            
-                                        </div>
-                                        <div class="div_esp2">
-                                            <div class="conteudo_esp">
-                                                <img src="./../assets/dashboard-icons/icon_checkCinza.svg" alt="">
-                                                <h5>Livre: <span id="qntLivre">4.1</span><span
-                                                        class="uniMedidaRAM">GB</span></h5>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-
-                                <div class="div_componente">
-                                    <div class="compTitulo">
-                                        <div class="compIcon">
-                                            <img src="./../assets/dashboard-icons/icon_kpiDisco.svg" alt="">
-                                            <h5>DISCO</h5>
-                                        </div>
-                                    </div>
-                                    <div class="divStatus">
-                                        <h5><span id="qntUsoDisco">14.1</span>%</h5>
-                                        <div class="barra">
-                                            <div class="progresso" style="width: 14.1%;"></div>
-                                        </div>
-                                    </div>
-                                    <div class="div_especiCrit">
-                                        <div class="div_esp1">
-                                            <div class="conteudo_esp">
-                                                <img src="./../assets/dashboard-icons/icon_CircleMeio.svg" alt="">
-                                                <h5>Usado: <span id="usadoDisco">1.4</span>TB</h5>
-                                            </div>
-                                        </div>
-                                        <div class="div_esp2">
-                                            <div class="conteudo_esp">
-                                                <img src="./../assets/dashboard-icons/icon_circleCheio.svg" alt="">
-                                                <h5>Total: <span id="totalDisco">10</span>TB</h5>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div  class="div_info_cpu">
+                                <img src="./../assets/icon_cpu.png" alt="">
+                                <h4>CPU</h4>
+                                <h4>94%</h4>
+                                </div>
+                                <div class="div_info_ram">
+                                <img src="./../assets/icon_ram.png" alt="">
+                                <h4>RAM</h4>
+                                <h4>80%</h4>
+                                </div>
+                                <div class="div_info_disco">
+                                <img src="./../assets/icon_disco.png" alt="">
+                                <H4>DISCO</H4>
+                                <h4>50%</h4>
+                                </div>
+                                <div class="alerta_info">
+                                    <h1>CPU - ALTA</h1>
                                 </div>
                             </div>
                         </div>
+
+
+                                                <div class="div_server">
+                            
+                            <div class="div_nomeServer">
+                                <div class="div_titulos_info">
+                                <h1>2-</h1>
+                                
+                                <img src="./../assets/dashboard-icons/server.svg" alt="">
+
+                                <div class="titulos_info">
+
+                                <h4><span id="nomeServer">ZONA-A</span></h4>
+                                <h4><span id="nomeServer">SERVIDOR-DC01</span></h4>
+                                </div>
+                                </div>
+                                <div  class="div_info_cpu">
+                                <img src="./../assets/icon_cpu.png" alt="">
+                                <h4>CPU</h4>
+                                <h4>94%</h4>
+                                </div>
+                                <div class="div_info_ram">
+                                <img src="./../assets/icon_ram.png" alt="">
+                                <h4>RAM</h4>
+                                <h4>80%</h4>
+                                </div>
+                                <div class="div_info_disco">
+                                <img src="./../assets/icon_disco.png" alt="">
+                                <H4>DISCO</H4>
+                                <h4>50%</h4>
+                                </div>
+                                <div class="alerta_info">
+                                    <h1>CPU - ALTA</h1>
+                                </div>
+                            </div>
+
+
+                            
+                        </div>
+
+                                                <div class="div_server">
+                            
+                            <div class="div_nomeServer">
+                                <div class="div_titulos_info">
+                                <h1>3-</h1>
+                                
+                                <img src="./../assets/dashboard-icons/server.svg" alt="">
+
+                                <div class="titulos_info">
+
+                                <h4><span id="nomeServer">ZONA-A</span></h4>
+                                <h4><span id="nomeServer">SERVIDOR-DC01</span></h4>
+                                </div>
+                                </div>
+                                <div  class="div_info_cpu">
+                                <img src="./../assets/icon_cpu.png" alt="">
+                                <h4>CPU</h4>
+                                <h4>94%</h4>
+                                </div>
+                                <div class="div_info_ram">
+                                <img src="./../assets/icon_ram.png" alt="">
+                                <h4>RAM</h4>
+                                <h4>80%</h4>
+                                </div>
+                                <div class="div_info_disco">
+                                <img src="./../assets/icon_disco.png" alt="">
+                                <H4>DISCO</H4>
+                                <h4>50%</h4>
+                                </div>
+                                <div class="alerta_info">
+                                    <h1>CPU - ALTA</h1>
+                                </div>
+                            </div>
+                        </div>
+
+
+                                                <div class="div_server">
+                            
+                            <div class="div_nomeServer">
+                                <div class="div_titulos_info">
+                                <h1>4-</h1>
+                                
+                                <img src="./../assets/dashboard-icons/server.svg" alt="">
+
+                                <div class="titulos_info">
+
+                                <h4><span id="nomeServer">ZONA-A</span></h4>
+                                <h4><span id="nomeServer">SERVIDOR-DC01</span></h4>
+                                </div>
+                                </div>
+                                <div  class="div_info_cpu">
+                                <img src="./../assets/icon_cpu.png" alt="">
+                                <h4>CPU</h4>
+                                <h4>94%</h4>
+                                </div>
+                                <div class="div_info_ram">
+                                <img src="./../assets/icon_ram.png" alt="">
+                                <h4>RAM</h4>
+                                <h4>80%</h4>
+                                </div>
+                                <div class="div_info_disco">
+                                <img src="./../assets/icon_disco.png" alt="">
+                                <H4>DISCO</H4>
+                                <h4>50%</h4>
+                                </div>
+                                <div class="alerta_info">
+                                    <h1>CPU - ALTA</h1>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
                     </div>
                 </div>
 
                 <div class="div_alertas-mae">
-                    <div class="div_alertas-conteudo">
-                        <h1>Alertas do dia</h1>
-                        <div class="div_alertas">
-                            <div class="div_alerta urgente">
-                                <div class="div_conteudoAlert">
-                                    <div class="conteudoTitulo">
-                                        <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
-                                        <h3>SRV-DC01-WEB-05</h3>
-                                        <h5>2 min atrás</h5>
-                                    </div>
-                                    <h4>CPU acima de 95% por mais de 10 minutos.</h4>
-                                </div>
-                            </div>
-
-                            <div class="div_alerta importante">
-                                <div class="div_conteudoAlert">
-                                    <div class="conteudoTitulo">
-                                        <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
-                                        <h3>SRV-DC01-DB-12</h3>
-                                        <h5>15 min atrás</h5>
-                                    </div>
-                                    <h4>Uso de RAM acima de 92% por mais de 5 minutos.</h4>
-                                </div>
-                            </div>
-
-                            <div class="div_alerta urgente">
-                                <div class="div_conteudoAlert">
-                                    <div class="conteudoTitulo">
-                                        <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
-                                        <h3>SRV-FK02-GM-02</h3>
-                                        <h5>20 min atrás</h5>
-                                    </div>
-                                    <h4>Uso de RAM acima de 92% por mais de 5 minutos.</h4>
-                                </div>
-                            </div>
-
-                            <div class="div_alerta importante">
-                                <div class="div_conteudoAlert">
-                                    <div class="conteudoTitulo">
-                                        <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
-                                        <h3>SRV-DC01-WEB-08</h3>
-                                        <h5>21 min atrás</h5>
-                                    </div>
-                                    <h4>Uso de CPU acima de 85%.</h4>
-                                </div>
-                            </div>
-
-                           
-                        </div>
+                    <div class="titulo_relatorios">
+                    <h1>RELATORIOS SEMANAIS ZONAS</h1>
                     </div>
-                </div>
-            </div>
+                    <br>
 
-<div id="container_graficosP2">
-<div class="grafico1">
-    <h1>Servidores Estressados X Sobrecarregados</h1>
-    <div class="div_graficoUsoGeral">
-        <canvas id="graficoUso"></canvas>
-    </div>
-</div>
-
-<div class="div_relatorios-mae">
-    <div class="div_relatorio-conteudo">
-        <h1>Relatórios</h1>
-        <div class="div_relatorios">
-            <div class="div_relatorio">
-                <div class="div_conteudoRel">
-                    <div class="conteudoRelatorio" >
+                    <div class="cards_relatorios">
+                        <div class="conteudoRelatorio" >
                         <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
                         <h3><u>RelatorioDia-30-04-2026</u></h3>
                     </div>
-                    <div class="conteudoRelatorio">
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>RelatorioDia-28-04-2026</u></h3>
-                    </div>
-                    <div class="conteudoRelatorio">
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>RelatorioDia-27-04-2026</u></h3>
-                    </div>
-                    <div class="conteudoRelatorio">
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>Relatorio-Semana3-04-2026</u></h3>
-                    </div>
-                    <div class="conteudoRelatorio">
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>Relatorio-Semana2-04-2026</u></h3>
-                    </div>
-                    <div class="conteudoRelatorio">
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>Relatorio-Semana1-04-2026</u></h3>
-                    </div>
-                   
+                    <br>
 
+                                        <div class="conteudoRelatorio" >
+                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
+                        <h3><u>RelatorioDia-30-04-2026</u></h3>
+                    </div>
+                    <br>
+
+                                        <div class="conteudoRelatorio" >
+                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
+                        <h3><u>RelatorioDia-30-04-2026</u></h3>
+                    </div>
+                    <br>
+
+                                        <div class="conteudoRelatorio" >
+                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
+                        <h3><u>RelatorioDia-30-04-2026</u></h3>
+                    </div>
+                    </div>
+            </div>
+<br>
+
+
+            <div class="div_titulo_zona" id="div_titulo_zona">
+                <div id="titulo_zona">
+                <h1>Selecione uma zona</h1>
+                <h2>Visão de primeiras investigações.</h2>
                 </div>
 
+                <select name="" id="select_zonas" onchange="buscarZonaGrafico()">
+                  <option value="valor_vazio">SELECIONE A ZONA</option>                
+                
+                </select>
+
+
+            </div>
+            <div style="height: 20px;">
+                <p style="color: white;">a</p>
             </div>
 
-        </div>
 
-    </div>
-                                                     <button id="btn_Relatorio">Gerar Relatório</button>
 
-</div>
-            </div>
-            <div id="container_graficosP3">
-                <div class="div_conteudoGraficoTop3">
-                    <div class="grafico3">
-                        <h1>Top 3 Processos - Uso de Ram</h1>
-                        <div class="div_graficoProc">
-                            <canvas id="graficoTopProcRAM"></canvas>
+
+                
+
+
+            <div id="graficos_parte2" style="display: none;">
+                <div class="primeria_divisao">
+                    <div class="primeiro_grafico">
+                        <div class="titulo_p1">
+                            <h1 id="titulo_grafico1">Trafego total comparado ao dia da semana anterior ZONA A</h1>
+                            <img src="../assets/icons_dashOpGestora/info.svg" alt="" onclick="abrirModal()">
                         </div>
-                        <hr>
+                        <div class="grafico_p1">
 
-                        <div class="top3">
-                            <div class="top">
-                                <div class="div_tituloPodio">
-                                    <div class="podio podio1">1</div>
-                                    <h4><span id="maisConsomeRam1">My SQL Server</span></h4>
-                                </div>
-                                <div class="div_valoresPodio">
-                                    <h4 id="podio1"><span id="totalUsado1">9</span>GB</h4>
-                                    <h5><span id="totalUsadoPorcent1">41.9</span>% do total</h5>
-                                </div>
-                            </div>
-
-                            <div class="top">
-                                <div class="div_tituloPodio">
-                                    <div class="podio podio2">2</div>
-                                    <h4><span id="maisConsomeRam2">Apache Web Server</span></h4>
-                                </div>
-                                <div class="div_valoresPodio">
-                                    <h4 id="podio2"><span id="totalUsado2">6.5</span>GB</h4>
-                                    <h5><span id="totalUsadoPorcent2">30.2</span>% do total</h5>
-                                </div>
-                            </div>
-
-                            <div class="top">
-                                <div class="div_tituloPodio">
-                                    <div class="podio podio3">3</div>
-                                    <h4><span id="maisConsomeRam3">Node.js Application</span></h4>
-                                </div>
-                                <div class="div_valoresPodio">
-                                    <h4 id="podio3"><span id="totalUsado3">6</span>GB</h4>
-                                    <h5><span id="totalUsadoPorcent3">27.9</span>% do total</h5>
-                                </div>
-                            </div>
+                            
+                              <canvas id="myChart"></canvas>
+                            
                         </div>
-
-                        <hr>
-
-                        <div class="totalTop3">
-                            <h4>Total do Top 3:</h4>
-                            <h4><span id="totalUsoRamTop3">21.5</span>GB (<span id="totalUsoPorcentRam">93.4%</span>)
-                            </h4>
+                        <div class="informacoes_p1">
+                            <div class="dia_atual_semana">
+                                <h1>Dia atual: Sabado</h1>
+                            </div>
+                            <div class="dia_anterior">
+                                    <div class="quadrado_roxo">
+                                    <p>a</p>
+                                </div>
+                                <h1>DIA DA SEMANA ANTERIOR</h1>
+                            </div>
+                            <div class="dia_atual">
+                                <div class="quadrado_ciano">
+                                    <p>a</p>
+                                </div>
+                                <h1>DIA ATUAL</h1>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="grafico4">
-                        <h1>Top 3 Processos - Uso de CPU</h1>
-                        <div class="div_graficoProc">
-                            <canvas id="graficoTopProcCPU"></canvas>
+                    <div class="segundo_grafico">
+                        <div class="titulo_p2">
+                            <h1 id="titulo_grafico2">Tempo de resolução de chamado em horas (MTTR) ZONA A</h1>
+                        <img src="../assets/icons_dashOpGestora/info.svg" alt="" onclick="abrirModal()">
                         </div>
-                        <hr>
-
-                        <div class="top3">
-                            <div class="top">
-                                <div class="div_tituloPodio">
-                                    <div class="podio podio1">1</div>
-                                    <h4><span id="maisConsomeCPU1">srcds_linux</span></h4>
-                                </div>
-                                <div class="div_valoresPodio">
-                                    <h4><span id="totalUsadoPorcentCPU1">48</span>%</h4>
-                                </div>
-                            </div>
-
-                            <div class="top">
-                                <div class="div_tituloPodio">
-                                    <div class="podio podio2">2</div>
-                                    <h4><span id="maisConsomeCPU2">SourceMod</span></h4>
-                                </div>
-                                <div class="div_valoresPodio">
-                                    <h4><span id="totalUsadoPorcentCPU2">14</span>%</h4>
-                                </div>
-                            </div>
-
-                            <div class="top">
-                                <div class="div_tituloPodio">
-                                    <div class="podio podio3">3</div>
-                                    <h4><span id="maisConsomeCPU3">My SQL Server</span></h4>
-                                </div>
-                                <div class="div_valoresPodio">
-                                    <h4><span id="totalUsadoPorcentCPU3">8</span>%</h4>
-                                </div>
-                            </div>
+                        <div class="grafico_p2">
+                                <canvas id="myChart2" style="width: 100%;"></canvas>
                         </div>
-
-                        <hr>
-
-                        <div class="totalTop3">
-                            <h4>Total do Top 3:</h4>
-                            <h4><span id="totalUsoPorcentCPU">70%</span></h4>
+                        <div class="informacoes_p2">
+                            <div class="tempo_sla">
+                                <div class="quadrado_vermelho">
+                                    <p>b</p>
+                                </div>
+                                <h1>TEMPO ESTIPULADO SLA</h1>
+                            </div>
+                            <div>
+                                <div class="mttr_atual">
+                                    <div class="quadrado_azul">
+                                        <p>b</p>
+                                    </div>
+                                    <h1>MTTR DA ZONA</h1>
+                                </div>
+                            </div>
                         </div>
                     </div>
-    </div>
-    </div>
+                </div>
+                <div class="segunda_divisao">
+                    <div class="terceiro_grafico">
+                                                <div class="titulo_p3">
+                            <h1 id="titulo_grafico3">Correlação entre o Disco em cache x P99 latencia da ZONA A</h1>
+                            <img src="../assets/icons_dashOpGestora/info.svg" alt="" onclick="abrirModal()">
+                        </div>
+                        <div class="grafico_p3">
+                            <canvas id="myChart3" style="width: 100%;"></canvas>
+                        </div>
+                        <div class="informacoes_p3">
+                                                        <div class="latencia">
+                                <div class="quadrado_amarelo">
+                                    <p>b</p>
+                                </div>
+                                <h1>LATENCIA</h1>
+                            </div>
+                            <div>
+                                <div class="disco_cache">
+                                    <div class="quadrado_azul">
+                                        <p>b</p>
+                                    </div>
+                                    <h1>DISCO EM CACHE</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quarto_grafico">
+                                                <div class="titulo_p4">
+                            <h1>Correlação entre a quantidade de computadores sobrecarregados x  <br> computadores com latencia alta</h1>
+                            <img src="../assets/icons_dashOpGestora/info.svg" alt="" onclick="abrirModal()">
+                        </div>
+                        <div class="grafico_p4">
+                            <canvas id="myChart4" style="width: 100%;"></canvas>
+                        </div>
+                        <div class="informacoes_p4">
+                                                        <div class="computadores_sobrecarregados">
+                                <div class="quadrado_laranja">
+                                    <p>b</p>
+                                </div>
+                                <h1>COMPUTADORES COM ALTA LATENCIA</h1>
+                            </div>
+                            <div>
+                                <div class="computadores_alta_latencia">
+                                    <div class="quadrado_roza">
+                                        <p>b</p>
+                                    </div>
+                                    <h1>COMPUTADORES SOBREECARREGADOS</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+
+   
+            
+
 
     <script>
         function verTodosServidores() {
             console.log("Ver todos os servidores");
         }
     </script>
+
+    <script src="../js/dashAnalista.js"></script>
+    <script src="../js/sessao.js"></script>
+    <script src="./../js/subMenu.js"></script>
+    <script src="./../js/modaisInfos.js"></script>
 </body>
-<script src="../js/dashAnalista.js"></script>
-<script src="../js/sessao.js"></script>
-<script src="./../js/subMenu.js"></script>
-<script src="./../js/modaisInfos.js"></script>
+
+<script>
+
+
+
+function buscarDadosZona(){
+    console.log("Estou buscando o dados da zona")
+
+    fetch("/bzonas", {
+        method: "POST",
+        headers: {
+                "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+                idUsuario: sessionStorage.ID_USUARIO
+            })
+
+    }).then(function(resposta) {
+        console.log("deu certo")
+        resposta_json = resposta.json()
+        return resposta_json
+       
+        
+    }).then(function(dados) {
+        
+         var zonas = dados.resultadoenvio
+         var mensagem = ""
+
+         for(i = 0; i < zonas.length; i++) {
+
+     
+            var zona_nome =  zonas[i].nome
+            mensagem  += `<option value="${zona_nome}">${zona_nome}</option>`
+
+         }
+
+         select_zonas.innerHTML += `${mensagem}`
+
+
+
+         
+
+        
+    }).catch(function(erro) {
+        console.log("deu merda")
+        console.log(erro)
+    })
+
+
+
+
+}
+
+
+function buscarZonaGrafico() {
+
+    
+
+    var valor_select_zona = select_zonas.value
+
+
+    if(valor_select_zona != "valor_vazio") {
+        console.log(`valor da zona atual é ${valor_select_zona} `)
+
+        titulo_zona.innerHTML = ` 
+                <h1>Panorama - ${valor_select_zona}</h1>
+                <h2>Visão de primeiras investigações.</h2>
+        
+        `
+
+    
+
+        graficos_parte2.style.display = "block"
+        
+        titulo_grafico1.innerHTML = `Trafego total comparado ao dia da semana anterior ${valor_select_zona}`
+        titulo_grafico2.innerHTML = `Tempo de resolução de chamado em horas (MTTR) ${valor_select_zona}`
+        titulo_grafico3.innerHTML = `Correlação entre o Disco em cache x P99 latencia da ${valor_select_zona} `
+        pegarDados(valor_select_zona)
+        
+    } else {
+                titulo_zona.innerHTML = ` 
+                <h1>Selecione uma zona</h1>
+                <h2>Visão de primeiras investigações.</h2>
+        
+        `
+              graficos_parte2.style.display = "none"
+    }
+
+}
+
+
+function pegarDados(dados) {
+    console.log(`Iniciando a plotagem da zona: ${dados} `)
+}
+</script>
+
 
 </html>
