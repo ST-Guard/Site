@@ -328,7 +328,7 @@ function renderizarPreditivo() {
     data: {
       labels,
       datasets: [
-        { label: 'Custo histórico', data: custosHistoricos, borderColor: '#66C0F4', backgroundColor: 'rgba(102,192,244,0.08)', borderWidth: 2, pointRadius: 3, tension: 0.35, fill: true },
+        { label: 'Custo histórico', data: custosHistoricos, borderColor: '#2C5D86', backgroundColor: 'rgba(44,93,134,0.07)', borderWidth: 2, pointRadius: 3, tension: 0.35, fill: true },
         { label: 'Custo previsto', data: custosPrevistos, borderColor: '#66C0F4', borderDash: [6,4], borderWidth: 2, pointRadius: 4, tension: 0.35, fill: false, spanGaps: false }
       ]
     },
@@ -340,8 +340,8 @@ function renderizarPreditivo() {
         tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${formatarMoeda(Number(ctx.raw || 0) * 1000)}` } }
       },
       scales: {
-        y: { ticks: { callback: valor => `${valor}k` }, grid: { color: 'rgba(255,255,255,0.08)' } },
-        x: { grid: { display: false } }
+        y: { ticks: { color: '#6B7E91', callback: valor => `${valor}k` }, grid: { color: 'rgba(216,227,238,0.8)' } },
+        x: { ticks: { color: '#6B7E91' }, grid: { display: false } }
       }
     }
   });
