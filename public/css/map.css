@@ -1,0 +1,28 @@
+.regiao-permitida {
+    cursor: pointer;
+}
+
+.regiao-permitida .shape {
+    opacity: 1;
+}
+
+.regiao-permitida .icon_state {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(102, 192, 244, 0.8));
+}
+
+.regiao-permitida:hover {
+    transform: scale(1.02);
+    transition: 0.2s;
+}
+
+.regiao-bloqueada {
+    cursor: not-allowed;
+}
+
+.regiao-bloqueada .shape,
+.regiao-bloqueada .icon_state,
+.regiao-bloqueada .label_icon_state {
+    opacity: 0.25;
+    filter: grayscale(1);
+}
