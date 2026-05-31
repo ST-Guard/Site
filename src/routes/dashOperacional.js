@@ -11,6 +11,13 @@ router.get("/listarRegioes/:idUsuario/", function (req, res) {
     dashOperacionalController.listarRegioes(req, res);
 });
 
+router.get("/listarRegioesDaEmpresa/:idEmpresa/", function (req, res) {
+    dashOperacionalController.listarRegioesDaEmpresa(req, res);
+});
+
+router.get("/buscarGestoraOpJson", function (req, res) {
+    dashOperacionalController.buscarGestoraOpJson(req, res);
+});
 module.exports = router;
 
 
