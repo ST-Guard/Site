@@ -1092,3 +1092,35 @@ header {
     width: 100%;
   }
 }
+
+
+.divSelecaoDatacenter{
+    width: 100%;
+    display: flex;
+    justify-content:flex-end;
+    margin-top: 1%;
+}
+
+.divSelecaoDatacenter button{
+    background-color: transparent;
+    cursor: pointer;
+    transform: translateY(+5px);
+
+}
+
+#selectDatacenter{
+    width: 23rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    border-radius: 3px;
+    background-color: transparent;
+    border: #1c4886 2px solid;
+    color: #4B5563;
+    outline: none;
+    cursor: pointer;
+}
+
+#selectDatacenter:focus {
+  background-color: #244770; /* Exemplo de um azul bem claro */
+  color: white;
+}

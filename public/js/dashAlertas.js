@@ -2,7 +2,9 @@ function fnNavegar(caminho){
     window.location.href = caminho
 }
 window.onload = () => {
-    buscarDados()
+    buscarDados(),
+        carregarRegioesDoGestor();
+
 }
 
 // if (!sessionStorage.ID_USUARIO) {
@@ -224,6 +226,65 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+const idUsuario = sessionStorage.ID_USUARIO;
+
+
+function carregarRegioesDoGestor() {
+    fetch(`/dashOperacional/listarRegioes/${idUsuario}`)
+        .then(resposta => {
+            if (!resposta.ok) {
+                throw new Error("Erro ao buscar regiões do gestor");
+            }
+
+            return resposta.json();
+        })
+        .then(regioes => {
+            liberarRegioesNoMapa(regioes);
+            sessionStorage.ID_REGIAO = regioes.idRegiao;
+        })
+        .catch(erro => {
+            console.error("Erro ao carregar regiões:", erro);
+        });
+}
+
+function liberarRegioesNoMapa(regioesPermitidas) {
+    const regioesPermitidasFormatadas = regioesPermitidas.map(regiao => {
+        return {
+            idRegiao: regiao.idRegiao,
+            estado: regiao.estado.toLowerCase()
+        };
+    });
+
+    const todosEstadosDoMapa = document.querySelectorAll("#map .state");
+
+    todosEstadosDoMapa.forEach(estadoMapa => {
+        const ufMapa = estadoMapa.dataset.state;
+
+        const regiaoEncontrada = regioesPermitidasFormatadas.find(regiao => regiao.estado === ufMapa);
+
+        if (regiaoEncontrada) {
+            estadoMapa.classList.add("regiao-permitida");
+            estadoMapa.classList.remove("regiao-bloqueada");
+
+            estadoMapa.onclick = function (event) {
+                event.preventDefault();
+
+                const idRegiao = regiaoEncontrada.idRegiao;
+
+                carregarDatacentersDoGestor(idRegiao);
+            };
+        } else {
+            estadoMapa.classList.add("regiao-bloqueada");
+            estadoMapa.classList.remove("regiao-permitida");
+
+            estadoMapa.onclick = function (event) {
+                event.preventDefault();
+                alert("Você não possui acesso aos datacenters desta região.");
+            };
+        }
+    });
+}
 function detalhes() {
     window.location = "dashServidorGestor.html"
 }

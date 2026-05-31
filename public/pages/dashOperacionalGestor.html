@@ -115,6 +115,11 @@
 
 
     <div class="SubcorpoPagina">
+      <div class="divSelecaoDatacenter">
+        
+
+        <button id="btnVoltar" onclick="voltar()"><img src="../assets/icons_dashOpGestora/undo-2.svg" alt=""></button>
+      </div>
       <div class="top-info">
         <div class="textoInicio">
           <div class="div_local">
@@ -123,7 +128,9 @@
           </div>
           <div class="div_nomeDatacenter">
             <img src="../assets/icons_dashOpGestora/hard-drive.svg" alt="Ícone de datacenter" width="18">
-            <h2>DATACENTER</h2>
+            <select id="selectDatacenter" onchange="mudarDatacenter()">
+              <h2><option value="#" disabled    >Selecione um datacenter</option></h2>
+        </select>
           </div>
         </div>
         <button class="btn-relatorios" onclick="mostrarRelatorios()">Relatórios</button>
@@ -368,7 +375,7 @@
                 <h3>Ranking de Servidores Críticos (Top 5).</h3>
                 <img src="../assets/icons_dashOpGestora/info.svg" alt="Icone de informacao">
               </div>
-              <p>Servidores que foram identificados com a saúde fora do ideal.</p>
+              <p>Servidores identificados com a saúde fora do ideal.</p>
             </div>
 
             <div class="tempo_card">
@@ -409,10 +416,10 @@
           <div class="header_card_servidores">
             <div>
               <div class="div_titulo_srv">
-                <h3>Projeção de saúde operacional.</h3>
+                <h3>Tendência de degradação</h3>
                 <img src="../assets/icons_dashOpGestora/info.svg" alt="Icone de informacao">
               </div>
-              <p>Estimativa para os próximos 7 dias</p>
+              <p>Estimativa para os próximos 7 dias da saúde dos servidores.</p>
             </div>
 
             <div class="tempo_card">
@@ -500,7 +507,7 @@
 
 
               </div>
-              <p>Uptime individual dos servidores no período analisado.</p>
+              <p>Uptime individual dos servidores, analisados sob o período dos últimos 7 dias..</p>
 
             </div>
 
@@ -620,7 +627,6 @@
 
 
     </div>
-    <script src="./../js/sessao.js"></script>
     <script src="./../js/dashGestor.js"></script>
     <script src="../js/modaisInfos.js"></script>
 </body>
