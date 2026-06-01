@@ -108,9 +108,9 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-buttons">
-        <div class="sidebar-button" onclick="navegarPara('../pages/dashOperacionalGestor.html')">
+        <div class="sidebar-button" onclick="navegarPara('../pages/inicioGestor.html')">
           <img src="../assets/dashboard-icons/icon_dashboard_azul.svg" alt="">
-          <p><a href="../pages/dashOperacionalGestor.html">Dashboard</a></p>
+          <p><a href="../pages/inicioGestor.html">Dashboard</a></p>
 
         </div>
          <div class="sidebar-button-select" onclick="navegarPara('../pages/dashFinanceiro.html')">
@@ -174,7 +174,7 @@
 
       <!-- KPI ROI ESTIMADO -->
       <div id="container_kpis">
-        <div class="div_kpi positivo" onclick="abrirModalRoi()" style="cursor:pointer;"
+        <div class="div_kpi positivo" id="kpi-roi-card" onclick="abrirModalRoi()" style="cursor:pointer;"
           data-descricao="Mede o retorno financeiro gerado pela infraestrutura no mês, comparando receita e custo."
           data-bom="ROI positivo, estável ou crescente. Acima de 30% indica boa eficiência."
           data-ruim="ROI em queda, muito baixo ou negativo indica custo crescendo mais que a receita.">
@@ -262,7 +262,7 @@
             </div>
             <div class="info_kpi">
               <div class="containerTitulo">
-                <h3>ORÇAMENTO APROVADO PARA (JAN/26)</h3>
+                <h3>ORÇAMENTO APROVADO PARA (Julho/26)</h3>
               </div>
               <div class="div_situacao">
                 <h1 id="kpi-budget-val">-</h1>
@@ -278,7 +278,7 @@
             <!-- POPUP DA KPI DE CIMA DE ORÇAMENTO -->
           <div class="popover-orcamento" id="budget-popover">
             <div class="titulo-popover-orcamento">
-              Orçamento Jan/26
+              Orçamento Jul/26
               <button class="fechar-popover-orcamento" onclick="fecharJanelaOrcamento(event)">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
@@ -319,7 +319,7 @@
           </div>
           <div class="info_kpi">
             <div class="containerTitulo">
-              <h3>CUSTO PREVISTO (JAN/26)</h3>
+              <h3>CUSTO PREVISTO (Jul/26)</h3>
             </div>
             <div class="div_situacao">
                 <h1 id="kpi-predicted">-</h1>
@@ -457,7 +457,7 @@
               <span id="model-mae-badge_custo" class="model-mae-badge-class">MAE — custo</span>
               <span id="model-mae-badge_receita" class="model-mae-badge-class">MAE — receita</span>
             </div>
-            <div class="sub-secao" style="color:rgba(255,255,255,0.5);">Projeção por regressão linear sobre o histórico de 12 meses (Jan–Dez 2025)</div>
+            <div class="sub-secao" style="color:rgba(255,255,255,0.5);">Projeção por regressão linear sobre o histórico de 12 meses</div>
           </div>
         
           <div class="badge-modelo-preditivo">

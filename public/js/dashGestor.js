@@ -17,7 +17,7 @@ function voltar(){
 
 function atualizarDiaSemana() {
     const dataAtual = new Date();
-    const cidadeSessao = sessionStorage.getItem("CIDADE") || "Região";
+    const cidadeSessao = sessionStorage.getItem("ESTADO") || "Região";
 
     const diasDaSemana = [
         "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
@@ -223,6 +223,11 @@ function renderizarKpisDatacenter(nomeDatacenter) {
     atualizarKpiCrescimentoIncidentes(datacenter);
     atualizarKpiUptime(datacenter);
     atualizarKpiServidoresCriticos(datacenter);
+    renderizarRankingServidoresCriticos(datacenter);
+    renderizarTendenciaDegradacao(datacenter);
+     renderizarUptimeServidores(datacenter);
+     renderizarGraficoSaudeZonas(datacenter);
+
 }
 function atualizarKpiScore(datacenter) {
     const score = datacenter.score ?? 0;
@@ -426,14 +431,264 @@ function atualizarEstiloKpi(idKpi, status) {
     }
 }
 
+//--------------------------------------------------------- WIDGETS SRV: CRITICOS E PREVISAO DE DEGRADAÇÃO ---------------------------------------
+
+function renderizarRankingServidoresCriticos(datacenter) {
+    const lista = document.getElementById("listaRankingServidoresCriticos");
+
+    if (!lista) {
+        console.error("Container listaRankingServidoresCriticos não encontrado no HTML.");
+        return;
+    }
+
+    const ranking = datacenter.rankingSrvCriticosTop5 || [];
+
+    lista.innerHTML = "";
+
+    if (ranking.length === 0) {
+        lista.innerHTML = `
+            <div class="item_servidor">
+                <p>Nenhum servidor crítico encontrado</p>
+                <span class="status-servidor servidor-indefinido">● Sem dados disponíveis</span>
+            </div>
+        `;
+        return;
+    }
+
+    ranking.forEach((servidor, index) => {
+        const nomeServidor = servidor.servidor || "Servidor não identificado";
+        const zona = servidor.zona || "Zona não informada";
+        const score = servidor.score ?? 0;
+        const status = servidor.status || "Indefinido";
+        const classeStatus = obterClasseStatusServidor(status);
+        console.log("Ranking servidor:", {
+            nomeServidor,
+            status,
+            classeStatus
+        });
+        const componentesTendencia = servidor.projecaoSaude?.componentesTendencia || [];
+
+        let textoComponentes = "";
+
+        if (componentesTendencia.length === 0) {
+            textoComponentes = `<p>Nenhum componente ficou acima do limite de forma relevante.</p>`;
+        } else {
+            componentesTendencia.forEach(componente => {
+                const nomeComponente = componente.componente || "Componente";
+                const persistenciaAtual = componente.persistenciaAtual ?? 0;
+
+                textoComponentes += `
+                    <p>
+                        ${persistenciaAtual}% das coletas de ${nomeComponente} ficaram acima do limite.
+                    </p>
+                `;
+            });
+        }
+
+        lista.innerHTML += `
+            <div class="item_servidor item_tendencia">
+        <div class="item">
+                <p>${index + 1}° ${nomeServidor}</p>
+                <span class="status-servidor ${classeStatus}">
+                    ● Score: ${score} | ${zona}
+                </span>
+</div>
+                 <div class="tooltip-tendencia">
+               <h4>Motivo da criticidade</h4>
+            ${textoComponentes}
+                </div>
+            </div>
+        `;
+    }
+
+);
+}
+
+function obterClasseStatusServidor(status) {
+    const statusNormalizado = String(status || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    if (statusNormalizado.includes("saudavel")) {
+        return "servidor-saudavel";
+    }
+
+    if (statusNormalizado.includes("atencao")) {
+        return "servidor-atencao";
+    }
+
+    if (statusNormalizado.includes("critico")) {
+        return "servidor-critico";
+    }
+
+    return "servidor-indefinido";
+}
+
+function renderizarTendenciaDegradacao(datacenter) {
+    const lista = document.getElementById("listaTendenciaDegradacao");
+
+    if (!lista) {
+        console.error("Container listaTendenciaDegradacao não encontrado no HTML.");
+        return;
+    }
+
+    const servidores = datacenter.rankingSrvCriticosTop5 || [];
+
+    lista.innerHTML = "";
+
+    if (servidores.length === 0) {
+        lista.innerHTML = `
+            <div class="item_servidor item_tendencia">
+                <p>Nenhum servidor com tendência encontrada</p>
+                <span class="status-servidor servidor-indefinido">● Sem dados disponíveis</span>
+            </div>
+        `;
+        return;
+    }
+
+    servidores.forEach((servidor, index) => {
+        const nomeServidor = servidor.servidor || "Servidor não identificado";
+        const projecao = servidor.projecaoSaude;
+
+        if (!projecao) {
+            lista.innerHTML += `
+                <div class="item_servidor item_tendencia">
+                    <p>${index + 1}° ${nomeServidor}</p>
+                    <span class="status-servidor servidor-indefinido">
+                        ● Sem projeção disponível
+                    </span>
+                </div>
+            `;
+            return;
+        }
+
+        const scoreAtual = projecao.scoreAtual ?? servidor.score ?? 0;
+        const scoreProjetado = projecao.scoreProjetado ?? 0;
+        const risco = projecao.risco || "Indefinido";
+        const motivo = projecao.motivo || "Sem motivo informado";
+        const classeStatus = obterClasseStatusServidor(risco);
+
+        lista.innerHTML += `
+    <div class="item_servidor item_tendencia">
+        <div class="item">
+            <p>${index + 1}° ${nomeServidor}</p>
+
+            <span class="status-servidor ${classeStatus}">
+                ● Score projetado: ${scoreProjetado} | Atual: ${scoreAtual}
+            </span>
+        </div>
+
+        <div class="tooltip-tendencia">
+            <h4>Motivo da projeção</h4>
+            <p>${motivo}</p>
+        </div>
+    </div>
+      `;
+    });
+}
+
+const saudeZonas = []
+const nomesZonas = []
+function renderizarUptimeServidores(datacenter) {
+  const lista = document.getElementById("listaUptimeServidores");
+
+  if (!lista) {
+    console.error("Container listaUptimeServidores não encontrado no HTML.");
+    return;
+  }
+
+  lista.innerHTML = "";
+
+  const servidores = [];
+
+  const zonas = datacenter?.zonas || [];
+
+  zonas.forEach(zona => {
+    const servidoresDaZona = zona.servidores || [];
+    
+    servidoresDaZona.forEach(servidor => {
+      servidores.push({
+        nome: servidor.servidor,
+        zona: servidor.zona,
+        uptimeOperacional: servidor.uptimeOperacional
+      });
+    });
+  });
+
+  if (servidores.length === 0) {
+    lista.innerHTML = `
+      <div class="item_servidor item_tendencia">
+        <p>Nenhum servidor encontrado</p>
+        <span class="status-servidor servidor-indefinido">● Sem dados disponíveis</span>
+      </div>
+    `;
+    return;
+  }
+
+  servidores.forEach((servidor, index) => {
+    const nomeServidor = servidor.nome || "Servidor não identificado";
+    const uptimeDados = servidor.uptimeOperacional;
+
+    if (!uptimeDados) {
+      lista.innerHTML += `
+        <div class="item_servidor item_tendencia" >
+          <p>${index + 1}° ${nomeServidor}</p>
+          <span class="status-servidor servidor-indefinido">● Sem uptime disponível</span>
+        </div>
+      `;
+      return;
+    }
+
+    const valorUptime = uptimeDados.uptime;
+    const statusUptime = uptimeDados.statusUptime || "Indefinido";
+    const horasIndisponivel = uptimeDados.tempoIndisponivelHoras || 0;
+
+    let classeStatus = "servidor-indefinido";
+
+    if (statusUptime === "Saudável") {
+      classeStatus = "servidor-saudavel";
+    } else if (statusUptime === "Atenção") {
+      classeStatus = "servidor-atencao";
+    } else if (statusUptime === "Crítico") {
+      classeStatus = "servidor-critico";
+    }
+
+    lista.innerHTML += `
+      <div class="item_servidor item_tendencia">
+        <div class="item">
+          <p>${index + 1}° ${nomeServidor}</p>
+          <span class="status-servidor ${classeStatus}">
+            ● Uptime: ${valorUptime}%
+          </span>
+        </div>
+
+        <div class="tooltip-tendencia">
+          <h4>Motivo do uptime</h4>
+          <p>Servidor ficou ${horasIndisponivel} horas indisponível.</p>
+        </div>
+      </div>
+    `;
+  });
+}
+
+
+
 //}//---------------------------------------------------------------------------------------------------------------------------------------------
 
+function renderizarGraficoSaudeZonas(datacenter) {
+  const ctxSaudeZonas = document.getElementById('graficoSaudeZonas');
 
-// Precisa do DOMcontentLoaded, pq garante que os elementos do html carreguem antes de pegar o id do char, saco?
-document.addEventListener('DOMContentLoaded', () => {
-const ctxSaudeZonas = document.getElementById('graficoSaudeZonas');
+  const nomesZonas = [];
+  const saudeZonas = [];
 
-  const dadosSaudeZonas = [95, 78, 88, 65, 91, 45, 65, 91, 45];
+  const zonas = datacenter?.zonas || [];
+
+  zonas.forEach(zona => {
+    nomesZonas.push(zona.zona);
+    saudeZonas.push(zona.score);
+  });
 
   function definirCorZona(score) {
     if (score >= 80) {
@@ -448,10 +703,10 @@ const ctxSaudeZonas = document.getElementById('graficoSaudeZonas');
   new Chart(ctxSaudeZonas, {
     type: 'bar',
     data: {
-      labels: ['Zona A', 'Zona B', 'Zona C', 'Zona D', 'Zona E', 'Zona F','Zona G', 'Zona H', 'Zona I'],
+      labels: nomesZonas,
       datasets: [{
-        data: dadosSaudeZonas,
-        backgroundColor: dadosSaudeZonas.map(score => definirCorZona(score)),
+        data: saudeZonas,
+        backgroundColor: saudeZonas.map(score => definirCorZona(score)),
         borderRadius: 4,
         barThickness: 46
       }]
@@ -487,18 +742,48 @@ const ctxSaudeZonas = document.getElementById('graficoSaudeZonas');
       }
     }
   });
-   
+}
 
+let graficoAlertasSemana = null;
+
+function renderizarGraficoAlertas(datacenter) {
   const ctxIncidentesSemana = document.getElementById('graficoIncidentesSemana');
 
-  new Chart(ctxIncidentesSemana, {
+  if (!ctxIncidentesSemana) {
+    console.error("Canvas graficoIncidentesSemana não encontrado.");
+    return;
+  }
+
+  const dadosAlertas = datacenter?.graficoAlertasSemana || {};
+
+  const dias = [
+    "Segunda",
+    "Terça",
+    "Quarta",
+    "Quinta",
+    "Sexta",
+    "Sábado",
+    "Domingo"
+  ];
+
+  const qntAlertas = dias.map(dia => dadosAlertas[dia] || 0);
+
+  const media = dadosAlertas.media || 0;
+
+  const linhaMedia = dias.map(() => media);
+
+  if (graficoAlertasSemana !== null) {
+    graficoAlertasSemana.destroy();
+  }
+
+  graficoAlertasSemana = new Chart(ctxIncidentesSemana, {
     type: 'line',
     data: {
-      labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+      labels: dias,
       datasets: [
         {
           label: 'Alertas Diários',
-          data: [45, 34, 58, 42, 69, 29, 20],
+          data: qntAlertas,
           borderColor: '#2F80ED',
           backgroundColor: '#2F80ED',
           borderWidth: 3,
@@ -509,7 +794,7 @@ const ctxSaudeZonas = document.getElementById('graficoSaudeZonas');
         },
         {
           label: 'Linha da Média',
-          data: [42, 42, 42, 42, 42, 42, 42],
+          data: linhaMedia,
           borderColor: '#F5A400',
           borderWidth: 2,
           borderDash: [4, 4],
@@ -533,9 +818,9 @@ const ctxSaudeZonas = document.getElementById('graficoSaudeZonas');
       scales: {
         y: {
           beginAtZero: true,
-          max: 80,
+          suggestedMax: Math.max(...qntAlertas, media, 5),
           ticks: {
-            stepSize: 20,
+            stepSize: 5,
             color: '#6B7280'
           },
           grid: {
@@ -555,9 +840,8 @@ const ctxSaudeZonas = document.getElementById('graficoSaudeZonas');
       }
     }
   });
+}
 
-    atualizarGrafico();
-})
 
 
 function mostrarRelatorios(){
