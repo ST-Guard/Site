@@ -35,6 +35,7 @@ app.use("/enviar", falecosnosRouter)
 app.use("/servidor", servidorRouter)
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
+app.use("/financeira", financeira)
 
 
 
