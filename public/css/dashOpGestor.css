@@ -60,7 +60,6 @@ header {
     flex-direction: column;
     align-items: flex-start;
     box-sizing: border-box;
-    padding-left: 3%;
     padding-right: 4%;
 
 }
@@ -135,10 +134,31 @@ header {
     border-radius: 12px;
     padding: 16px;
     display: flex;
-    border: 1px solid;
-    border-color: var(--KPI-normal);
-    box-shadow: 1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0, 0, 0, 0.1);
+ 
     box-sizing: border-box;
+}
+
+
+.div_kpi.kpi-saudavel {
+    border: 1px solid var(--KPI-normal);
+    box-shadow: 1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.div_kpi.kpi-atencao {
+        border: 1px solid var(--KPI-importante);
+
+    box-shadow: 1.5px 1px 2px 1px #F5CC4D, 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.div_kpi.kpi-critico {
+    border: 1px solid var(--KPI-urgente);
+    box-shadow: 1.5px 1px 2px 1px #FF5252, 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.div_kpi.kpi-indefinido {
+    border: 1px solid #9CA3AF;
+
+    box-shadow: 1.5px 1px 2px 1px #9CA3AF, 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .info_kpi {
