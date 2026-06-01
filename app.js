@@ -39,6 +39,7 @@ app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
 app.use("/dashOperacional", dashOperacionalRouter);
 app.use("/financeira", financeira);
+app.use("/bzonas", buscarzonasRouter);
 
 // inicia o servidor
 app.listen(PORT, function () {
