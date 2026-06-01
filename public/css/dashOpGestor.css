@@ -37,7 +37,7 @@ header {
 }
 
 .sidebar {
-    width: 18%;
+    width: 12%;
     height: 100%;
     margin-top: 10vh;
     max-width: 100%;
@@ -60,7 +60,6 @@ header {
     flex-direction: column;
     align-items: flex-start;
     box-sizing: border-box;
-    padding-left: 3%;
     padding-right: 4%;
 
 }
@@ -135,10 +134,31 @@ header {
     border-radius: 12px;
     padding: 16px;
     display: flex;
-    border: 1px solid;
-    border-color: var(--KPI-normal);
-    box-shadow: 1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0, 0, 0, 0.1);
+ 
     box-sizing: border-box;
+}
+
+
+.div_kpi.kpi-saudavel {
+    border: 1px solid var(--KPI-normal);
+    box-shadow: 1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.div_kpi.kpi-atencao {
+        border: 1px solid var(--KPI-importante);
+
+    box-shadow: 1.5px 1px 2px 1px #F5CC4D, 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.div_kpi.kpi-critico {
+    border: 1px solid var(--KPI-urgente);
+    box-shadow: 1.5px 1px 2px 1px #FF5252, 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.div_kpi.kpi-indefinido {
+    border: 1px solid #9CA3AF;
+
+    box-shadow: 1.5px 1px 2px 1px #9CA3AF, 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .info_kpi {
@@ -328,7 +348,7 @@ header {
 .card_servidores {
     width: 50%;
     min-height: 240px;
-    border: 1px solid #9A9A9A;
+    border: 1px solid #949494;
     box-shadow: 3px 5px 15px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     padding: 20px;
@@ -394,6 +414,7 @@ header {
     width: 100%;
     max-height: 220px;
     overflow-y: auto;
+    background-color: #f7f7f7;
     border: 1px solid #9A9A9A;
     border-radius: 5px;
     padding: 10px;
@@ -404,6 +425,7 @@ header {
     width: 100%;
     min-height: 42px;
     border: 1px solid #9A9A9A;
+    background-color:white ;
     border-radius: 5px;
     margin-bottom: 16px;
     padding: 0 16px;
@@ -418,7 +440,7 @@ header {
 }
 
 .item_servidor p {
-    color: #6B7280;
+    color: #1c4886;
     font-size: 0.9rem;
     font-weight: 500;
 }
@@ -772,7 +794,7 @@ header {
     padding: 0 16px;
     display: flex;
     align-items: center;
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 500;
     box-sizing: border-box;
 }
@@ -1089,4 +1111,36 @@ header {
   .item_relatorio_gerado button {
     width: 100%;
   }
+}
+
+
+.divSelecaoDatacenter{
+    width: 100%;
+    display: flex;
+    justify-content:flex-end;
+    margin-top: 1%;
+}
+
+.divSelecaoDatacenter button{
+    background-color: transparent;
+    cursor: pointer;
+    transform: translateY(+5px);
+
+}
+
+#selectDatacenter{
+    width: 23rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    border-radius: 3px;
+    background-color: transparent;
+    border: #1c4886 2px solid;
+    color: #4B5563;
+    outline: none;
+    cursor: pointer;
+}
+
+#selectDatacenter:focus {
+  background-color: #244770; /* Exemplo de um azul bem claro */
+  color: white;
 }

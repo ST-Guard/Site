@@ -24,17 +24,21 @@ var buscarzonasRouter = require("./src/routes/buscarzona")
 var dadosAlertaRouter = require("./src/routes/alertas")
 var dadosAlertaRouter2 = require("./src/routes/alertas2")
 
+var dashOperacionalRouter = require("./src/routes/dashOperacional");
+
+
+
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
-// rotas
+
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
-app.use("/enviar", falecosnosRouter)
-app.use("/servidor", servidorRouter)
+app.use("/enviar", falecosnosRouter);
+app.use("/servidor", servidorRouter);
 app.use("/zonas", zonaRouter);
 app.use("/sessao", sessaoRouter);
 app.use("/bzonas", buscarzonasRouter)
@@ -44,9 +48,9 @@ app.use("/alertas", dadosAlertaRouter)
 app.use("/alertas2", dadosAlertaRouter2)
 
 //Rotas Financeir.a
+app.use("/dashOperacional", dashOperacionalRouter);
 app.use("/financeira", financeira);
-
-
+app.use("/bzonas", buscarzonasRouter);
 
 // inicia o servidor
 app.listen(PORT, function () {

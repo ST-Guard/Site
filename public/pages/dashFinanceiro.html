@@ -1,4 +1,3 @@
-<!doctype html>
 <html lang="pt-br">
 
 <head>
@@ -31,10 +30,10 @@
           <div class="sub-secao">Histórico de rentabilidade (%)</div>
         </div>
         <div class="botoes-periodo">
-          <button class="btn-periodo roi-period-btn" onclick="setRoiPeriod(1,this)">30 dias</button>
-          <button class="btn-periodo roi-period-btn" onclick="setRoiPeriod(2,this)">6 meses</button>
-          <button class="btn-periodo roi-period-btn active" onclick="setRoiPeriod(3,this)">12 meses</button>
-          <button class="btn-periodo roi-period-btn" onclick="setRoiPeriod(4,this)">YTD</button>
+          <button class="btn-periodo roi-period-btn" onclick="definirPeriodoRoi(1,this)">30 dias</button>
+          <button class="btn-periodo roi-period-btn" onclick="definirPeriodoRoi(2,this)">6 meses</button>
+          <button class="btn-periodo roi-period-btn active" onclick="definirPeriodoRoi(3,this)">12 meses</button>
+          <button class="btn-periodo roi-period-btn" onclick="definirPeriodoRoi(4,this)">YTD</button>
         </div>
       </div>
       <canvas id="roiChart" height="120"></canvas>
@@ -56,7 +55,7 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
             Imprimir
           </button>
-          <button class="btn-barra-ferramentas-relatorio fechar" onclick="closeReportModal()">
+          <button class="btn-barra-ferramentas-relatorio fechar" onclick="fecharModalRelatorio()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             Fechar
           </button>
@@ -70,7 +69,7 @@
   <!-- HEADER DA PAGINA -->
     <header>
     <nav>
-      <div class="logo-nav" onclick="fnNavegar('/')">
+      <div class="logo-nav" onclick="navegarPara('/')">
         <a href="../pages/index.html">
           <img src="./../assets/logos/smart data branco.png" alt="">
         </a>
@@ -109,32 +108,32 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-buttons">
-        <div class="sidebar-button" onclick="fnNavegar('../pages/dashGestor.html')">
+        <div class="sidebar-button" onclick="navegarPara('../pages/dashOperacionalGestor.html')">
           <img src="../assets/dashboard-icons/icon_dashboard_azul.svg" alt="">
-          <p><a href="../pages/dashGestor.html">Dashboard</a></p>
+          <p><a href="../pages/dashOperacionalGestor.html">Dashboard</a></p>
 
         </div>
-         <div class="sidebar-button-select" onclick="fnNavegar('../pages/dashFinanceiro.html')">
+         <div class="sidebar-button-select" onclick="navegarPara('../pages/dashFinanceiro.html')">
           <img src="../assets/dashFinanceiro/coin-icon-blue.svg" alt="">
           <p><a href="../pages/dashFinanceiro.html">Financeiro</a></p>
           
         </div>
-        <div class="sidebar-button" onclick="fnNavegar('../pages/dashServidorGestor.html')">
+        <div class="sidebar-button" onclick="navegarPara('../pages/dashServidorGestor.html')">
           <img src="../assets/dashboard-icons/icon_servidores_branco.svg" alt="">
           <p><a href="../pages/dashServidorGestor.html">Servidores</a></p>
           
         </div>
-        <div class="sidebar-button" onclick="fnNavegar('../pages/dashAlertas.html')">
+        <div class="sidebar-button" onclick="navegarPara('../pages/dashAlertas.html')">
           <img src="../assets/dashboard-icons/icon_alerta_branco.svg" alt="">
           <p><a href="../pages/dashAlertas.html">Alertas</a></p>
           
         </div>
-        <div class="sidebar-button" onclick="fnNavegar('../pages/dashFuncionario.html')">
+        <div class="sidebar-button" onclick="navegarPara('../pages/dashFuncionario.html')">
           <img src="../assets/dashboard-icons/icon_form_branco.svg" alt="">
           <p><a href="../pages/dashFuncionario.html">Funcionários</a></p>
           
         </div>
-        <div class="sidebar-button" onclick="fnNavegar('../pages/dashConfigGestor.html')">
+        <div class="sidebar-button" onclick="navegarPara('../pages/dashConfigGestor.html')">
           <img src="../assets/dashboard-icons/icon_config_branco.svg" alt="">
           <p><a href="../pages/dashConfigGestor.html">Configurações</a></p>
           
@@ -160,15 +159,11 @@
           <h2>Visão consolidada dos custos, receitas e consumo de toda a sua infraestrutura.</h2>
         </div>
         <div class="acoes-cabecalho">
-          <button class="btn-acao btn-acao-preditiva" id="currency-btn" >
+          <button class="btn-acao btn-acao-preditiva" onclick="abrirModalPreditivo()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg>
             Análise Preditiva
-          </button>
-          <button class="btn-acao" id="currency-btn" onclick="alternarMoeda()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-            Mudar para USD
           </button>
           <button class="btn-acao acao-primaria" onclick="document.getElementById('reports-section').scrollIntoView({behavior:'smooth',block:'start'})">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -179,70 +174,102 @@
 
       <!-- KPI ROI ESTIMADO -->
       <div id="container_kpis">
-        <div class="div_kpi positivo" onclick="abrirModalRoi()" style="cursor:pointer;">
+        <div class="div_kpi positivo" onclick="abrirModalRoi()" style="cursor:pointer;"
+          data-descricao="Mede o retorno financeiro gerado pela infraestrutura no mês, comparando receita e custo."
+          data-bom="ROI positivo, estável ou crescente. Acima de 30% indica boa eficiência."
+          data-ruim="ROI em queda, muito baixo ou negativo indica custo crescendo mais que a receita.">
+          <div class="tooltip-kpi">
+            <p>Mede o retorno financeiro gerado pela infraestrutura no mês, comparando receita e custo.</p>
+            <div><span class="tooltip-bom">Bom:</span> ROI positivo, estável ou crescente. Acima de 30% indica boa eficiência.</div>
+            <div><span class="tooltip-atencao">Atenção:</span> ROI em queda, muito baixo ou negativo indica custo crescendo mais que a receita.</div>
+          </div>
           <div class="info_kpi">
             <div class="containerTitulo">
-              <h3>ROI ESTIMADO (RECEITA VS CUSTO)</h3>
+              <h3>ROI ESTIMADO (RECEITA VS CUSTO) (MÊS)</h3>
             </div>
             <div class="div_situacao">
-              <h1 id="ROI_ESTIMADO">>+53.0%</h1>
+              <h1 id="ROI_ESTIMADO">-</h1>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" 
                 stroke="currentColor" stroke-width="2" style="color:#4CAF82;">
                 <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
                 <polyline points="16 7 22 7 22 13"/>
                 </svg>
             </div>
-            <h4>Margem líquida: <strong id="RECEITA_LIQUIDA">R$ 298.000</strong>. Clique para histórico.</h4>
-            <span class="badge-kpi badge-kpi-verde">▲ +0,2pp vs Nov/25</span>
+            <h4>Margem líquida: <strong id="RECEITA_LIQUIDA">-</strong>. Clique para histórico.</h4>
+            <span class="badge-kpi badge-kpi-verde" id="DELTA_ROI">-</span>
           </div>
         </div>
         
         <!-- KPI FATURAMENTO TOTAL  -->
-        <div class="div_kpi kpi-faturamento" onclick="toggleLineChart('receita')" style="cursor:pointer;">
+        <div class="div_kpi kpi-faturamento" onclick="alternarGraficoLinha('receita')" style="cursor:pointer;"
+          data-descricao="Receita estimada gerada pela infraestrutura no mês corrente."
+          data-bom="Faturamento crescente e acima do mês anterior."
+          data-ruim="Queda de faturamento ou crescimento menor que o aumento dos custos.">
+          <div class="tooltip-kpi">
+            <p>Receita estimada gerada pela infraestrutura no mês corrente.</p>
+            <div><span class="tooltip-bom">Bom:</span> Faturamento crescente e acima do mês anterior.</div>
+            <div><span class="tooltip-atencao">Atenção:</span> Queda de faturamento ou crescimento menor que o aumento dos custos.</div>
+          </div>
           <div class="info_kpi">
             <div class="containerTitulo">
               <h3>FATURAMENTO TOTAL (MÊS)</h3>
             </div>
             <div class="div_situacao">
-              <h1 id="kpi-rev-val" id="FATURAMENTO_TOTAL">R$ 860.000</h1>
+              <h1 id="kpi-rev-val">-</h1>
               <img src="../assets/dashboard-icons/icon_check.svg" alt="">
             </div>
             <h4>Receita estimada gerada pela infraestrutura no mês corrente.</h4>
-            <span class="badge-kpi badge-kpi-verde" id="kpi-rev-delta">▲ +R$ 35.000 vs Nov/25</span>
+            <span class="badge-kpi badge-kpi-verde" id="kpi-rev-delta">-</span>
           </div>
         </div>
 
         <!-- KPI CUSTO TOTAL DE INFRAESTRUTURA -->
-        <div class="div_kpi kpi-custo" onclick="toggleLineChart('custo')" style="cursor:pointer;">
+        <div class="div_kpi kpi-custo" onclick="alternarGraficoLinha('custo')" style="cursor:pointer;"
+          data-descricao="Soma de energia, rede, hardware, licenças e operação da infraestrutura no mês."
+          data-bom="Custo dentro do orçamento e crescendo menos que o faturamento."
+          data-ruim="Custo acima do orçamento ou subindo mais rápido que a receita.">
+          <div class="tooltip-kpi">
+            <p>Soma de energia, rede, hardware, licenças e operação da infraestrutura no mês.</p>
+            <div><span class="tooltip-bom">Bom:</span> Custo dentro do orçamento e crescendo menos que o faturamento.</div>
+            <div><span class="tooltip-atencao">Atenção:</span> Custo acima do orçamento ou subindo mais rápido que a receita.</div>
+          </div>
           <div class="info_kpi">
             <div class="containerTitulo">
               <h3>CUSTO TOTAL DE INFRAESTRUTURA (MÊS)</h3>
             </div>
             <div class="div_situacao">
-              <h1 id="kpi-cost-val">R$ 562.000</h1>
-              <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
+              <h1 id="kpi-cost-val">-</h1>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v10"></path><path d="M15 9.5c-.7-.7-1.7-1-3-1-1.7 0-3 .8-3 2s1.3 2 3 2 3 .8 3 2-1.3 2-3 2c-1.3 0-2.3-.3-3-1"></path></svg>
             </div>
             <h4>Soma de energia, hardware, licença e operação no mês corrente.</h4>
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;">
-              <span class="badge-kpi badge-kpi-vermelho" id="kpi-cost-delta">▲ +R$ 22.000 vs Nov/25</span>
-              <span class="badge-kpi" id="kpi-cost-budget-status">de <span id="kpi-cost-budget-ref">589.000</span> orçados</span>
+              <span class="badge-kpi badge-kpi-vermelho" id="kpi-cost-delta">-</span>
+              <span class="badge-kpi" id="kpi-cost-budget-status">de <span id="kpi-cost-budget-ref">-</span> orçados</span>
             </div>
           </div>
         </div>
 
         <!-- KPI ORÇAMENTO APROVADO (PROX. MÊS) -->
         <div class="envoltorio-popover-orcamento">
-          <div class="div_kpi kpi-orcamento" id="kpi-budget-card" onclick="toggleBudgetPopover(event)" style="cursor:pointer;">
+          <div class="div_kpi kpi-orcamento" id="kpi-budget-card" onclick="alternarJanelaOrcamento(event)" style="cursor:pointer;"
+            data-descricao="Valor aprovado para cobrir o custo previsto do próximo mês com margem de segurança."
+            data-bom="Orçamento maior ou igual ao custo previsto com margem suficiente."
+            data-ruim="Orçamento abaixo do custo previsto ou com pouca folga para variações.">
+            <div class="tooltip-kpi">
+              <p>Valor aprovado para cobrir o custo previsto do próximo mês com margem de segurança.</p>
+              <div><span class="tooltip-bom">Bom:</span> Orçamento maior ou igual ao custo previsto com margem suficiente.</div>
+              <div><span class="tooltip-atencao">Atenção:</span> Orçamento abaixo do custo previsto ou com pouca folga para variações.</div>
+            </div>
             <div class="info_kpi">
               <div class="containerTitulo">
                 <h3>ORÇAMENTO APROVADO PARA (JAN/26)</h3>
               </div>
               <div class="div_situacao">
-                <h1 id="kpi-budget-val" style="color:var(--KPI-importante);">R$ 360.000</h1>
-                <img src="../assets/dashboard-icons/icon_check.svg" alt="">
+                <h1 id="kpi-budget-val">-</h1>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h5"></path><path d="M9 15l2 2 4-5"></path></svg>
               </div>
               <h4>Baseado na previsão de regressão: <span id="kpi-budget-ref">—</span> + <span id="kpi-budget-margin-label">5</span>% de margem.</h4>
-              <span class="badge-kpi badge-kpi-amarelo" style="margin-top:4px;display:inline-flex;">
+              <span class="badge-kpi badge-kpi" style="margin-top:4px;display:inline-flex;">
                 <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;"><circle cx="12" cy="12" r="3"/></svg>
                 Clique para editar a margem
               </span>
@@ -252,7 +279,7 @@
           <div class="popover-orcamento" id="budget-popover">
             <div class="titulo-popover-orcamento">
               Orçamento Jan/26
-              <button class="fechar-popover-orcamento" onclick="closeBudgetPopover(event)">
+              <button class="fechar-popover-orcamento" onclick="fecharJanelaOrcamento(event)">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
@@ -273,36 +300,58 @@
               Margem de segurança
               <span><span id="budget-margin-display">5</span>%</span>
             </div>
-            <input class="slider-pop-orcamento" type="range" id="budget-margin-slider" min="0" max="20" value="5" step="0.5" oninput="onBudgetMarginChange(this.value)">
+            <input class="slider-pop-orcamento" type="range" id="budget-margin-slider" min="0" max="20" value="5" step="0.5" oninput="aoAlterarMargemOrcamento(this.value)">
             <div class="nota-pop-orcamento">Orçamento = regressão linear dos últimos 12 meses + margem. Recalculado automaticamente a cada mês.</div>
           </div>
         </div>
+        <div class="kpis-baixo-center">
 
+    
         <!-- KPI CUSTO PREVISTO (PROX. MÊS) -->
-        <div class="div_kpi kpi-previsto" onclick="scrollToPredict()" style="cursor:pointer;">
+        <div class="div_kpi kpi-previsto" onclick="abrirPredicaoPeloCartao()" style="cursor:pointer;"
+          data-descricao="Projeção de custo calculada por regressão linear com base no histórico financeiro."
+          data-bom="Custo previsto abaixo do orçamento e com tendência controlada."
+          data-ruim="Previsão acima do orçamento ou crescimento acelerado nos próximos meses.">
+          <div class="tooltip-kpi">
+            <p>Projeção de custo calculada por regressão linear com base no histórico financeiro.</p>
+            <div><span class="tooltip-bom">Bom:</span> Custo previsto abaixo do orçamento e com tendência controlada.</div>
+            <div><span class="tooltip-atencao">Atenção:</span> Previsão acima do orçamento ou crescimento acelerado nos próximos meses.</div>
+          </div>
           <div class="info_kpi">
             <div class="containerTitulo">
               <h3>CUSTO PREVISTO (JAN/26)</h3>
             </div>
             <div class="div_situacao">
-              <h1 id="kpi-predicted">R$ 568.000</h1>
-              <img src="../assets/dashboard-icons/icon_check.svg" alt="">
+                <h1 id="kpi-predicted">-</h1>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"></path><path d="M4 19h16"></path><path d="M8 15l3-3 3 2 5-7"></path><path d="M16 7h3v3"></path></svg>
             </div>
             <h4>Projeção por regressão linear sobre histórico 2025. <strong>Clique para análise</strong>.</h4>
+             <span class="badge-kpi badge-kpi" style="margin-top:4px;display:inline-flex;">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:3px;"><circle cx="12" cy="12" r="3"/></svg>
+                Clique para abrir janela de predição
+              </span>
           </div>
         </div>
 
         <!-- KPI DE ALERTAS ATIVOS  -->
-        <div class="div_kpi kpi-alertas">
-          <div class="info_kpi">
+        <div class="div_kpi kpi-alertas"
+          data-descricao="Quantidade de alertas financeiros ou operacionais ativos na infraestrutura."
+          data-bom="Nenhum alerta crítico e baixa quantidade de alertas ativos."
+          data-ruim="Alertas críticos ativos ou aumento recorrente de alertas no mês.">
+          <div class="tooltip-kpi">
+            <p>Quantidade de alertas financeiros ou operacionais ativos na infraestrutura.</p>
+            <div><span class="tooltip-bom">Bom:</span> Nenhum alerta crítico e baixa quantidade de alertas ativos.</div>
+            <div><span class="tooltip-atencao">Atenção:</span> Alertas críticos ativos ou aumento recorrente de alertas no mês.</div>
+          </div>
+          <div class="info_kpi" id="KPI_ALERTA_ID">
             <div class="containerTitulo">
-              <h3>ALERTAS ATIVOS NA INFRAESTRUTURA</h3>
+              <h3>ALERTAS ATIVOS NA INFRAESTRUTURA (MÊS)</h3>
             </div>
             <div class="div_situacao">
               <div style="display:flex;align-items:baseline;gap:8px;">
-                <h1 style="color:var(--KPI-negativo);">1</h1>
+                <h1 style="color:var(--KPI-negativo);">-</h1>
                 <span style="font-size:0.9rem;font-weight:600;color:var(--corFonteTexto);">Crítico</span>
-                <h1 style="color:#F5A623;font-size:1.6rem;">2</h1>
+                <h1 style="color:#F5A623;">-</h1>
                 <span style="font-size:0.9rem;font-weight:600;color:var(--corFonteTexto);">Alertas</span>
               </div>
               <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
@@ -310,6 +359,8 @@
             <h4>Crítico: DC02-CACHE-3 (ocioso). Alertas: DC01-WEB-05, DC05-EDGE-2.</h4>
           </div>
         </div>
+
+            </div>
 
         </div>
         
@@ -321,22 +372,20 @@
           <div class="cabecalho-cartao">
             <div>
               <div class="titulo-secao">Evolução de custos vs receita</div>
-              <div class="sub-secao">Período selecionável — linha tracejada = <strong>previsão</strong></div>
+              <div class="sub-secao">Compare custo e receita por período — linha tracejada = previsão de 3 meses</div>
             </div>
             <div class="botoes-periodo">
-              <button class="btn-periodo" onclick="setPeriod(1,this)">30 dias</button>
-              <button class="btn-periodo" onclick="setPeriod(2,this)">6 meses</button>
-              <button class="btn-periodo active" onclick="setPeriod(3,this)">12 meses</button>
-              <button class="btn-periodo" onclick="setPeriod(4,this)">YTD</button>
+              <button class="btn-periodo" onclick="definirPeriodoGrafico('6m',this)">6 meses</button>
+              <button class="btn-periodo active" onclick="definirPeriodoGrafico('12m',this)">12 meses</button>
+              <button class="btn-periodo" onclick="definirPeriodoGrafico('24h',this)">24Hrs</button>
             </div>
           </div>
           <canvas id="lineChart" height="130"></canvas>
           <div class="legenda-grafico">
-            <div class="item-legenda" onclick="toggleDataset(0)"><div class="ponto-legenda" style="background:#2C5D86;"></div> Custo</div>
-            <div class="item-legenda" onclick="toggleDataset(1)"><div class="ponto-legenda" style="background:#F5CC4D;"></div> Receita</div>
-            <div class="item-legenda" onclick="toggleDataset(2)"><div class="ponto-legenda tracejado" style="color:#66C0F4;"></div> Previsão Custo</div>
-            <div class="item-legenda" onclick="toggleDataset(3)"><div class="ponto-legenda tracejado" style="color:#FFF47C;"></div> Previsão Receita</div>
-            <div class="item-legenda" onclick="toggleDataset(4)"><div class="ponto-legenda tracejado" style="color:#F5CC4D;"></div> Orçamento</div>
+            <div class="item-legenda" onclick="alternarSerieGraficoLinha(0)"><div class="ponto-legenda" style="background:#2C5D86;"></div> Custo</div>
+            <div class="item-legenda" onclick="alternarSerieGraficoLinha(1)"><div class="ponto-legenda" style="background:#F5CC4D;"></div> Receita</div>
+            <div class="item-legenda" onclick="alternarSerieGraficoLinha(2)"><div class="ponto-legenda tracejado" style="color:#66C0F4;"></div> Previsão Custo</div>
+            <div class="item-legenda" onclick="alternarSerieGraficoLinha(3)"><div class="ponto-legenda tracejado" style="color:#9a7a1a;"></div> Previsão Receita</div>
           </div>
         </div>
         <!-- GRAFICO DE DONUTS -->
@@ -358,13 +407,13 @@
               <div class="sub-secao" id="bar-sub">Custo mensal — soma = R$ 562.000</div>
             </div>
             <div class="alternador-vista">
-              <button class="btn-alternador active" onclick="setBarView('custo',this)">
+              <button class="btn-alternador active" onclick="definirVisualizacaoBarra('custo',this)">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                 Custo
               </button>
-              <button class="btn-alternador" onclick="setBarView('roi',this)">
+              <button class="btn-alternador" onclick="definirVisualizacaoBarra('roi',this)">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                ROI por DC
+                ROI
               </button>
             </div>
           </div>
@@ -378,11 +427,11 @@
               <div class="sub-secao" id="table-sub">Maiores consumidores do orçamento mensal</div>
             </div>
             <div class="alternador-vista">
-              <button class="btn-alternador active" onclick="setTableView('servidores',this)">
+              <button class="btn-alternador active" onclick="definirVisualizacaoTabela('servidores',this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                 Servidores
               </button>
-              <button class="btn-alternador" onclick="setTableView('zonas',this)">
+              <button class="btn-alternador" onclick="definirVisualizacaoTabela('zonas',this)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 Zonas
               </button>
@@ -405,7 +454,8 @@
           <div class="predict-header-text">
             <div class="titulo-secao" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;">
               Análise Preditiva — Projeção de Custo e Receita
-              <span id="model-mae-badge" style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:rgba(44,93,134,0.15);color:#66C0F4;">MAE —</span>
+              <span id="model-mae-badge_custo" class="model-mae-badge-class">MAE — custo</span>
+              <span id="model-mae-badge_receita" class="model-mae-badge-class">MAE — receita</span>
             </div>
             <div class="sub-secao" style="color:rgba(255,255,255,0.5);">Projeção por regressão linear sobre o histórico de 12 meses (Jan–Dez 2025)</div>
           </div>
@@ -427,13 +477,13 @@
         <div class="seletor-mes">
           <span class="rotulo-seletor-mes">Horizonte de previsão</span>
           <div class="btns-rapidos-mes">
-            <button class="btn-mr" onclick="setForecastMonths(1,this)">1M</button>
-            <button class="btn-mr active" onclick="setForecastMonths(3,this)">3M</button>
-            <button class="btn-mr" onclick="setForecastMonths(6,this)">6M</button>
+            <button class="btn-mr" onclick="definirMesesPrevisao(1,this)">1M</button>
+            <button class="btn-mr active" onclick="definirMesesPrevisao(3,this)">3M</button>
+            <button class="btn-mr" onclick="definirMesesPrevisao(6,this)">6M</button>
           </div>
           <div class="envoltorio-slider-mes">
-            <input type="range" id="month-slider" min="1" max="12" value="3" oninput="onSliderInput(this.value)">
-            <div class="valor-slider" id="slider-display">3</div>
+            <input type="range" id="month-slider" min="1" max="6" value="3" oninput="aoAlterarControlePrevisao(this.value)">
+               <div class="valor-slider" id="slider-display">3</div>
             <div class="unidade-slider">meses</div>
           </div>
         </div>
@@ -444,47 +494,9 @@
         <div class="inferior-preditivo">
           <div>
             <div class="forecast-chart-label" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,0.55);margin-bottom:10px;">
-              <span>Curva de custo: histórico + projeção linear com IC 95%</span>
-              <span style="display:flex;align-items:center;gap:5px;font-size:10px;color:rgba(255,255,255,0.5);">
-                <span style="display:inline-block;width:18px;height:2px;background:repeating-linear-gradient(90deg,#F5CC4D 0,#F5CC4D 4px,transparent 4px,transparent 8px);"></span>
-                Orçamento (regressão+<span id="forecast-margin-label">5</span>%)
-              </span>
+              <span>Curva de custo e receita: histórico + projeção linear</span>
             </div>
             <canvas id="forecastChart" height="90"></canvas>
-          </div>
-          <div class="painel-risco">
-            <div class="titulo-risco">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              Alertas Preditivos por Servidor
-            </div>
-            <div class="item-risco alto">
-              <div class="info-risco">
-                <div class="servidor-risco">DC02-CACHE-3</div>
-                <div class="motivo-risco">Ofensor: Custo ocioso detectado. RAM/CPU baixos.</div>
-              </div>
-              <div class="badge-risco alto">Alto</div>
-            </div>
-            <div class="item-risco medio">
-              <div class="info-risco">
-                <div class="servidor-risco">DC05-EDGE-2</div>
-                <div class="motivo-risco">Tendência de custo +18%/mês baseada na Latência</div>
-              </div>
-              <div class="badge-risco medio">Médio</div>
-            </div>
-            <div class="item-risco medio">
-              <div class="info-risco">
-                <div class="servidor-risco">DC01-WEB-05</div>
-                <div class="motivo-risco">Custo de energia acima da média prevista</div>
-              </div>
-              <div class="badge-risco medio">Médio</div>
-            </div>
-            <div class="item-risco baixo">
-              <div class="info-risco">
-                <div class="servidor-risco">DC04-AUTH-1</div>
-                <div class="motivo-risco">Variáveis (CPU/RAM/Custo) estáveis</div>
-              </div>
-              <div class="badge-risco baixo">Baixo</div>
-            </div>
           </div>
         </div>
 
@@ -503,7 +515,7 @@
               <div class="sub-secao">Gere o fecho do mês ou consulte relatórios anteriores.</div>
             </div>
           </div>
-          <button class="btn-primario" onclick="openReportModal({month:'Dezembro 2025',gen:'02/01/2026',cost:562000,rev:860000,roi:53.0})">
+          <button class="btn-primario" onclick="abrirModalRelatorio({month:'Dezembro 2025',gen:'02/01/2026',cost:562000,rev:860000,roi:53.0})">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             Gerar relatório de Dezembro 2025
           </button>
