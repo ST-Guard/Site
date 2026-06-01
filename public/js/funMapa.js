@@ -1,9 +1,32 @@
 console.log("FUNMAP.JS CARREGOU");
 
-function fnNavegar(caminho) {
-    window.location.href = caminho;
+
+if (!sessionStorage.ID_USUARIO) {
+    conteiner_msg.innerHTML = "Você precisa estar logado!"
+    loadingModal()
+    window.location = "login.html";
 }
 
+function buscarDados() {
+    const idUsuario = sessionStorage.ID_USUARIO
+    
+    fetch(`/sessao/buscarUsuario/${idUsuario}`, {
+    })
+      .then(function (resposta) {
+        return resposta.json();
+    })
+    .then(function (dados) {
+        dados = dados[0]
+
+        username.innerHTML = dados.nomePessoa
+        cargoname.innerHTML = dados.cargo
+        if (dados.imagem) {
+            imagemPerfilCima.src = `/assets/imgsBd/${dados.imagem}`
+        } else {
+            imagemPerfilCima.src = "../assets/dashConfig/usuario.png"
+        }
+    })
+}
 const idUsuario = sessionStorage.getItem("ID_USUARIO");
 const idEmpresa = sessionStorage.getItem("FK_EMPRESA");
 const nomeEmpresa = sessionStorage.getItem("NOME_EMPRESA") || "Steam";
@@ -16,6 +39,8 @@ function iniciarMapa() {
     console.log("Iniciando mapa...");
     fecharPopupRegiao();
     carregarMapaOperacional();
+    buscarDados();
+
 }
 
 if (document.readyState === "loading") {
@@ -429,10 +454,12 @@ function fecharPopupRegiao() {
 
 function selecionarDatacenters() {
     window.location.href = "dashOperacionalGestor.html";
+
 }
 
 function selecionarAlerta() {
     window.location.href = "dashAlertas.html";
+ 
 }
 
 function limparSessao() {
