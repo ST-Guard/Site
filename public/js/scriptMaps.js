@@ -110,7 +110,6 @@
 
 
 
-let dataSelecionado = null;
 
 function selecionarAlerta(data) {
 	const kpis = document.getElementById("container_kpis");
@@ -122,16 +121,21 @@ function selecionarAlerta(data) {
 	const mttr = document.getElementById("graficoMttr");
 	const sla = document.getElementById("slaArea");
 
-	let dataSelecionado = data;
 	let nome;
+
+	sessionStorage.setItem('DATA', "")
 
 	if (data == 1) {
 		nome = "São Paulo"
+		sessionStorage.setItem('DATA', "SP")
 	} else if (data == 2) {
 		nome = "Rio de Janeiro"
+		sessionStorage.setItem('DATA', "RJ")
 	} else {
 		nome = "Porto Alegre"
+		sessionStorage.setItem('DATA', "RS")
 	}
+
 
 	titulo.innerHTML = nome
 
@@ -142,9 +146,14 @@ function selecionarAlerta(data) {
 	scrollAlertas.style.display = "flex";
 	mapa.style.display = "none";
 	sla.style.display = "block"
+
+	carregarDadosDashAlerta();
+	carregarDadosDashAlerta2();
 }
 
 function voltar() {
+	sessionStorage.setItem('DATA', "")
+
 	const kpis = document.getElementById("container_kpis");
 	const parte1 = document.getElementById("parte1");
 	const scrollAlertas = document.getElementById("lista_alertas");

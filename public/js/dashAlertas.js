@@ -1,8 +1,10 @@
-function fnNavegar(caminho){
+function fnNavegar(caminho) {
     window.location.href = caminho
 }
 window.onload = () => {
-    buscarDados()
+    buscarDados(),
+        carregarRegioesDoGestor();
+
 }
 
 // if (!sessionStorage.ID_USUARIO) {
@@ -12,80 +14,32 @@ window.onload = () => {
 
 function buscarDados() {
     const idUsuario = sessionStorage.ID_USUARIO
-    
+
     fetch(`/sessao/buscarUsuario/${idUsuario}`, {
     })
-      .then(function (resposta) {
-        return resposta.json();
-    })
-    .then(function (dados) {
-        dados = dados[0]
+        .then(function (resposta) {
+            return resposta.json();
+        })
+        .then(function (dados) {
+            dados = dados[0]
 
-        username.innerHTML = dados.nomePessoa
-        cargoname.innerHTML = dados.cargo
-        dataCenterTitulo.innerHTML = dados.nomeDataCenter
-        if (dados.imagem) {
-            imagemPerfilCima.src = `/assets/imgsBd/${dados.imagem}`
-        } else {
-            imagemPerfilCima.src = "../assets/dashConfig/usuario.png"
-        }
-    })
+            username.innerHTML = dados.nomePessoa
+            cargoname.innerHTML = dados.cargo
+            dataCenterTitulo.innerHTML = dados.nomeDataCenter
+            if (dados.imagem) {
+                imagemPerfilCima.src = `/assets/imgsBd/${dados.imagem}`
+            } else {
+                imagemPerfilCima.src = "../assets/dashConfig/usuario.png"
+            }
+        })
 }
-
-
-
-function mudarAlerta1() {
-    const img = document.querySelector('.checkbox1 button img');
-    if (img && img.src.includes("checkAlerta.png")) {
-        img.src = "../assets/dashboard-icons/checkPositivo.png";
-    } else if (img) {
-        img.src = "../assets/dashboard-icons/checkAlerta.png";
-    }
-}
-
-function mudarAlerta2() {
-    const img = document.querySelector('.checkbox2 button img');
-    if (img && img.src.includes("checkAlerta.png")) {
-        img.src = "../assets/dashboard-icons/checkPositivo.png";
-    } else if (img) {
-        img.src = "../assets/dashboard-icons/checkAlerta.png";
-    }
-}
-
-function mudarAlerta3() {
-    const img = document.querySelector('.checkbox3 button img');
-    if (img && img.src.includes("checkAlerta.png")) {
-        img.src = "../assets/dashboard-icons/checkPositivo.png";
-    } else if (img) {
-        img.src = "../assets/dashboard-icons/checkAlerta.png";
-    }
-}
-
-function mudarAlerta4() {
-    const img = document.querySelector('.checkbox4 button img');
-    if (img && img.src.includes("checkAlerta.png")) {
-        img.src = "../assets/dashboard-icons/checkPositivo.png";
-    } else if (img) {
-        img.src = "../assets/dashboard-icons/checkAlerta.png";
-    }
-}
-
-function mudarAlerta5() {
-    const img = document.querySelector('.checkbox5 button img');
-    if (img && img.src.includes("checkAlerta.png")) {
-        img.src = "../assets/dashboard-icons/checkPositivo.png";
-    } else if (img) {
-        img.src = "../assets/dashboard-icons/checkAlerta.png";
-    }
-}
-
 
 document.addEventListener("DOMContentLoaded", () => {
     const alerta = document.getElementById("Alerta");
     const distribuicao = document.getElementById("distribuicao");
     const mttr = document.getElementById("mttr")
 
-    new Chart(alerta, {
+    window.chartAlerta = new Chart(alerta, {
         type: "bar",
         data: {
             labels: ["Sem 1", "Sem 2", "Sem 3", "Sem 4"],
@@ -117,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
             plugins: {
                 title: {
                     display: true,
-                    text: 'Alertas por semana',
+                    text: 'Distribuição de alertas por severidade (último mês)',
                     align: 'start',
                     font: {
                         size: 18
@@ -125,33 +79,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 subtitle: {
                     display: true,
-                    text: 'Distribuição de alertas por severidade(último mês)',
+                    text: 'Máximo esperado: Baixos: 10 - 20 | Médios: 2 - 5 | Críticos: 0 - 1',
                     align: 'start',
                     font: {
-                        size: 18
+                        size: 15
                     },
                 }
             },
             scales: {
-            x: {
-                stacked: true,
-                grid: {
-                display: false
+                x: {
+                    stacked: true,
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    max: 60,
+                    ticks: {
+                        stepSize: 15
+                    }
                 }
-            },
-            y: {
-                stacked: true,
-                beginAtZero: true,
-                max: 60,
-                ticks: {
-                stepSize: 15
-                }
-            }
             }
         }
     });
 
-    new Chart(mttr, {
+    window.chartMttr = new Chart(mttr, {
         type: "bar",
         data: {
             labels: ["SERVIDOR-DH-01", "SERVIDOR-DH-02", "SERVIDOR-DH-03", "SERVIDOR-DH-04", "SERVIDOR-DH-05", "SERVIDOR-DH-06", "SERVIDOR-DH-07", "SERVIDOR-DH-08", "SERVIDOR-DH-09"],
@@ -183,37 +137,47 @@ document.addEventListener("DOMContentLoaded", () => {
             plugins: {
                 title: {
                     display: true,
-                    text: 'MTTR de cada servidor por tipo de alerta',
+                    text: 'MTTR de cada servidor por tipo de alerta em Horas',
                     align: 'start',
                     font: {
                         size: 18
                     },
                 },
-            
+                subtitle: {
+                    display: true,
+                    text: 'SLA Baixos : 24 | SLA Médios: 4 | SLA Críticos: 1',
+                    align: 'start',
+                    color: '#666',
+                    font: {
+                        size: 14,
+                        family: 'Arial',
+                        weight: 'normal'
+                    }
+                }
             },
             scales: {
-            x: {
-                stacked: true,
-                grid: {
-                display: false
+                x: {
+                    stacked: true,
+                    grid: {
+                        display: false
+                    }
+                },
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                    max: 60,
+                    ticks: {
+                        stepSize: 15
+                    }
                 }
-            },
-            y: {
-                stacked: true,
-                beginAtZero: true,
-                max: 60,
-                ticks: {
-                stepSize: 15
-                }
-            }
             }
         }
     });
 
-    new Chart(distribuicao, {
+    window.chartDistribuicao = new Chart(distribuicao, {
         type: "doughnut",
         data: {
-            labels: ["CPU", "RAM", "Disco", "Latência"],
+            labels: ["CPU", "Disco", "RAM", "REDE"],
             datasets: [{
                 data: [8, 19, 33, 30],
                 backgroundColor: ["#52ffeb", "#0008ff", "#7700ff", "#00ffe1"],
@@ -256,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 title: {
                     display: true,
-                    text: 'Distribuição por componetes',
+                    text: 'Distribuição de alertas por componentes (último mês)',
                     align: 'start',
                     font: {
                         size: 18
@@ -267,10 +231,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
                 subtitle: {
                     display: true,
-                    text: 'Total de alertas por componentes (último mês)',
+                    text: 'Máximo esperado: 12 - 26',
                     align: 'start',
                     font: {
-                        size: 18
+                        size: 15
                     },
                     padding: {
                         bottom: 30,
@@ -284,6 +248,65 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+const idUsuario = sessionStorage.ID_USUARIO;
+
+
+function carregarRegioesDoGestor() {
+    fetch(`/dashOperacional/listarRegioes/${idUsuario}`)
+        .then(resposta => {
+            if (!resposta.ok) {
+                throw new Error("Erro ao buscar regiões do gestor");
+            }
+
+            return resposta.json();
+        })
+        .then(regioes => {
+            liberarRegioesNoMapa(regioes);
+            sessionStorage.ID_REGIAO = regioes.idRegiao;
+        })
+        .catch(erro => {
+            console.error("Erro ao carregar regiões:", erro);
+        });
+}
+
+function liberarRegioesNoMapa(regioesPermitidas) {
+    const regioesPermitidasFormatadas = regioesPermitidas.map(regiao => {
+        return {
+            idRegiao: regiao.idRegiao,
+            estado: regiao.estado.toLowerCase()
+        };
+    });
+
+    const todosEstadosDoMapa = document.querySelectorAll("#map .state");
+
+    todosEstadosDoMapa.forEach(estadoMapa => {
+        const ufMapa = estadoMapa.dataset.state;
+
+        const regiaoEncontrada = regioesPermitidasFormatadas.find(regiao => regiao.estado === ufMapa);
+
+        if (regiaoEncontrada) {
+            estadoMapa.classList.add("regiao-permitida");
+            estadoMapa.classList.remove("regiao-bloqueada");
+
+            estadoMapa.onclick = function (event) {
+                event.preventDefault();
+
+                const idRegiao = regiaoEncontrada.idRegiao;
+
+                carregarDatacentersDoGestor(idRegiao);
+            };
+        } else {
+            estadoMapa.classList.add("regiao-bloqueada");
+            estadoMapa.classList.remove("regiao-permitida");
+
+            estadoMapa.onclick = function (event) {
+                event.preventDefault();
+                alert("Você não possui acesso aos datacenters desta região.");
+            };
+        }
+    });
+}
 function detalhes() {
     window.location = "dashServidorGestor.html"
 }

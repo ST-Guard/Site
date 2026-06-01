@@ -4,8 +4,8 @@
     --Ram: #461ea49b;
     --Disco: #4c6ef5;
     --KPI-urgente: #FF5252;
-    --KPI-importante: #F5CC4D;
-    --KPI-normal: #23B26D;
+    --KPI-importante: #FFA500;
+    --KPI-normal: #ffff00;
     --azulClarinho: #66C0F4;
     --corDaFonte: #0F1C2E;
     --corFonteTexto: #6B7280;
@@ -108,13 +108,18 @@
 }
 
 /* KPI normal */
-#container_kpis .kpi4 {
+#container_kpis .kpi3 {
     border-color: var(--KPI-normal);
+    box-shadow: 1.5px 1px 2px 1px #ffff00, 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#container_kpis .kpi4 {
+    border-color: #23B26D;
     box-shadow: 1.5px 1px 2px 1px #23B26D, 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 #container_kpis .kpi4 h1 {
-    color: var(--KPI-normal);
+    color: #23B26D;
 }
 
 /* KPI urgente */
@@ -176,7 +181,7 @@
 }
 
 .SubcorpoPagina {
-    width: 82%;
+    width: 88%;
     max-height: 90vh;
     overflow: scroll;
     display: flex;
@@ -201,7 +206,7 @@
     border: 1px solid #dcdcdc;
     border-radius: 16px;
     padding: 20px 20px 16px;
-    height: 90%;
+    height: 100%;
 }
 
 .grafico_pizza_canvas {
@@ -224,13 +229,14 @@
     border-radius: 20px;
     padding: 10px 10px;
     height: 100%;
+
 }
 
 .grafico_chart {
     position: relative;
     width: 100%;
     margin-top: 10px;
-    height: 280px;
+    
 }
 
 .grafico_kpis {
@@ -269,19 +275,19 @@
     background-color: #D9D9D9;
 }
 
-.grafico_kp2 {
+.grafico_kp3 {
     background: #f2cfcf;
 }
 
-.grafico_kp2 p {
+.grafico_kp3 p {
     color: #FF5252;
 }
 
-.grafico_kp3 {
+.grafico_kp2 {
     background: #efe2b8;
 }
 
-.grafico_kp3 p {
+.grafico_kp2 p {
     color: #E2B62C;
 }
 
@@ -1001,6 +1007,34 @@
     width: 100%;
 }
 
+.regiao-permitida {
+    cursor: pointer;
+}
+
+.regiao-permitida .shape {
+    opacity: 1;
+}
+
+.regiao-permitida .icon_state {
+    opacity: 1;
+    filter: drop-shadow(0 0 10px rgba(102, 192, 244, 0.8));
+}
+
+.regiao-permitida:hover {
+    transform: scale(1.02);
+    transition: 0.2s;
+}
+
+.regiao-bloqueada {
+    cursor: not-allowed;
+}
+
+.regiao-bloqueada .shape,
+.regiao-bloqueada .icon_state,
+.regiao-bloqueada .label_icon_state {
+    opacity: 0.25;
+    filter: grayscale(1);
+}
 @media (min-width: 501px) {
     .conteiner_mapa .parca .estado {
         position: absolute;

@@ -22,7 +22,7 @@
     }
 
     .corpoDash {
-        width: 82%;
+        width: 100%;
         overflow-y: scroll;
         overflow-x: hidden;
         max-width: 100%;
@@ -284,7 +284,7 @@
         font-family: "IBM Plex Sans", sans-serif !important;
         color: #0F1C2E;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: center;
 
     }
 

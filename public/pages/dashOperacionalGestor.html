@@ -115,512 +115,330 @@
 
 
     <div class="SubcorpoPagina">
-      <div class="top-info">
-        <div class="textoInicio">
-          <div class="div_local">
-            <img src="../assets/icons_dashOpGestora/map-pinned.svg" alt="Ícone de localização" width="18">
-            <h1><span id="cidade">Cidade</span>, <span id="dia_da_semana"></span></h1>
-          </div>
-          <div class="div_nomeDatacenter">
-            <img src="../assets/icons_dashOpGestora/hard-drive.svg" alt="Ícone de datacenter" width="18">
-            <h2>DATACENTER</h2>
-          </div>
-        </div>
-        <button class="btn-relatorios" onclick="mostrarRelatorios()">Relatórios</button>
+
+  <div class="divSelecaoDatacenter">
+    <button id="btnVoltar" onclick="voltar()">
+      <img src="../assets/icons_dashOpGestora/undo-2.svg" alt="Voltar">
+    </button>
+  </div>
+
+  <div class="top-info">
+    <div class="textoInicio">
+
+      <div class="div_local">
+        <img src="../assets/icons_dashOpGestora/map-pinned.svg" alt="Ícone de localização" width="18">
+        <h1>
+          <span id="cidadeSelecionada">Cidade</span>,
+          <span id="diaSemanaAtual"></span>
+        </h1>
       </div>
 
-      <div class="header-kpi">
-        <div class="conteudoHeaderKpi">
-          <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
-          <span class="atualizacao"> Atualizações em 5 min.</span>
+      <div class="div_nomeDatacenter">
+        <img src="../assets/icons_dashOpGestora/hard-drive.svg" alt="Ícone de datacenter" width="18">
 
-        </div>
+        <select id="selectDatacenter" onchange="selecionarDatacenter(this.value)">
+          <option value="" disabled selected>Selecione um datacenter</option>
+        </select>
       </div>
-      <div id="div_relatorios" style="display: none;">
-  <div class="conteudo_relatorios">
-    <button class="btn_fechar_relatorio" onclick="fecharRelatorios()"><img src="../assets/icons_dashOpGestora/minimize-2.svg" alt=""></button>
 
-    <div class="box_filtros_relatorio">
-      <h2>Relatórios Operacionais</h2>
-      <p>Visualize análises detalhadas, métricas históricas e indicadores estratégicos da infraestrutura monitorada.</p>
-
-      <label>Escolha o período de tempo do seu relatório:</label>
-
-      <select>
-        <option>Diário</option>
-        <option>Semanal</option>
-        <option>Mensal</option>
-      </select>
-
-      <button class="btnCriarRelatorio">Criar relatório</button>
     </div>
 
-<div class="card_relatorios_gerados">
-  <div class="header_card_relatorios">
-    <div>
-      <div class="div_titulo_srv">
-        <h3>Relatórios gerados.</h3>
-        <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
-      </div>
-      <p>Histórico dos relatórios operacionais criados pela gestão.</p>
-    </div>
+    <button class="btn-relatorios" onclick="mostrarRelatorios()">Relatórios</button>
+  </div>
 
-    <div class="tempo_card">
+  <div class="header-kpi">
+    <div class="conteudoHeaderKpi">
       <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
-      <p>Agora</p>
+      <span class="atualizacao">Atualizações em 5 min.</span>
     </div>
   </div>
 
-  <div class="lista_relatorios_gerados">
-    <div class="item_relatorio_gerado">
-      <div>
-        <p>Relatório diário</p>
-        <span>25/06/2026 • DATA-WEB-0782</span>
+  <div id="div_relatorios" style="display: none;">
+    <div class="conteudo_relatorios">
+
+      <button class="btn_fechar_relatorio" onclick="fecharRelatorios()">
+        <img src="../assets/icons_dashOpGestora/minimize-2.svg" alt="Fechar relatórios">
+      </button>
+
+      <div class="box_filtros_relatorio">
+        <h2>Relatórios Operacionais</h2>
+        <p>Visualize análises detalhadas, métricas históricas e indicadores estratégicos da infraestrutura monitorada.</p>
+
+        <label for="selectPeriodoRelatorio">Escolha o período de tempo do seu relatório:</label>
+
+        <select id="selectPeriodoRelatorio">
+          <option value="diario">Diário</option>
+          <option value="semanal">Semanal</option>
+          <option value="mensal">Mensal</option>
+        </select>
+
+        <button class="btnCriarRelatorio">Criar relatório</button>
       </div>
 
-      <button>Visualizar</button>
-    </div>
+      <div class="card_relatorios_gerados">
+        <div class="header_card_relatorios">
+          <div>
+            <div class="div_titulo_srv">
+              <h3>Relatórios gerados.</h3>
+              <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
+            </div>
+            <p>Histórico dos relatórios operacionais criados pela gestão.</p>
+          </div>
 
-    <div class="item_relatorio_gerado">
-      <div>
-        <p>Relatório semanal</p>
-        <span>18/06/2026 • DATA-WEB-0782</span>
+          <div class="tempo_card">
+            <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
+            <p>Agora</p>
+          </div>
+        </div>
+
+        <div id="listaRelatoriosGerados" class="lista_relatorios_gerados">
+          <!-- JS renderiza os relatórios aqui -->
+        </div>
       </div>
 
-      <button>Visualizar</button>
-    </div>
-
-    <div class="item_relatorio_gerado">
-      <div>
-        <p>Relatório mensal</p>
-        <span>Junho/2026 • DATA-WEB-0782</span>
-      </div>
-
-      <button>Visualizar</button>
     </div>
   </div>
-</div>  </div>
+
+  <div id="container_kpis">
+
+  <div  class="div_kpi kpi1 kpi_com_tooltip" id="kpiScoreSaude">
+      <div class="info_kpi">
+        <div class="containerTitulo">
+          <h3>SCORE DE SAÚDE</h3>
+        </div>
+
+        <div class="div_situacao">
+          <h1><span id="scoreDatacenter">0</span>/100</h1>
+          <img id="statusKpiScore" src="../assets/dashboard-icons/icon_check.svg" alt="Status score">
+        </div>
+
+        <h4>Saúde baseada em alertas e estabilidade do ambiente.</h4>
+      </div>
+
+      <div class="popUp_kpi">
+        <h5>Parâmetros do Score de saúde</h5>
+
+        <p><span class="bolinhaStatus verde_kpi"></span><strong>Saudável</strong> → 85–100</p>
+        <p><span class="bolinhaStatus amarelo_kpi"></span><strong>Atenção</strong> → 60–84</p>
+        <p><span class="bolinhaStatus vermelho_kpi"></span><strong>Crítico</strong> → 0–59</p>
+      </div>
+    </div>
+
+    <div  class="div_kpi kpi_com_tooltip" id="kpiCrescimentoIncidentes">
+      <div class="info_kpi">
+        <div class="containerTitulo">
+          <h3>CRESC. INCIDENTES</h3>
+        </div>
+
+        <div class="div_situacao">
+          <h1><span id="porcentCresc">0</span>%</h1>
+          <img id="statusKPICresc" src="../assets/dashboard-icons/icon_check.svg" alt="Status crescimento">
+        </div>
+
+        <h4>
+          De <span id="qntAlertasAnterior">0</span> alertas na semana →
+          <span id="qntAlertasAtual">0</span> alertas na semana
+        </h4>
+      </div>
+
+
+      <div class="popUp_kpi">
+        <h5>Parâmetros Cresc. Incidentes</h5>
+
+        <p><span class="bolinhaStatus verde_kpi"></span><strong>Estável</strong> → 0% - 5%</p>
+        <p><span class="bolinhaStatus amarelo_kpi"></span><strong>Atenção</strong> → 6% – 15%</p>
+        <p><span class="bolinhaStatus vermelho_kpi"></span><strong>Crítico</strong> → acima de 15%</p>
+      </div>
+    </div>
+
+    <div  class="div_kpi kpi_com_tooltip" id="kpiServidoresInstaveis">
+      <div class="info_kpi">
+        <div class="containerTitulo">
+          <h3>SERVIDORES INSTÁVEIS</h3>
+        </div>
+
+        <div class="div_situacao">
+          <h1>
+            <span id="qntServComUptimeBaixo">0</span>/
+            <span id="totalSrvUptime">0</span>
+          </h1>
+          <img id="statusMenorUpt" src="../assets/dashboard-icons/icon_check.svg" alt="Status uptime">
+        </div>
+
+        <h4>
+          <span id="porcentagemServComBaixoUpt">0</span>% dos servidores estão com o uptime abaixo do ideal.
+        </h4>
+      </div>
+
+      <div class="popUp_kpi">
+        <h5>Parâmetros dos Servidores Instáveis</h5>
+
+        <p><span class="bolinhaStatus verde_kpi"></span><strong>Estável</strong> → até 10%</p>
+        <p><span class="bolinhaStatus amarelo_kpi"></span><strong>Atenção</strong> → 11% - 25%</p>
+        <p><span class="bolinhaStatus vermelho_kpi"></span><strong>Crítico</strong> → acima de 25%</p>
+      </div>
+    </div>
+
+    <div   class="div_kpi kpi_com_tooltip" id="kpiServidoresCriticos">
+      <div class="info_kpi">
+        <div class="containerTitulo">
+          <h3>SERVIDORES CRÍTICOS</h3>
+        </div>
+
+        <div class="div_situacao">
+          <h1>
+            <span id="qntSrvComAlertas">0</span>/
+            <span id="totalSrvCriticos">0</span>
+          </h1>
+          <img id="statusSrvCriticos" src="../assets/dashboard-icons/icon_check.svg" alt="Status servidores críticos">
+        </div>
+
+        <h4>
+          <span id="porcentSrvCritic">0</span>% dos servidores estão com a saúde crítica.
+        </h4>
+      </div>
+
+      <div class="popUp_kpi">
+        <h5>Parâmetros dos Servidores Críticos</h5>
+
+        <p><span class="bolinhaStatus verde_kpi"></span><strong>Estável</strong> → até 10%</p>
+        <p><span class="bolinhaStatus amarelo_kpi"></span><strong>Atenção</strong> → 11% - 25%</p>
+        <p><span class="bolinhaStatus vermelho_kpi"></span><strong>Crítico</strong> → acima de 25%</p>
+      </div>
+    </div>
+
+  </div>
+
+  <section class="secao1_servidores">
+
+    <div class="card_servidores">
+      <div class="header_card_servidores">
+        <div>
+          <div class="div_titulo_srv">
+            <h3>Ranking de Servidores Críticos (Top 5).</h3>
+            <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
+          </div>
+          <p>Servidores identificados com a saúde fora do ideal.</p>
+        </div>
+
+        <div class="tempo_card">
+          <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
+          <p>5 min.</p>
+        </div>
+      </div>
+
+      <div id="listaRankingServidoresCriticos" class="lista_servidores">
+        <!-- JS renderiza ranking crítico aqui -->
+      </div>
+    </div>
+
+    <div class="card_servidores">
+      <div class="header_card_servidores">
+        <div>
+          <div class="div_titulo_srv">
+            <h3>Tendência de degradação</h3>
+            <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
+          </div>
+          <p>Estimativa para os próximos 7 dias da saúde dos servidores.</p>
+        </div>
+
+        <div class="tempo_card">
+          <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
+          <p>5 min.</p>
+        </div>
+      </div>
+
+      <div id="listaTendenciaDegradacao" class="lista_servidores">
+        <!-- JS renderiza tendência aqui -->
+      </div>
+    </div>
+
+  </section>
+
+  <section class="secao2_saude">
+
+    <div class="card_saude_zonas">
+      <div class="header_card_saude">
+        <div>
+          <div class="div_titulo_srv">
+            <h3>Comparação de saúde entre as zonas.</h3>
+            <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
+          </div>
+        </div>
+
+        <div class="tempo_card">
+          <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
+          <p>5 min.</p>
+        </div>
+      </div>
+
+      <div class="area_grafico_zonas">
+        <canvas id="graficoSaudeZonas"></canvas>
+      </div>
+
+      <div class="legenda_saude_zonas">
+        <div><span class="legenda_verde"></span><p>Saudável (80-100)</p></div>
+        <div><span class="legenda_amarela"></span><p>Atenção (60-79)</p></div>
+        <div><span class="legenda_vermelha"></span><p>Crítico (0-59)</p></div>
+      </div>
+    </div>
+
+    <div class="card_uptime_servidor">
+      <div class="header_card_saude">
+        <div>
+          <div class="div_titulo_srv">
+            <h3>Comparativo de uptime por servidor.</h3>
+            <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
+          </div>
+          <p>Uptime individual dos servidores, analisados sob o período dos últimos 7 dias.</p>
+        </div>
+
+        <div class="tempo_card">
+          <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
+          <p>5 min.</p>
+        </div>
+      </div>
+
+      <div id="listaUptimeServidores" class="lista_uptime_servidores">
+        <!-- JS renderiza uptime aqui -->
+      </div>
+    </div>
+
+  </section>
+
+  <section class="secao3_incidentes_jira">
+
+    <div class="card_incidentes_semana">
+      <div class="header_card_incidentes">
+        <div class="div_titulo_srv">
+          <h3>Distribuição dos incidentes na semana.</h3>
+          <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
+        </div>
+
+        <div class="tempo_card">
+          <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
+          <p>5 min.</p>
+        </div>
+      </div>
+
+      <div class="area_grafico_incidentes">
+        <canvas id="graficoIncidentesSemana"></canvas>
+      </div>
+
+      <div class="box_tendencia">
+        <h4>Tendência ⊙</h4>
+        <p id="textoTendenciaIncidentes">Aguardando dados do datacenter selecionado.</p>
+      </div>
+    </div>
+
+   
+    
+    </div>
+
+  </section>
+
 </div>
-      <div id="container_kpis">
 
-        <div class="div_kpi kpi1 kpi_com_tooltip" id="kpiScoreSaude">
-          <div class="info_kpi">
-            <div class="containerTitulo">
-              <h3>SCORE DE SAÚDE</h3>
-            </div>
-
-            <div class="div_situacao">
-              <h1><span id="scoreDatacenter">100</span>/100</h1>
-              <img id="statusKpiScore" src="../assets/dashboard-icons/icon_check.svg" alt="">
-            </div>
-
-            <h4>Saúde baseada em alertas e estabilidade do ambiente.</h4>
-          </div>
-
-            <div class="popUp_kpi">
-    <h5>Parâmetros do Score de saúde</h5>
-
-    <p>
-      <span class="bolinhaStatus verde_kpi"></span>
-      <strong>Saudável</strong> → 85–100
-    </p>
-
-    <p>
-      <span class="bolinhaStatus amarelo_kpi"></span>
-      <strong>Atenção</strong> → 60–84
-    </p>
-
-    <p>
-      <span class="bolinhaStatus vermelho_kpi"></span>
-      <strong>Crítico</strong> → 0–59
-    </p>
-  </div>
-        </div>
-
-        <div class="div_kpi kpi_com_tooltip" id="kpiCrescimentoIncidentes">
-          <div class="info_kpi">
-            <div class="containerTitulo">
-              <h3> CRESC. INCIDENTES</h3>
-            </div>
-
-            <div class="div_situacao">
-              <h1><span id="porcentCresc">0</span>%</h1>
-              <img id="statusKPICresc" src="../assets/dashboard-icons/icon_check.svg" alt="">
-            </div>
-
-            <h4>
-              De <span id="qntAlertasAnterior">0</span> alertas na semana →
-              <span id="qntAlertasAtual">0</span> alertas na semana
-            </h4>
-          </div>
-
-
-                 <div class="popUp_kpi">
-    <h5>Paramêtros Cresc. Incidentes</h5>
-
-    <p>
-      <span class="bolinhaStatus verde_kpi"></span>
-      <strong>Estável</strong> → 0% - 5%
-    </p>
-
-    <p>
-      <span class="bolinhaStatus amarelo_kpi"></span>
-      <strong>Atenção</strong> → 6% – 15%
-    </p>
-
-    <p>
-      <span class="bolinhaStatus vermelho_kpi"></span>
-      <strong>Crítico</strong> → acima de 15%
-    </p>
-  </div>
-        </div>
-
-        <div class="div_kpi kpi_com_tooltip" id="kpiServidoresInstaveis">
-          <div class="info_kpi">
-            <div class="containerTitulo">
-              <h3>SERVIDORES INSTÁVEIS</h3>
-            </div>
-
-            <div class="div_situacao">
-              <h1>
-                <span id="qntServComUptimeBaixo">0</span>/
-                <span id="totalSrvUptime">0</span>
-              </h1>
-              <img id="statusMenorUpt" src="../assets/dashboard-icons/icon_check.svg" alt="">
-            </div>
-
-            <h4>
-              <span id="porcentagemServComBaixoUpt">0</span>% dos servidores estão
-              com o uptime abaixo do ideal.
-            </h4>
-          </div>
-
-
-                 <div class="popUp_kpi">
-    <h5>Parâmetros do Servidores Instáveis</h5>
-
-    <p>
-      <span class="bolinhaStatus verde_kpi"></span>
-      <strong>Estável</strong> → 10%
-    </p>
-
-    <p>
-      <span class="bolinhaStatus amarelo_kpi"></span>
-      <strong>Atenção</strong> → 11% - 25%
-    </p>
-
-    <p>
-      <span class="bolinhaStatus vermelho_kpi"></span>
-      <strong>Crítico</strong> → acima de 25%
-    </p>
-  </div>
-        </div>
-
-        <div class="div_kpi kpi_com_tooltip" id="kpiServidoresCriticos">
-          <div class="info_kpi">
-            <div class="containerTitulo">
-              <h3>SERVIDORES CRÍTICOS</h3>
-            </div>
-
-            <div class="div_situacao">
-              <h1>
-                <span id="qntSrvComAlertas">0</span>/
-                <span id="totalSrvCriticos">0</span>
-              </h1>
-              <img id="statusSrvCriticos" src="../assets/dashboard-icons/icon_check.svg" alt="">
-            </div>
-
-            <h4>
-              <span id="porcentSrvCritic">0</span>% dos servidores estão com algum alerta crítico.
-            </h4>
-          </div>
-
-
-                 <div class="popUp_kpi">
-    <h5>Parâmetros do Servidores Críticos</h5>
-
-    <p>
-      <span class="bolinhaStatus verde_kpi"></span>
-      <strong>Estável</strong> → 10%
-    </p>
-
-    <p>
-      <span class="bolinhaStatus amarelo_kpi"></span>
-      <strong>Atenção</strong> → 11% - 25%
-    </p>
-
-    <p>
-      <span class="bolinhaStatus vermelho_kpi"></span>
-      <strong>Crítico</strong> → acima de 25%
-    </p>
-  </div>
-        </div>
-
-      </div>
-
-
-
-      <section class="secao1_servidores">
-        <div class="card_servidores">
-          <div class="header_card_servidores">
-            <div>
-              <div class="div_titulo_srv">
-                <h3>Ranking de Servidores Críticos (Top 5).</h3>
-                <img src="../assets/icons_dashOpGestora/info.svg" alt="Icone de informacao">
-              </div>
-              <p>Servidores que foram identificados com a saúde fora do ideal.</p>
-            </div>
-
-            <div class="tempo_card">
-              <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
-              <p>5 min.</p>
-            </div>
-          </div>
-
-          <div class="lista_servidores">
-            <div class="item_servidor">
-              <p>1° SERVIDOR</p>
-              <span id="srvCrit1">● Score: 0</span>
-            </div>
-
-            <div class="item_servidor">
-              <p>2° SERVIDOR</p>
-              <span id="srvCrit2">● Score:0</span>
-            </div>
-
-            <div class="item_servidor">
-              <p>3° SERVIDOR</p>
-              <span id="srvCrit3">● Score: 0</span>
-            </div>
-
-            <div class="item_servidor">
-              <p>4° SERVIDOR</p>
-              <span id="srvCrit4">● Score: 0</span>
-            </div>
-            <div class="item_servidor">
-              <p>5° SERVIDOR</p>
-              <span id="srvCrito5">● Score: 0</span>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="card_servidores">
-          <div class="header_card_servidores">
-            <div>
-              <div class="div_titulo_srv">
-                <h3>Projeção de saúde operacional.</h3>
-                <img src="../assets/icons_dashOpGestora/info.svg" alt="Icone de informacao">
-              </div>
-              <p>Estimativa para os próximos 7 dias</p>
-            </div>
-
-            <div class="tempo_card">
-              <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
-
-              <p>5 min.</p>
-            </div>
-          </div>
-
-          <div class="lista_servidores">
-            <div class="item_servidor">
-              <p>SERVIDOR</p>
-              <span id="srvProjetado1">● Score projetado: 0</span>
-            </div>
-            <!--● Score projetado: 62*/-->
-            <div class="item_servidor">
-              <p>SERVIDOR</p>
-              <span id="srvProjetado2">● Score projetado: 0</span>
-            </div>
-
-            <div class="item_servidor">
-              <p>SERVIDOR</p>
-              <span id="srvProjetado3">● Score projetado: 0</span>
-            </div>
-            <div class="item_servidor">
-              <p>SERVIDOR</p>
-              <span id="srvProjetado4">● Score projetado: 0</span>
-            </div>
-            <div class="item_servidor">
-              <p>SERVIDOR</p>
-              <span id="srvProjetado5">● Score projetado: 0</span>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <section class="secao2_saude">
-
-        <div class="card_saude_zonas">
-          <div class="header_card_saude">
-            <div>
-              <div class="div_titulo_srv">
-
-                <h3>Comparação de saúde entre as zonas. </h3>
-                <img src="../assets/icons_dashOpGestora/info.svg" alt="">
-              </div>
-            </div>
-
-            <div class="tempo_card">
-              <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
-              <p>5 min.</p>
-            </div>
-          </div>
-
-          <div class="area_grafico_zonas">
-            <canvas id="graficoSaudeZonas"></canvas>
-          </div>
-
-          <div class="legenda_saude_zonas">
-            <div>
-              <span class="legenda_verde"></span>
-              <p>Saudável (80-100)</p>
-            </div>
-
-            <div>
-              <span class="legenda_amarela"></span>
-              <p>Atenção (60-79)</p>
-            </div>
-
-            <div>
-              <span class="legenda_vermelha"></span>
-              <p>Crítico (0-59)</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card_uptime_servidor">
-          <div class="header_card_saude">
-            <div>
-              <div class="div_titulo_srv">
-
-                <h3>Comparativo de uptime por servidor. </h3>
-                <img src="../assets/icons_dashOpGestora/info.svg" alt="">
-
-
-              </div>
-              <p>Uptime individual dos servidores no período analisado.</p>
-
-            </div>
-
-            <div class="tempo_card">
-              <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
-              <p>5 min.</p>
-            </div>
-          </div>
-
-          <div class="lista_uptime_servidores">
-            <div class="item_uptime uptime_critico">
-              <p><span class="nomeServidor">SERVIDOR</span></p>
-              <span>● Uptime: 0%</span>
-            </div>
-
-            <div class="item_uptime uptime_atencao">
-              <p><span class="nomeServidor">SERVIDOR</span></p>
-              <span>● Uptime: 0%</span>
-            </div>
-
-            <div class="item_uptime uptime_atencao_claro">
-              <p><span class="nomeServidor">SERVIDOR</span></p>
-              <span>● Uptime: 0%</span>
-            </div>
-
-            <div class="item_uptime uptime_saudavel">
-              <p><span class="nomeServidor">SERVIDOR</span></p>
-              <span>● Uptime: 0%</span>
-            </div>
-            <div class="item_uptime uptime_saudavel">
-              <p><span class="nomeServidor">SERVIDOR</span></p>
-              <span>● Uptime: 0%</span>
-            </div>
-            <div class="item_uptime uptime_saudavel">
-              <p><span class="nomeServidor">SERVIDOR</span></p>
-              <span>● Uptime: 0%</span>
-            </div>
-            <div class="item_uptime uptime_saudavel">
-              <p><span class="nomeServidor">SERVIDOR</span></p>
-              <span>● Uptime: 0%</span>
-            </div>
-          </div>
-        </div>
-
-      </section>
-      <section class="secao3_incidentes_jira">
-
-        <div class="card_incidentes_semana">
-          <div class="header_card_incidentes">
-            <div class="div_titulo_srv">
-              <h3>Distribuição dos incidentes na semana.</h3>
-              <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
-            </div>
-
-            <div class="tempo_card">
-              <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
-              <p>5 min.</p>
-            </div>
-          </div>
-
-          <div class="area_grafico_incidentes">
-            <canvas id="graficoIncidentesSemana"></canvas>
-          </div>
-
-          <div class="box_tendencia">
-            <h4>Tendência ⊙</h4>
-            <p>Tendência positiva em relação à semana anterior,</p>
-          </div>
-        </div>
-
-        <div class="card_atualizacoes_jira">
-          <div class="header_card_incidentes">
-            <div class="div_titulo_srv">
-              <img src="../assets/icons_dashOpGestora/jira.svg" alt="Ícone Jira">
-              <h3>Atualizações do Jira.</h3>
-              <img src="../assets/icons_dashOpGestora/info.svg" alt="Ícone de informação">
-
-
-            </div>
-
-            <div class="tempo_card">
-              <img src="../assets/icons_dashOpGestora/clock.svg" alt="">
-              <p>20 min.</p>
-            </div>
-          </div>
-
-          <div class="lista_jira">
-            <div class="item_jira jira_finalizado">
-              João Finalizou chamado SH32-DA
-            </div>
-
-            <div class="item_jira jira_andamento">
-              Marcos moveu para Andamento chamado HJ1-DE
-            </div>
-
-            <div class="item_jira jira_finalizado">
-              Maria Finalizou chamado FDE-FE
-            </div>
-
-            <div class="item_jira jira_andamento">
-              Beatriz moveu para Andamento chamado SHAO-24
-            </div>
-
-            <div class="item_jira jira_andamento">
-              Ana moveu para Andamento chamado DASDA-24
-            </div>
-            <div class="item_jira jira_andamento">
-              Ana moveu para Andamento chamado DASDA-24
-            </div>
-            <div class="item_jira jira_andamento">
-              Ana moveu para Andamento chamado DASDA-24
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-
-    </div>
-    <script src="./../js/sessao.js"></script>
     <script src="./../js/dashGestor.js"></script>
     <script src="../js/modaisInfos.js"></script>
 </body>
