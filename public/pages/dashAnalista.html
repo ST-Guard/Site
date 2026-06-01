@@ -18,7 +18,7 @@
 
 </head>
 
-<body onload="buscarDadosZona()">
+<body onload="buscarDadosZona(), obterdados()">
 
     <header>        
         <nav>
@@ -343,37 +343,7 @@
                     </div>
                 </div>
 
-                <div class="div_alertas-mae">
-                    <div class="titulo_relatorios">
-                    <h1>RELATORIOS SEMANAIS ZONAS</h1>
-                    </div>
-                    <br>
 
-                    <div class="cards_relatorios">
-                        <div class="conteudoRelatorio" >
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>RelatorioDia-30-04-2026</u></h3>
-                    </div>
-                    <br>
-
-                                        <div class="conteudoRelatorio" >
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>RelatorioDia-30-04-2026</u></h3>
-                    </div>
-                    <br>
-
-                                        <div class="conteudoRelatorio" >
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>RelatorioDia-30-04-2026</u></h3>
-                    </div>
-                    <br>
-
-                                        <div class="conteudoRelatorio" >
-                        <img src="../assets/dashboard-icons/icon_relatorio.svg" alt="">
-                        <h3><u>RelatorioDia-30-04-2026</u></h3>
-                    </div>
-                    </div>
-            </div>
 <br>
 
 
@@ -572,7 +542,7 @@ function buscarDadosZona(){
 
         
     }).catch(function(erro) {
-        console.log("deu merda")
+        console.log("Existe algum erro na aplicação")
         console.log(erro)
     })
 
@@ -621,6 +591,12 @@ function buscarZonaGrafico() {
 
 function pegarDados(dados) {
     console.log(`Iniciando a plotagem da zona: ${dados} `)
+}
+
+
+function obterdados(){
+    console.log("OBTENDO OS DADOS")
+
 }
 </script>
 
