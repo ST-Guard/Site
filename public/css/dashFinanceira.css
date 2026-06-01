@@ -336,6 +336,20 @@ header {
 #container_kpis .div_kpi.positivo h1,
 .kpi-faturamento h1 { color: var(--KPI-positivo); }
 
+#container_kpis .div_kpi.positivo .div_situacao svg {
+  color: var(--KPI-positivo) !important;
+}
+
+#container_kpis .div_kpi.negativo {
+  border-color: var(--KPI-negativo) !important;
+  box-shadow: 0 2px 10px rgba(224, 80, 80, 0.18) !important;
+}
+
+#container_kpis .div_kpi.negativo h1,
+#container_kpis .div_kpi.negativo .div_situacao svg {
+  color: var(--KPI-negativo) !important;
+}
+
 .kpi-custo {
   border-color: var(--KPI-normal) !important;
   box-shadow: 0 2px 10px rgba(44, 93, 134, 0.18) !important;

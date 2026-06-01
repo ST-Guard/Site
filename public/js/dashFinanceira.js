@@ -97,6 +97,15 @@ function atualizarSelo(id, valor, positivoVerde = true) {
   elemento.classList.add(positivo === positivoVerde ? 'badge-kpi-verde' : 'badge-kpi-vermelho');
 }
 
+function atualizarCorKpiRoi(valorRoi) {
+  const cartaoRoi = document.getElementById("kpi-roi-card");
+  if (!cartaoRoi) return;
+
+  const roiPositivo = Number(valorRoi || 0) >= 0;
+  cartaoRoi.classList.toggle("positivo", roiPositivo);
+  cartaoRoi.classList.toggle("negativo", !roiPositivo);
+}
+
 let projecoesPreditivas = [];
 let mesesForecast = 3;
 let forecastChartInst;
@@ -207,6 +216,7 @@ function plotarDados(dadosS3){
 
  // KPIS
   atualizarTexto("ROI_ESTIMADO", formatarPercentual(roi.ROI_MES_CORRENTE));
+  atualizarCorKpiRoi(roi.ROI_MES_CORRENTE);
   atualizarTexto("RECEITA_LIQUIDA", formatarMoeda(roi.MARGEM_LIQUIDO));
   atualizarTexto("DELTA_ROI", formatarVariacaoPercentual(roi.DELTA_ROI));
   atualizarSelo("DELTA_ROI", roi.DELTA_ROI);
