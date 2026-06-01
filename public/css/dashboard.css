@@ -159,7 +159,7 @@ nav {
 
 /* ######## SIDEBAR ######## */
 .sidebar {
-    width: 18%;
+    width: 12%;
     height: 90vh;
     max-width: 100%;
     background-color: var(--azul-mais-escuro);

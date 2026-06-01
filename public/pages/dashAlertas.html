@@ -409,28 +409,28 @@
                 <div class="div_kpi kpi2" id="media">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>SEVERIDADE MEDIA</h3>
+                            <h3>MÉDIOS ABERTOS</h3>
                         </div>
                         <div class="div_situacao">
                             <h1 id="qtdMedios">2</h1>
                             <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
                         </div>
                         <div class="status">
-                            <h4>Em monitoramento</h4>
+                            <h4>Requerem atenção</h4>
                         </div>
                     </div>
                 </div>
                 <div class="div_kpi kpi3" id="baixa">
                     <div class="info_kpi">
                         <div class="containerTitulo">
-                            <h3>SEVERIDADE BAIXA</h3>
+                            <h3>BAIXOS ABERTOS</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1 id="qtdMedios">3</h1>
-                            <img src="../assets/dashboard-icons/icon_check.svg" alt="">
+                            <h1 id="qtdBaixos">3</h1>
+                            <img src="../assets/dashboard-icons/icon_atencao.svg" alt="">
                         </div>
                         <div class="status">
-                            <h4>Resolvido/baixa importância</h4>
+                            <h4>Relevância inferior</h4>
                         </div>
                     </div>
                 </div>
@@ -440,11 +440,11 @@
                             <h3>RESOLVIDOS (24h)</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1 id="qtdMedios">3</h1>
+                            <h1 id="qtdResolvidos">3</h1>
                             <img src="../assets/dashboard-icons/icon_check.svg" alt="">
                         </div>
                         <div class="status">
-                            <h4>SLA dentro do esperado</h4>
+                            <h4></h4>
                         </div>
                     </div>
                 </div>
@@ -454,11 +454,13 @@
                             <h3>Servidor com mais alertas ativos</h3>
                         </div>
                         <div class="div_situacao">
-                            <h1 id="qtdMedios">SERVIDOR-DH-01</h1>
+                            <h1 id="nomeServer">SERVIDOR-DH-01</h1>
                             <img src="../assets/dashboard-icons/icon_alerta.svg" alt="">
                         </div>
                         <div class="status">
-                            <h4>12 Alertas</h4>
+                            <h4>
+                                <div id="qtdAlertaServer">12</div> Alertas
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -470,7 +472,7 @@
                         <div class="grafico_chart">
                             <canvas id="Alerta"></canvas>
                         </div>
-                        <div class="boxTendencia">
+                        <!-- <div class="boxTendencia">
                             <div class="tendencia">
                                 <img src="../assets/icone_certo.png" alt="">
                                 <div class="textos">
@@ -478,7 +480,7 @@
                                     <p>Alertas Criticos com queda significativa.</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </section>
                 <div class="grafico_pizza_card">
@@ -496,32 +498,24 @@
 
                     <div class="grafico_kpis">
                         <div class="grafico_kp1">
-                            <h1>Maior tempo para baixos</h1>
-                            <p>SERVIDOR-DH-08</p>
+                            <h1>Maior MTTR para baixos</h1>
+                            <p id="maiorB">SERVIDOR-DH-08</p>
                         </div>
                         <div class="grafico_kp2">
-                            <h1>Maior tempo para médios</h1>
-                            <p>SERVIDOR-DH-05</p>
+                            <h1>Maior MTTR para médios</h1>
+                            <p id="maiorM">SERVIDOR-DH-05</p>
                         </div>
                         <div class="grafico_kp3">
-                            <h1>Maior tempo para críticos</h1>
-                            <p>SERVIDOR-DH-06</p>
+                            <h1>Maior MTTR para críticos</h1>
+                            <p id="maiorC">SERVIDOR-DH-06</p>
                         </div>
                         <div class="grafico_kp4">
-                            <h1>Melhor MTTR</h1>
-                            <p>SERVIDOR-DH-01</p>
+                            <h1>Melhor MTTR para críticos</h1>
+                            <p id="melhor">SERVIDOR-DH-01</p>
                         </div>
                     </div>
 
-                    <div class="boxTendencia">
-                        <div class="tendencia">
-                            <img src="../assets/icone_certo.png" alt="">
-                            <div class="textos">
-                                <h1>Tendência Positiva</h1>
-                                <p>Alertas Criticos com queda significativa.</p>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </section>
 
@@ -664,6 +658,7 @@
                     </div>
                 </div>
             </section>
+
             <section class="lista_alertas" id="lista_alertas" style="display: none;">
                 <div class="div_lista_alertas">
                     <div class="div_alertas-conteudo">
@@ -687,11 +682,6 @@
                                             <h1>CPU</h1>
                                         </div>
                                     </div>
-                                    <div class="checkBox checkbox1">
-                                        <button onclick="mudarAlerta1()">
-                                            <img src="../assets/dashboard-icons/checkAlerta.png" alt="">
-                                        </button>
-                                    </div>
                                 </div>
                                 <div class="identificação_servidor">
                                     <img src="../assets/icon_servidor.png" alt="">
@@ -699,7 +689,7 @@
                                 </div>
                                 <div class="botoes_card_alerta">
                                     <button style="background-color: #6B7280; color: white; font-weight: 550;"
-                                        onclick="detalhes()">Ver detalhe</button>
+                                        onclick="">Ver detalhe</button>
                                 </div>
                             </div>
 
@@ -721,11 +711,7 @@
                                             <h1>RAM</h1>
                                         </div>
                                     </div>
-                                    <div class="checkBox checkbox2">
-                                        <button onclick="mudarAlerta2()">
-                                            <img src="../assets/dashboard-icons/checkAlerta.png" alt="">
-                                        </button>
-                                    </div>
+
                                 </div>
                                 <div class="identificação_servidor">
                                     <img src="../assets/icon_servidor.png" alt="">
@@ -733,7 +719,7 @@
                                 </div>
                                 <div class="botoes_card_alerta">
                                     <button style="background-color: #6B7280; color: white; font-weight: 550;"
-                                        onclick="detalhes()">Ver detalhe</button>
+                                        onclick="">Ver detalhe</button>
                                 </div>
                             </div>
 
@@ -755,11 +741,7 @@
                                             <h1>RAM</h1>
                                         </div>
                                     </div>
-                                    <div class="checkBox checkbox3">
-                                        <button onclick="mudarAlerta3()">
-                                            <img src="../assets/dashboard-icons/checkAlerta.png" alt="">
-                                        </button>
-                                    </div>
+
                                 </div>
                                 <div class="identificação_servidor">
                                     <img src="../assets/icon_servidor.png" alt="">
@@ -767,7 +749,7 @@
                                 </div>
                                 <div class="botoes_card_alerta">
                                     <button style="background-color: #6B7280; color: white; font-weight: 550;"
-                                        onclick="detalhes()">Ver detalhe</button>
+                                        onclick="">Ver detalhe</button>
                                 </div>
                             </div>
 
@@ -789,11 +771,7 @@
                                             <h1>DISCO</h1>
                                         </div>
                                     </div>
-                                    <div class="checkBox checkbox4">
-                                        <button onclick="mudarAlerta4()">
-                                            <img src="../assets/dashboard-icons/checkAlerta.png" alt="">
-                                        </button>
-                                    </div>
+
                                 </div>
                                 <div class="identificação_servidor">
                                     <img src="../assets/icon_servidor.png" alt="">
@@ -801,7 +779,7 @@
                                 </div>
                                 <div class="botoes_card_alerta">
                                     <button style="background-color: #6B7280; color: white; font-weight: 550;"
-                                        onclick="detalhes()">Ver detalhe</button>
+                                        onclick="">Ver detalhe</button>
                                 </div>
                             </div>
 
@@ -823,11 +801,7 @@
                                             <h1>CPU</h1>
                                         </div>
                                     </div>
-                                    <div class="checkBox checkbox5">
-                                        <button onclick="mudarAlerta5()">
-                                            <img src="../assets/dashboard-icons/checkAlerta.png" alt="">
-                                        </button>
-                                    </div>
+
                                 </div>
                                 <div class="identificação_servidor">
                                     <img src="../assets/icon_servidor.png" alt="">
@@ -835,14 +809,11 @@
                                 </div>
                                 <div class="botoes_card_alerta">
                                     <button style="background-color: #6B7280; color: white; font-weight: 550;"
-                                        onclick="detalhes()">Ver detalhe</button>
+                                        onclick="">Ver detalhe</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
-
                 </div>
             </section>
         </div>
@@ -857,10 +828,10 @@
     </div>
 
 </body>
-
+<script src="../js/dashAlertas.js"></script>
 <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
 <script src="../js/scriptMaps.js"></script>
 <script src="../js/modaisInfos.js"></script>
-<script src="../js/dashAlertas.js"></script>
+<script src="../buscar_dados/buscarDadosAlerta.js"></script>
 
 </html>
