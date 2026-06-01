@@ -9,23 +9,17 @@
         rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-        rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"rel="stylesheet">
     <link rel="icon" href="./../assets/icon/icon.png">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-   
-        
-    
     <link rel="stylesheet" href="../css/dashboard.css" />
     <link rel="stylesheet" href="../css/dashAnalistaEspecifica.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>      
 
 </head>
 
 <body>
-
     <header>
-
        <nav>
             <div class="logo-nav" onclick="fnNavegar('/')">
                 <a href="../pages/index.html">
@@ -56,7 +50,6 @@
                 </div>
             </div>
         </nav>
-
     </header>
 
     <div class="corpoPagina">
@@ -105,7 +98,7 @@
                 </div>
             </div>
             <div id="container_kpis">
-                <div class="div_kpi kpi1">
+                <div class="div_kpi kpi1 kpi_com_tooltip">
                     <div class="info_kpi">
                         <div class="containerTitulo">
                             <h3>P99 TAXA DE DOWNLOAD</h3>
@@ -116,8 +109,15 @@
                         </div>
                         <h4>Durante 99% do tempo, o uso ficou abaixo de 77% </h4>
                     </div>
+                    <div class="popUp_kpi">
+                        <h5>Parâmetros Incidentes</h5>
+
+                        <p><span class="bolinhaStatus vermelho_kpi"></span><strong>Critico</strong> → 85–100</p>
+                        <p><span class="bolinhaStatus amarelo_kpi"></span><strong>Relevante</strong> → 60–84</p>
+                        <p><span class="bolinhaStatus verde_kpi"></span><strong>Saudavel</strong> → 0–59</p>
+                    </div>
                 </div>
-                <div class="div_kpi kpi2">
+                <div class="div_kpi kpi2 kpi_com_tooltip">
                     <div class="info_kpi">
                         <div class="containerTitulo">
                             <h3>P99 DE DISCO</h3>
@@ -130,8 +130,15 @@
                             <h4>Durante 99% do tempo, o uso ficou abaixo de 62.4% </h4>
                         </div>
                     </div>
+                    <div class="popUp_kpi">
+                        <h5>Parâmetros Incidentes</h5>
+
+                        <p><span class="bolinhaStatus vermelho_kpi"></span><strong>Critico</strong> → 85–100</p>
+                        <p><span class="bolinhaStatus amarelo_kpi"></span><strong>Relevante</strong> → 60–84</p>
+                        <p><span class="bolinhaStatus verde_kpi"></span><strong>Saudavel</strong> → 0–59</p>
+                    </div>
                 </div>
-                <div class="div_kpi kpi3">
+                <div class="div_kpi kpi3 kpi_com_tooltip">
                     <div class="info_kpi">
                         <div class="containerTitulo">
                             <h3>P99 DE CPU</h3>
@@ -144,8 +151,15 @@
                             <h4>Durante 99% do tempo, o uso ficou abaixo de 85.7% </h4>
                         </div>
                     </div>
+                    <div class="popUp_kpi">
+                        <h5>Parâmetros Incidentes</h5>
+
+                        <p><span class="bolinhaStatus vermelho_kpi"></span><strong>Critico</strong> → 85–100</p>
+                        <p><span class="bolinhaStatus amarelo_kpi"></span><strong>Relevante</strong> → 60–84</p>
+                        <p><span class="bolinhaStatus verde_kpi"></span><strong>Saudavel</strong> → 0–59</p>
+                    </div>
                 </div>
-                <div class="div_kpi kpi4">
+                <div class="div_kpi kpi4 kpi_com_tooltip">
                     <div class="info_kpi">
                         <div class="containerTitulo">
                             <h3>P99 DE RAM</h3>
@@ -158,8 +172,15 @@
                             <h4>Durante 99% do tempo, o uso ficou abaixo de 37.2% </h4>
                         </div>
                     </div>
+                    <div class="popUp_kpi">
+                        <h5>Parâmetros Incidentes</h5>
+
+                        <p><span class="bolinhaStatus vermelho_kpi"></span><strong>Critico</strong> → 85–100</p>
+                        <p><span class="bolinhaStatus amarelo_kpi"></span><strong>Relevante</strong> → 60–84</p>
+                        <p><span class="bolinhaStatus verde_kpi"></span><strong>Saudavel</strong> → 0–59</p>
+                    </div>
                 </div>
-                <div class="div_kpi kpi5">
+                <div class="div_kpi kpi5 ">
                     <div class="info_kpi">
                         <div class="containerTitulo">
                             <h3>TRÁFEGO DE DOWNLOAD</h3>

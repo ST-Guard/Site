@@ -151,6 +151,82 @@ h1{
   color: var(--KPI-urgente);
 }
 
+.kpi_com_tooltip {
+    position: relative;
+    overflow: visible !important;
+}
+
+
+.popUp_kpi {
+    position: absolute;
+    top: calc(80% + 12px);
+    left: 18%;
+
+    width: 260px;
+    max-width: 90vw;
+
+    background-color: #fcfeff;
+    border: 1px solid #1c4886;
+    border-radius: 6px;
+    padding: 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.2s ease;
+    z-index: 999;
+}
+
+.kpi_com_tooltip:hover .popUp_kpi {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.kpi_com_tooltip:hover .popUp_kpi {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popUp_kpi h5 {
+    color: #244770;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.popUp_kpi p {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+    color: #6B7280;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.popUp_kpi p:last-child {
+    margin-bottom: 0;
+}
+
+.bolinhaStatus {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: block;
+}
+
+.verde_kpi {
+    background-color: #23B26D;
+}
+
+.amarelo_kpi {
+    background-color: #F5A400;
+}
+
+.vermelho_kpi {
+    background-color: #FF5252;
+}
+
 .SubcorpoPagina {
   width: 100%;
   display: flex;
