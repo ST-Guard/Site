@@ -4,7 +4,7 @@ function listarRegioes(idUsuario) {
     var instrucao = `
         SELECT DISTINCT 
             r.uf,
-            r.cidade,
+            r.estado,
             r.idRegiao
         FROM usuario AS u
         JOIN datacenters_gestores AS dg 
@@ -47,7 +47,7 @@ function listarRegioesDaEmpresa(idEmpresa) {
         SELECT DISTINCT 
             r.idRegiao,
             r.uf,
-            r.cidade
+            r.estado
         FROM regiao AS r
         JOIN datacenter AS d
             ON d.idDataCenter = r.fkRegiaoDataCenter

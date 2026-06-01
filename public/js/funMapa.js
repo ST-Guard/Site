@@ -121,7 +121,7 @@ function renderizarMapa() {
         return {
             idRegiao: regiao.idRegiao,
             uf: String(regiao.uf).toLowerCase(),
-            cidade: regiao.cidade
+            estado: regiao.estado
         };
     });
 
@@ -129,7 +129,7 @@ function renderizarMapa() {
         return {
             idRegiao: regiao.idRegiao,
             uf: String(regiao.uf).toLowerCase(),
-            cidade: regiao.cidade
+            estado: regiao.estado
         };
     });
 
@@ -196,7 +196,7 @@ function renderizarMapa() {
 
             sessionStorage.setItem("ID_REGIAO", regiaoDoGestor.idRegiao);
             sessionStorage.setItem("UF", regiaoDoGestor.uf);
-            sessionStorage.setItem("CIDADE", regiaoDoGestor.cidade);
+            sessionStorage.setItem("ESTADO", regiaoDoGestor.estado);
 
             abrirPopupEscolhaRegiao(regiaoDoGestor, scoreRegiao);
         };
@@ -315,16 +315,16 @@ function aplicarEstiloVisualDireto(estadoMapa, existeNaEmpresa, gestorTemAcesso,
     if (!existeNaEmpresa) {
         shape.style.setProperty("fill", "#d9d9d9", "important");
         shape.style.setProperty("opacity", "0.45", "important");
-        shape.style.setProperty("filter", "grayscale(1) brightness(1.08)", "important");
+        shape.style.setProperty("filter", "grayscale(3) brightness(1.08)", "important");
 
         if (icon) {
             icon.style.setProperty("opacity", "0.18", "important");
-            icon.style.setProperty("filter", "grayscale(1)", "important");
+            icon.style.setProperty("filter", "grayscale(3)", "important");
         }
 
         if (label) {
             label.style.setProperty("opacity", "0.25", "important");
-            label.style.setProperty("filter", "grayscale(1)", "important");
+            label.style.setProperty("filter", "grayscale(3)", "important");
         }
 
         return;
@@ -334,12 +334,12 @@ function aplicarEstiloVisualDireto(estadoMapa, existeNaEmpresa, gestorTemAcesso,
     if (!gestorTemAcesso) {
         shape.style.setProperty("fill", corEstado, "important");
         shape.style.setProperty("opacity", "0.32", "important");
-        shape.style.setProperty("filter", "grayscale(0.8) brightness(1.12)", "important");
+        shape.style.setProperty("filter", "grayscale(1) brightness(1.12)", "important");
 
         if (icon) {
             icon.style.setProperty("fill", corGlow, "important");
             icon.style.setProperty("opacity", "0.35", "important");
-            icon.style.setProperty("filter", "grayscale(0.8)", "important");
+            icon.style.setProperty("filter", "grayscale(1)", "important");
         }
 
         if (label) {
@@ -361,7 +361,7 @@ function aplicarEstiloVisualDireto(estadoMapa, existeNaEmpresa, gestorTemAcesso,
         icon.style.setProperty("opacity", "1", "important");
         icon.style.setProperty(
             "filter",
-            `drop-shadow(0 0 6px ${corGlow}) drop-shadow(0 0 14px ${corGlow}) drop-shadow(0 0 24px ${corGlow})`,
+            `drop-shadow(0 0 6px ${corGlow}) drop-shadow(0 0 10px ${corGlow}) drop-shadow(0 0 24px ${corGlow})`,
             "important"
         );
     }
