@@ -124,16 +124,20 @@ function selecionarAlerta(data) {
 	let nome;
 
 	sessionStorage.setItem('DATA', "")
+	sessionStorage.setItem('REGIAO', "")
 
 	if (data == 1) {
 		nome = "São Paulo"
-		sessionStorage.setItem('DATA', "SP")
+		sessionStorage.setItem('DATA', "DC-SP-01")
+		sessionStorage.setItem('REGIAO', "SP")
 	} else if (data == 2) {
 		nome = "Rio de Janeiro"
-		sessionStorage.setItem('DATA', "RJ")
+		sessionStorage.setItem('DATA', "DC-RJ-01")
+		sessionStorage.setItem('REGIAO', "RJ")
 	} else {
 		nome = "Porto Alegre"
-		sessionStorage.setItem('DATA', "RS")
+		sessionStorage.setItem('DATA', "DC-RS-01")
+		sessionStorage.setItem('REGIAO', "RS")
 	}
 
 
@@ -153,6 +157,7 @@ function selecionarAlerta(data) {
 
 function voltar() {
 	sessionStorage.setItem('DATA', "")
+	sessionStorage.setItem('REGIAO', "")
 
 	const kpis = document.getElementById("container_kpis");
 	const parte1 = document.getElementById("parte1");

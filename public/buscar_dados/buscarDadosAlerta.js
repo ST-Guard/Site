@@ -74,20 +74,21 @@ async function atualizarDados2() {
 
 async function renderizarDadosDash(dadosDashboard) {
     let data = sessionStorage.getItem('DATA');
+    let regiao = sessionStorage.getItem('REGIAO')
 
     if (!data) {
         console.log("Datacenter não selecionado.");
         return;
     }
 
-    const datacenter = dadosDashboard["datacenters"];
+    const regiao = dadosDashboard["regiões"];
 
-    if (!datacenter || !datacenter[data]) {
-        console.log("Dados do datacenter não encontrados.");
+    if (!regiao || !regiao[data]) {
+        console.log("Dados do regiao não encontrados.");
         return;
     }
 
-    let caminho = datacenter[data];
+    let caminho = regiao[data][regiao];
 
     /* ========================= GRÁFICOS =========================*/
     /* ======================== MTTR SERVER =======================*/
@@ -97,7 +98,7 @@ async function renderizarDadosDash(dadosDashboard) {
     const listaMttrBaixo = dados.map(item => Number((item.baixo / 60).toFixed(2)));
     const listaMttrMedio = dados.map(item => Number((item.medio / 60).toFixed(2)));
     const listaMttrCritico = dados.map(item => Number((item.critico / 60).toFixed(2)));
-    const listaMttrLabels = dados.map(item => item.nomeServidor);
+    const listaMttrLabels = dados.map(item => item.servidor);
 
     if (mttrServer) {
         mttrServer.data.labels = listaMttrLabels;
@@ -131,20 +132,26 @@ async function renderizarDadosDash(dadosDashboard) {
 
 async function renderizarDadosDash2(dadosDashboard2) {
     let data = sessionStorage.getItem('DATA');
+    let regiao = sessionStorage.getItem('REGIAO');
 
     if (!data) {
-        console.log("Datacenter não selecionado.");
+        console.log("Região não selecionada.");
         return;
     }
 
-    const empresa = dadosDashboard2["SmartData Corp"];
+    if (!regiao) {
+        console.log("Datacenter não selecionada.");
+        return;
+    }
+
+    const empresa = dadosDashboard2["Steam"];
 
     if (!empresa || !empresa[data]) {
         console.log("Dados do datacenter não encontrados.");
         return;
     }
 
-    let caminho = empresa[data];
+    let caminho = empresa[regiao][data];
     /* ========================== KPIs ========================== */
     const kpiCriticoAberto = document.getElementById("qtdCriticos");
     const kpiMedioAverto = document.getElementById("qtdMedios");
